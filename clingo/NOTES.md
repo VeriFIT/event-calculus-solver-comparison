@@ -70,4 +70,57 @@ nothing else changes for clingcon
 while in clingo-lpx this leads to different answer sets,
 since instead of the number `1.1` we have a new variable "aeiou".
 
+## TODO
+
+The main issue that I see with the current approach is 
+the representation of constraints in the body.
+
+
+For example, at `ex3-falling_object/hybrid_model.lp` we have this rule to generate the event
+`hitGround(O)`.
+
+```
+happens_state(hitGround(O), S) :-
+    holds(falling(O), true, S-1),
+    &sum{ (height(O), S) } = 0,
+    step(S). 
+```
+
+Ideally, this would be all that we need.
+
+But consider the following case.
+
+We have:
+* `holds(falling(o), true, 1)`
+* `(height(o),1)= 5`
+* `(height(o),2)=-5`
+* `step(2)`
+
+The program does not derive 
+`happens_state(hitGround(o), 2)`
+since we do not have `(height(o),2)=0`,
+and the constraint `&sum{ (height(O), S) } = 0` is not satisfied.
+
+This does not model correctly the example, 
+since, at some instant, `height(o)` must have the value `0`
+if it goes from `5` to `-5`. 
+
+We can correct this by adding the following constraints.
+
+```
+% capture when height(O) = 0
+:- holds(falling(O), true, S-1),
+   &sum { (height(O), S-1) } < 0, &sum { (height(O), S) } > 0,
+   step(S).
+:- holds(falling(O), true, S-1),
+   &sum { (height(O), S-1) } > 0, &sum { (height(O), S) } < 0,
+   step(S).
+```
+
+They enforce that, if at some time point `height(o)` is `0`, 
+then there is also one state `s` where `(height(o),s)` is `0`.
+
+The questions are: 
+* how general is this approach? 
+* how can we automate it?
 
