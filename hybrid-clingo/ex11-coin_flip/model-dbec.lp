@@ -5,21 +5,21 @@
 % sorts
 %-------------------------------------------------------------------------------
 
-event(toss).
-event(land).
+% event(toss).
+% event(land).
 
-dfluent(up(heads)).
-dfluent(up(tails)).
+fluent(up(heads)).
+fluent(up(tails)).
 
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
-releases(toss,  up(X), T) :- fluent(up(X)), time(T).
+releasesAtStep(toss,  up(X), S) :- fluent(up(X)), step(S).
 
-initiates(land, up(X), T) :- holdsAt(up(X), T), time(T).
-terminates(land, up(X), T) :- not holdsAt(up(X), T), time(T), fluent(up(X)).
+initiatesAtStep(land, up(X), S) :- holdsAtStep(up(X), S), step(S).
+terminatesAtStep(land, up(X), S) :- not holdsAtStep(up(X), S), step(S), fluent(up(X)).
 
 
 %-------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ terminates(land, up(X), T) :- not holdsAt(up(X), T), time(T), fluent(up(X)).
 %-------------------------------------------------------------------------------
 
 % the coin must always be exactly one of the sides up
-1{holdsAt(up(X), T) : fluent(up(X))}1 :- time(T).
+1{holdsAtStep(up(X), S) : fluent(up(X))}1 :- step(S).
 
 %-------------------------------------------------------------------------------
 % observations
@@ -41,7 +41,8 @@ initiallyN(F) :- not initiallyP(F), fluent(F).
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(toss,      10).
-in_happens(land,      20). % TODO could be triggered
+happens(toss,      10).
+happens(land,      20). % TODO could be triggered
+happens(check,     30). % just to see the value after
 
 % --> two models heads or tails

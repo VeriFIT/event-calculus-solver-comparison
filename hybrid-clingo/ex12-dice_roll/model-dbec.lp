@@ -5,22 +5,25 @@
 % sorts
 %-------------------------------------------------------------------------------
 
-event(roll).
-event(land).
+% event(roll).
+% event(land).
 
-ffluent(sideUp).    % functional fluent
+fluent_Func(sideUp).    % functional fluent
 
-% the fluent can only have positive fholdsAts
-&sum{ fholdsAt(sideUp, T) } > 0 :- holdsAt(sideUp, T), not releasedAt(sideUp, T), time(T).
+% the fluent can only have positive values
+&sum{ valueAtStep(sideUp, S) } > 0 :- holdsAtStep(sideUp, S), not releasedAtStep(sideUp, S), step(S).
 
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
-releases(roll, sideUp, T) :- time(T).
+releasesAtStep(roll, sideUp, S) :- step(S).
 
-initiates(land, sideUp, (0, 1, 0, sideUp), T) :- time(T).
+initiatesValueAtStep(land, sideUp, S) :- holdsAtStep(sideUp, S), step(S).
+&sum{valueAtStep(sideUp,S)} = valueAtStep(sideUp,S+1) :-
+    initiatedValueByAtStep(land, sideUp, S),
+    step(S+1).
 
 
 %-------------------------------------------------------------------------------
@@ -28,13 +31,13 @@ initiates(land, sideUp, (0, 1, 0, sideUp), T) :- time(T).
 %-------------------------------------------------------------------------------
 
 % the dice must always be exactly one of the sides up
-% 1{holdsAt(sideUp, T)}1 :- time(T).
+1{holdsAtStep(sideUp, S)}1 :- step(S).
 
 %-------------------------------------------------------------------------------
 % observations
 %-------------------------------------------------------------------------------
 
-initiallyP(sideUp, 1).
+initiallyP_Func(sideUp, 1).
 %initiallyN(F) :- not initiallyP(F), fluent(F).
 
 
@@ -42,13 +45,14 @@ initiallyP(sideUp, 1).
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(roll,      10).
-in_happens(land,      20). % TODO could be triggered
+happens(roll,      10).
+happens(land,      20). % TODO could be triggered
+happens(check,     30).
 
 
 % enforce a result that we are looking for
-% (since its not really useful to list all non-ground fholdsAts...)
-&sum{ fholdsAt(sideUp, 3) } = X :- goal(X).
+% (since its not really useful to list all non-ground values...)
+&sum{ valueAtStep(sideUp, 3) } = X :- holdsAtStep(sideUp, 3), goal(X).
 
-% TODO the goal is grounded but the point of the example is to show a non-ground non-deterministic fholdsAt during the roll
+% TODO the goal is grounded but the point of the example is to show a non-ground non-deterministic value during the roll
 {goal(1;2;3;4;5;6)} = 1.

@@ -1,11 +1,11 @@
-$ clingo-lpx --strict -n0 ../axioms/fdec.lp -c maxstep=6 -c maxtime=1000 ./model.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+$ clingo-lpx --strict -n0 ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=6 ./model-dbec.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ../axioms/dbec-clingo_lpx-choice.lp ...
 Solving...
 Answer: 1
-(Time: 0.025s)
+(Time: 0.022s)
 happens(turn_light_off,10+e)
 happens(turn_light_off,10+3*e)
 happens(turn_light_off,10+5*e)
@@ -16,13 +16,13 @@ holdsAt(light_on,(10,"< T =<",10+e))
 holdsAt(light_on,(10+2*e,"< T =<",10+3*e))
 holdsAt(light_on,(10+4*e,"< T =<",10+5*e))
 Assignment: [leftovers]
-ftimeAtStep(0)=0
+timeAtStep(0)=0
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.025s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.014s
+Time         : 0.022s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.011s
 
 Command exited with non-zero status 30
 
@@ -30,5 +30,5 @@ Command exited with non-zero status 30
   real [s]  0.03
   user [s]  0.00
   sys  [s]  0.00
-  mem  [KB] 8960
+  mem  [KB] 8576
   avgm [KB] 0
