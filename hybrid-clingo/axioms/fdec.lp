@@ -25,6 +25,7 @@
 :- holdsAt(F, 0), initiallyN(F), dfluent(F).
 holdsAt(F, 0) :- initiallyP(F), dfluent(F).
 &sum{ fholdsAt(F,0) } = V :- initiallyP(F, V), ffluent(F).
+&sum{ fholdsAt(F,0) } = 0 :- initiallyN(F), ffluent(F).
 %%%% end
 
 %%% OV: to make it easier to transform DEC examples into FDEC

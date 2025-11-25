@@ -20,7 +20,6 @@ object(book).
 ffluent(location(A)) :- agent(A).
 ffluent(location(O)) :- object(O).
 dfluent(holding(A, O)) :- agent(A), object(O).
-dfluent(walking(A)) :- agent(A).
 ffluent(walkingTo(A)) :- agent(A).
 
 event(walk(A)) :- agent(A).
@@ -35,21 +34,18 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
 % will be walking, and their location will continuously approach Location2
-initiates(walk(A), walking(A), T) :- time(T), agent(A).
 initiates(walk(A), walkingTo(A), (fhappens(walk(A),T), 0, 0, walkingTo(A)), T) :- time(T), agent(A).    % TODO need a second fluent because trajectories can only be controlled by dfluents
 
 releases(walk(A), location(A), T) :- agent(A), time(T).
 
-terminates(arrive(A), walking(A), T) :- agent(A), time(T).
 terminates(arrive(A), walkingTo(A), T) :- agent(A), time(T).
 
 initiates(arrive(A), location(A), (0, 1, 0, location(A)), T) :- time(T), agent(A).
 
-trajectory(walking(A), T1, location(A), (0, 1, 0, location(A), 10), T2) :- agent(A), time(T1), time(T2).
-% trajectory(walkingTo(A), T1, location(A), (0, 1, 0, location(A), 10), T2) :- agent(A), time(T1), time(T2).
+trajectory(walkingTo(A), T1, location(A), (0, 1, 0, location(A), 10), T2) :- agent(A), time(T1), time(T2).
 
 happens(arrive(A), T) :-
-    holdsAt(walking(A), T), % holdsAt(walkingTo(A), T),
+    holdsAt(walkingTo(A), T), 
     normal_atom(fholdsAt(location(A), T), eq, fholdsAt(walkingTo(A), T)), 
     time(T).
 % TODO trigger_value for two func fluents
@@ -57,14 +53,14 @@ comparison(fholdsAt(location(A), T), fholdsAt(walkingTo(A), T)) :- agent(A), tim
 % TODO this constraint doesnt really work
 % TODO at T location might be 100 and walkingTo is 0 (not holds), and then at T+1 location might be 150 and walkingTo 200 -- killing the model (at T 100 > 0 and at T+1 150 < 200)
 % TODO the problem is that walkingTo is initiated at T to value 200 buts its value is still 0 at T
-    %:- holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
-    %:- holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+    %:- holdsAt(walkingTo(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+    %:- holdsAt(walkingTo(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
 % either the agent is already walking at T
-:- holdsAt(walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
-:- holdsAt(walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+:- holdsAt(walkingTo(A), T), holdsAt(walkingTo(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+:- holdsAt(walkingTo(A), T), holdsAt(walkingTo(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
 % or the agent just started walking at T
-:- happens(E, T), initiates(E, walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fhappens(E, T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
-:- happens(E, T), initiates(E, walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fhappens(E, T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+:- happens(E, T), initiates(E, walkingTo(A), T), holdsAt(walkingTo(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fhappens(E, T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+:- happens(E, T), initiates(E, walkingTo(A), T), holdsAt(walkingTo(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fhappens(E, T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
@@ -97,6 +93,10 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 0, 0, location(O
 % when an agent is in a room and holding an object, then the object is in the same room
 &sum{fholdsAt(location(A),T)} = fholdsAt(location(O),T) :-
     holdsAt(holding(A,O), T),
+    agent(A), object(O), time(T).
+holdsAt(location(O), T) :-
+    holdsAt(holding(A,O), T),
+    holdsAt(location(A), T),
     agent(A), object(O), time(T).
 
 
@@ -154,11 +154,6 @@ comparison(ftimeAtStep(T), GT) :- time(T), in_happens(walk(A), GT).
 in_happens(check, 55).
 
 % --> conclude arrive at 60
-
-% TODO ffluent needs something like this because FDEC (non fh) does not support false ffluents
-% A % &sum{ fholdsAt(F,0) } = 0 :- initiallyN(F), ffluent(F).   % <--- this is already in the axioms
-% B % initiallyP(walkingTo(A), 0) :- agent(A).
-% C % &sum{ fholdsAt(walkingTo(A),T) } = 0 :- not holdsAt(walking(A), T), agent(A), time(T).
 
 % TODO this is needed to avoid listing of all possible values of fhappens
 &sum{0} = fhappens(walk(nathan), T) :- not defined(fhappens(walk(nathan), T)), time(T).

@@ -1,11 +1,11 @@
-$ clingo-lpx --strict -n0 ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=9 ./model-state_constr-continuous.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+$ clingo-lpx --strict -n0 ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=9 ./model-state_constr-continuous-dbec.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 clingo-lpx version 1.3.0
 Reading from ../axioms/dbec-clingo_lpx-choice.lp ...
 Solving...
 Answer: 1
-(Time: 0.072s)
+(Time: 0.070s)
 happens(check,25)
 happens(check,55)
 happens(check,100)
@@ -68,28 +68,18 @@ valueAtStep(walkingTo(nathan),2)=0
 valueAtStep(walkingTo(nathan),5)=0
 valueAtStep(walkingTo(nathan),6)=0
 valueAtStep(walkingTo(nathan),9)=0
-valueAtStep(holding(nathan,book),0)=0
-valueAtStep(holding(nathan,book),1)=0
-valueAtStep(holding(nathan,book),2)=0
-valueAtStep(holding(nathan,book),3)=0
-valueAtStep(holding(nathan,book),4)=0
-valueAtStep(holding(nathan,book),5)=0
-valueAtStep(holding(nathan,book),6)=0
-valueAtStep(holding(nathan,book),7)=0
-valueAtStep(holding(nathan,book),8)=0
-valueAtStep(holding(nathan,book),9)=0
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.073s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
-CPU Time     : 0.059s
+Time         : 0.071s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+CPU Time     : 0.060s
 
 Command exited with non-zero status 30
 
   real      0:00.08
   real [s]  0.08
   user [s]  0.05
-  sys  [s]  0.01
+  sys  [s]  0.00
   mem  [KB] 9728
   avgm [KB] 0

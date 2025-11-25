@@ -1,0 +1,48 @@
+$ clingo-lpx --strict -n0 ../axioms/fdec.lp -c maxstep=5 -c maxtime=1000 ./model-effect_constr.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.031s)
+happens(walk(nathan),20)
+happens(walk(nathan),40)
+happens(letGoOf(nathan,book),30)
+happens(pickUp(nathan,book),10)
+holdsAt(holding(nathan,book),(10,"< T =<",20))
+holdsAt(holding(nathan,book),(20,"< T =<",30))
+fholdsAt(location(book),0,(0,"< T =<",10))
+fholdsAt(location(book),0,(10,"< T =<",20))
+fholdsAt(location(book),100,(20,"< T =<",30))
+fholdsAt(location(book),100,(30,"< T =<",40))
+fholdsAt(location(book),100,(40,"< T =<",1000))
+fholdsAt(location(nathan),0,(0,"< T =<",10))
+fholdsAt(location(nathan),0,(10,"< T =<",20))
+fholdsAt(location(nathan),100,(20,"< T =<",30))
+fholdsAt(location(nathan),100,(30,"< T =<",40))
+fholdsAt(location(nathan),200,(40,"< T =<",1000))
+Assignment: [leftovers]
+fhappens(walk(nathan),0)=0
+fhappens(walk(nathan),1)=0
+fhappens(walk(nathan),2)=100
+fhappens(walk(nathan),3)=0
+fhappens(walk(nathan),4)=200
+fhappens(walk(nathan),5)=0
+fholdsAt(location(book),0)=0
+fholdsAt(location(nathan),0)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.031s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.020s
+
+Command exited with non-zero status 30
+
+  real      0:00.03
+  real [s]  0.03
+  user [s]  0.01
+  sys  [s]  0.00
+  mem  [KB] 9088
+  avgm [KB] 0

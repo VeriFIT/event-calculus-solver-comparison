@@ -15,38 +15,46 @@ object(book).
 %! could also use (bellow) to treat agents as objects
 % object(A) :- agent(A).
 
-ffluent(location(A)) :- agent(A).
-ffluent(location(O)) :- object(O).
-dfluent(holding(A, O)) :- agent(A), object(O).
+fluent_Func(location(A)) :- agent(A).
+fluent_Func(location(O)) :- object(O).
+fluent(holding(A, O)) :- agent(A), object(O).
 
-event(walk(A)) :- agent(A).
-event(pickUp(A, O)) :- agent(A), object(O).
-event(letGoOf(A, O)) :- agent(A), object(O).
+% event(pickUp(A, O)) :- agent(A), object(O).
+% event(letGoOf(A, O)) :- agent(A), object(O).
 
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
-% if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
-% will be walking, and their location will continuously approach Location2
-initiates(walk(A), location(A), (fhappens(walk(A),T), 0, 0, location(A)), T) :- time(T), agent(A).
+% if an agent walks from Location1 to Location2, then they will no longer be in Location1
+% and will be in Location2
+&sum{eventValueAtStep(walk(A),S)} = valueAtStep(location(A),S+1) :-
+    initiatedValueByAtStep(walk(A), location(A), S),
+    step(S+1).
+initiatesValueAtStep(walk(A), location(A), S) :-
+    agent(A), step(S).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
-initiates(pickUp(A, O), holding(A, O), T) :-
-    normal_atom(fholdsAt(location(A), T), eq, fholdsAt(location(O), T)),
-    agent(A), object(O), time(T).
-comparison(fholdsAt(location(A), T), fholdsAt(location(O), T)) :- happens(pickUp(A, O), T).
+initiatesAtStep(pickUp(A, O), holding(A, O), S) :-
+    holdsAtStep(location(A), S), holdsAtStep(location(O), S),
+    normal_atom(valueAtStep(location(A), S), eq, valueAtStep(location(O), S)),
+    agent(A), object(O), step(S).
+comparison(valueAtStep(location(A), S), valueAtStep(location(O), S)) :- happensAtStep(pickUp(A, O), S).
 
 %% % if an agent is holding an object and lets go of it, then they will no longer be holding it
-terminates(letGoOf(A, O), holding(A, O), T) :-
-    holdsAt(holding(A, O), T),
-    agent(A), object(O), time(T).
+terminatesAtStep(letGoOf(A, O), holding(A, O), S) :-
+    holdsAtStep(holding(A, O), S),
+    agent(A), object(O), step(S).
 
 %! indirect effect
 % if an agent lets go of an object while in a room, then the object will be
 % in that room and will no longer be released from CLoI (caused by initiates)
-initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 0, 0, location(O)), T) :- time(T), agent(A), object(O).
+&sum{valueAtStep(location(A),S)} = valueAtStep(location(O),S+1) :-
+    initiatedValueByAtStep(letGoOf(A, O), location(O), S),
+    step(S+1).
+initiatesValueAtStep(letGoOf(A, O), location(O), S) :-
+   agent(A), object(O), step(S).
 
 
 %-------------------------------------------------------------------------------
@@ -54,21 +62,21 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 0, 0, location(O
 %-------------------------------------------------------------------------------
 
 % % an object can only be in one room at a time (same for agents...)
-% R1=R2 :- holdsAt(location(O,R1), T), holdsAt(location(O,R2), T),
-%     object(A), room(R1), room(R2), time(T).
-% R1=R2 :- holdsAt(location(A,R1), T), holdsAt(location(A,R2), T),
-%     agent(A), room(R1), room(R2), time(T).
+% R1=R2 :- holdsAtStep(location(O,R1), S), holdsAtStep(location(O,R2), S),
+%     object(A), room(R1), room(R2), step(S).
+% R1=R2 :- holdsAtStep(location(A,R1), S), holdsAtStep(location(A,R2), S),
+%     agent(A), room(R1), room(R2), step(S).
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
-&sum{fholdsAt(location(A),T)} = fholdsAt(location(O),T) :-
-    holdsAt(holding(A,O), T),
-    agent(A), object(O), time(T).
-% TODO this is only needed for the fh version of the axioms
-holdsAt(location(O), T) :-
-    holdsAt(holding(A,O), T),
-    holdsAt(location(A), T),
-    agent(A), object(O), time(T).
+holdsAtStep(location(O), S) :-
+    holdsAtStep(holding(A,O), S),
+    holdsAtStep(location(A), S),
+    agent(A), object(O), step(S).
+&sum{valueAtStep(location(A),S)} = valueAtStep(location(O),S) :-
+    holdsAtStep(holding(A,O), S),
+    holdsAtStep(location(A), S),
+    agent(A), object(O), step(S).
 
 
 %-------------------------------------------------------------------------------
@@ -82,36 +90,40 @@ holdsAt(location(O), T) :-
 %! indirect effect
 % when an agent pickups an object, then the location of that object will
 % be released from CLoI
-releases(pickUp(A,O), location(O), T) :-
-    agent(A), object(O), time(T).
+releasesAtStep(pickUp(A,O), location(O), S) :-
+    agent(A), object(O), step(S).
 
 %-------------------------------------------------------------------------------
 % observations
 %-------------------------------------------------------------------------------
 
-initiallyP(location(nathan), 0).
-initiallyP(location(book), 0).
-initiallyN(F) :- not initiallyP(F), not initiallyP(F, _), fluent(F).  % % nathan is initially not holding the book
+initiallyP_Func(location(nathan), 0).
+initiallyP_Func(location(book), 0).
+initiallyN(F) :- not initiallyP(F), not initiallyP_Func(F, _), fluent(F).  % % nathan is initially not holding the book
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(pickUp(nathan, book), 10).
+happens(pickUp(nathan, book), 10).
 
 % nathan walks to position 100 with the book
-in_happens(walk(nathan), 20).
+happens(walk(nathan), 20).
 % TODO an attempt at making a functional event
-&sum{100} = fhappens(walk(nathan), T) :- in_happens(walk(nathan), 20), time(T), normal_atom(ftimeAtStep(T), eq, 20).
-comparison(ftimeAtStep(T), GT) :- time(T), in_happens(walk(A), GT).
+&sum{100} = eventValueAtStep(walk(nathan), S) :- happens(walk(nathan), 20), step(S), normal_atom(timeAtStep(S), eq, 20).
+comparison(timeAtStep(S), T) :- step(S), happens(walk(A), T).
 
-in_happens(letGoOf(nathan, book), 30).
+happens(letGoOf(nathan, book), 30).
 
 % nathan walks to position 200 without the book
-in_happens(walk(nathan), 40).
+happens(walk(nathan), 40).
 % TODO an attempt at making a functional event
-&sum{200} = fhappens(walk(nathan), T) :- in_happens(walk(nathan), 40), time(T), normal_atom(ftimeAtStep(T), eq, 40).
-comparison(ftimeAtStep(T), GT) :- time(T), in_happens(walk(A), GT).
+&sum{200} = eventValueAtStep(walk(nathan), S) :- happens(walk(nathan), 40), step(S), normal_atom(timeAtStep(S), eq, 40).
+comparison(timeAtStep(S), T) :- step(S), happens(walk(A), T).
+
+{checkStep(S) : step(S)} = 1.
+&sum{ timeAtStep(S) } = 100 :- checkStep(S).
 
 % --> conclude that the book is at position 100 after time 20 and stays there 
+
