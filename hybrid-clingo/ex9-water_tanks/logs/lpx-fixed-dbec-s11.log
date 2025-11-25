@@ -1,0 +1,745 @@
+$ clingo-lpx --strict -n0 ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=11 ./model-fixed-dbec.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+
+clingo-lpx version 1.3.0
+Reading from ../axioms/dbec-clingo_lpx-choice.lp ...
+Solving...
+Answer: 1
+(Time: 0.184s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",305/16))
+holdsAt(left_filling,(305/16,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",329/16))
+holdsAt(left_filling,(329/16,"< T =<",169/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",157/8))
+holdsAt(right_filling,(157/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",305/16))
+releasedAt(water_left,(305/16,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",157/8))
+releasedAt(water_left,(157/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",329/16))
+releasedAt(water_left,(329/16,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",305/16))
+releasedAt(water_right,(305/16,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",157/8))
+releasedAt(water_right,(157/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",329/16))
+releasedAt(water_right,(329/16,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",475/8),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_left,(475/8,"->",60),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",50),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_left,(50,"->",40),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",355/8),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_left,(355/8,"->",50),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",50),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_right,(50,"->",195/4),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",215/4),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_right,(215/4,"->",235/4),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",50),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_right,(50,"->",155/4),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=15/16
+aux__leftFillDurAtStep(6)=1
+aux__leftFillDurAtStep(7)=0
+aux__leftFillDurAtStep(8)=0
+aux__leftFillDurAtStep(9)=7/16
+aux__leftFillDurAtStep(10)=1
+aux__leftFillDurAtStep(11)=0
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=0
+aux__rightFillDurAtStep(7)=1/2
+aux__rightFillDurAtStep(8)=1
+aux__rightFillDurAtStep(9)=0
+aux__rightFillDurAtStep(10)=0
+aux__rightFillDurAtStep(11)=1
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 2
+(Time: 0.186s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",305/16))
+holdsAt(left_filling,(305/16,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",157/8))
+holdsAt(right_filling,(157/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",305/16))
+releasedAt(water_left,(305/16,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",157/8))
+releasedAt(water_left,(157/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",305/16))
+releasedAt(water_right,(305/16,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",157/8))
+releasedAt(water_right,(157/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",475/8),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_left,(475/8,"->",60),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",50),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_left,(50,"->",40),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",50),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",50),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_right,(50,"->",195/4),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",215/4),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_right,(215/4,"->",235/4),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",155/4),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=15/16
+aux__leftFillDurAtStep(6)=1
+aux__leftFillDurAtStep(7)=0
+aux__leftFillDurAtStep(8)=0
+aux__leftFillDurAtStep(9)=1
+aux__leftFillDurAtStep(10)=0
+aux__leftFillDurAtStep(11)=1
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=0
+aux__rightFillDurAtStep(7)=1/2
+aux__rightFillDurAtStep(8)=1
+aux__rightFillDurAtStep(9)=0
+aux__rightFillDurAtStep(10)=1
+aux__rightFillDurAtStep(11)=0
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 3
+(Time: 0.188s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",305/16))
+holdsAt(left_filling,(305/16,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",329/16))
+holdsAt(left_filling,(329/16,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",305/16))
+releasedAt(water_left,(305/16,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",329/16))
+releasedAt(water_left,(329/16,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",305/16))
+releasedAt(water_right,(305/16,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",329/16))
+releasedAt(water_right,(329/16,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",475/8),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_left,(475/8,"->",60),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",40),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",355/8),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_left,(355/8,"->",50),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",50),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_right,(50,"->",195/4),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",235/4),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",50),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_right,(50,"->",155/4),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=15/16
+aux__leftFillDurAtStep(6)=1
+aux__leftFillDurAtStep(7)=0
+aux__leftFillDurAtStep(8)=7/16
+aux__leftFillDurAtStep(9)=1
+aux__leftFillDurAtStep(10)=0
+aux__leftFillDurAtStep(11)=1
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=0
+aux__rightFillDurAtStep(7)=1
+aux__rightFillDurAtStep(8)=0
+aux__rightFillDurAtStep(9)=0
+aux__rightFillDurAtStep(10)=1
+aux__rightFillDurAtStep(11)=0
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 4
+(Time: 0.191s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_left,193/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",305/16))
+holdsAt(left_filling,(305/16,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+holdsAt(right_filling,(185/8,"< T =<",193/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",305/16))
+releasedAt(water_left,(305/16,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_left,(185/8,"< T =<",193/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",305/16))
+releasedAt(water_right,(305/16,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+releasedAt(water_right,(185/8,"< T =<",193/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",475/8),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_left,(475/8,"->",60),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",40),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",50),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_left,(40,"->",20),(185/8,"< T =<",193/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",50),(145/8,"< T =<",305/16))
+holdsAt_Func_Cont(water_right,(50,"->",195/4),(305/16,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",235/4),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",155/4),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(115/4,"->",155/4),(185/8,"< T =<",193/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=15/16
+aux__leftFillDurAtStep(6)=1
+aux__leftFillDurAtStep(7)=0
+aux__leftFillDurAtStep(8)=1
+aux__leftFillDurAtStep(9)=0
+aux__leftFillDurAtStep(10)=1
+aux__leftFillDurAtStep(11)=0
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=0
+aux__rightFillDurAtStep(7)=1
+aux__rightFillDurAtStep(8)=0
+aux__rightFillDurAtStep(9)=1
+aux__rightFillDurAtStep(10)=0
+aux__rightFillDurAtStep(11)=1
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 5
+(Time: 0.203s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_left,193/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(switch_right,201/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(left_filling,(193/8,"< T =<",201/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+holdsAt(right_filling,(185/8,"< T =<",193/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_left,(185/8,"< T =<",193/8))
+releasedAt(water_left,(193/8,"< T =<",201/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+releasedAt(water_right,(185/8,"< T =<",193/8))
+releasedAt(water_right,(193/8,"< T =<",201/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",60),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",40),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",50),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_left,(40,"->",20),(185/8,"< T =<",193/8))
+holdsAt_Func_Cont(water_left,(20,"->",30),(193/8,"< T =<",201/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",195/4),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",235/4),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",155/4),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(115/4,"->",155/4),(185/8,"< T =<",193/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",75/4),(193/8,"< T =<",201/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=1
+aux__leftFillDurAtStep(6)=0
+aux__leftFillDurAtStep(7)=1
+aux__leftFillDurAtStep(8)=0
+aux__leftFillDurAtStep(9)=1
+aux__leftFillDurAtStep(10)=0
+aux__leftFillDurAtStep(11)=1
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=1
+aux__rightFillDurAtStep(7)=0
+aux__rightFillDurAtStep(8)=1
+aux__rightFillDurAtStep(9)=0
+aux__rightFillDurAtStep(10)=1
+aux__rightFillDurAtStep(11)=0
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 6
+(Time: 0.216s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_left,193/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",329/16))
+holdsAt(left_filling,(329/16,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+holdsAt(right_filling,(185/8,"< T =<",193/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",329/16))
+releasedAt(water_left,(329/16,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_left,(185/8,"< T =<",193/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",329/16))
+releasedAt(water_right,(329/16,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+releasedAt(water_right,(185/8,"< T =<",193/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",60),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",40),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",355/8),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_left,(355/8,"->",50),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_left,(40,"->",20),(185/8,"< T =<",193/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",195/4),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",235/4),(153/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",50),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_right,(50,"->",155/4),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(115/4,"->",155/4),(185/8,"< T =<",193/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=1
+aux__leftFillDurAtStep(6)=0
+aux__leftFillDurAtStep(7)=7/16
+aux__leftFillDurAtStep(8)=1
+aux__leftFillDurAtStep(9)=0
+aux__leftFillDurAtStep(10)=1
+aux__leftFillDurAtStep(11)=0
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=1
+aux__rightFillDurAtStep(7)=0
+aux__rightFillDurAtStep(8)=0
+aux__rightFillDurAtStep(9)=1
+aux__rightFillDurAtStep(10)=0
+aux__rightFillDurAtStep(11)=1
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 7
+(Time: 0.228s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_left,193/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",157/8))
+holdsAt(right_filling,(157/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+holdsAt(right_filling,(185/8,"< T =<",193/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",157/8))
+releasedAt(water_left,(157/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_left,(185/8,"< T =<",193/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",157/8))
+releasedAt(water_right,(157/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+releasedAt(water_right,(185/8,"< T =<",193/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",60),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",50),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_left,(50,"->",40),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",50),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_left,(40,"->",20),(185/8,"< T =<",193/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",195/4),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",215/4),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_right,(215/4,"->",235/4),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",155/4),(161/8,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(115/4,"->",155/4),(185/8,"< T =<",193/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=1
+aux__leftFillDurAtStep(6)=0
+aux__leftFillDurAtStep(7)=0
+aux__leftFillDurAtStep(8)=1
+aux__leftFillDurAtStep(9)=0
+aux__leftFillDurAtStep(10)=1
+aux__leftFillDurAtStep(11)=0
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=1/2
+aux__rightFillDurAtStep(7)=1
+aux__rightFillDurAtStep(8)=0
+aux__rightFillDurAtStep(9)=1
+aux__rightFillDurAtStep(10)=0
+aux__rightFillDurAtStep(11)=1
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+Answer: 8
+(Time: 0.233s)
+happens(switch_left,25/2)
+happens(switch_left,145/8)
+happens(switch_left,161/8)
+happens(switch_left,177/8)
+happens(switch_right,65/4)
+happens(switch_right,153/8)
+happens(switch_right,169/8)
+happens(switch_right,185/8)
+happens(start(right),10)
+holdsAt(left_filling,(25/2,"< T =<",65/4))
+holdsAt(left_filling,(145/8,"< T =<",153/8))
+holdsAt(left_filling,(161/8,"< T =<",329/16))
+holdsAt(left_filling,(329/16,"< T =<",169/8))
+holdsAt(left_filling,(177/8,"< T =<",185/8))
+holdsAt(right_filling,(10,"< T =<",25/2))
+holdsAt(right_filling,(65/4,"< T =<",145/8))
+holdsAt(right_filling,(153/8,"< T =<",157/8))
+holdsAt(right_filling,(157/8,"< T =<",161/8))
+holdsAt(right_filling,(169/8,"< T =<",177/8))
+releasedAt(water_left,(10,"< T =<",25/2))
+releasedAt(water_left,(25/2,"< T =<",65/4))
+releasedAt(water_left,(65/4,"< T =<",145/8))
+releasedAt(water_left,(145/8,"< T =<",153/8))
+releasedAt(water_left,(153/8,"< T =<",157/8))
+releasedAt(water_left,(157/8,"< T =<",161/8))
+releasedAt(water_left,(161/8,"< T =<",329/16))
+releasedAt(water_left,(329/16,"< T =<",169/8))
+releasedAt(water_left,(169/8,"< T =<",177/8))
+releasedAt(water_left,(177/8,"< T =<",185/8))
+releasedAt(water_right,(10,"< T =<",25/2))
+releasedAt(water_right,(25/2,"< T =<",65/4))
+releasedAt(water_right,(65/4,"< T =<",145/8))
+releasedAt(water_right,(145/8,"< T =<",153/8))
+releasedAt(water_right,(153/8,"< T =<",157/8))
+releasedAt(water_right,(157/8,"< T =<",161/8))
+releasedAt(water_right,(161/8,"< T =<",329/16))
+releasedAt(water_right,(329/16,"< T =<",169/8))
+releasedAt(water_right,(169/8,"< T =<",177/8))
+releasedAt(water_right,(177/8,"< T =<",185/8))
+holdsAt_Func(water_left,100,(0,"< T =<",10))
+holdsAt_Func(water_right,100,(0,"< T =<",10))
+holdsAt_Func_Cont(water_left,(100,"->",50),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_left,(50,"->",175/2),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_left,(175/2,"->",50),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_left,(50,"->",60),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_left,(60,"->",50),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_left,(50,"->",40),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_left,(40,"->",355/8),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_left,(355/8,"->",50),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_left,(50,"->",30),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_left,(30,"->",40),(177/8,"< T =<",185/8))
+holdsAt_Func_Cont(water_right,(100,"->",125),(10,"< T =<",25/2))
+holdsAt_Func_Cont(water_right,(125,"->",50),(25/2,"< T =<",65/4))
+holdsAt_Func_Cont(water_right,(50,"->",275/4),(65/4,"< T =<",145/8))
+holdsAt_Func_Cont(water_right,(275/4,"->",195/4),(145/8,"< T =<",153/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",215/4),(153/8,"< T =<",157/8))
+holdsAt_Func_Cont(water_right,(215/4,"->",235/4),(157/8,"< T =<",161/8))
+holdsAt_Func_Cont(water_right,(235/4,"->",50),(161/8,"< T =<",329/16))
+holdsAt_Func_Cont(water_right,(50,"->",155/4),(329/16,"< T =<",169/8))
+holdsAt_Func_Cont(water_right,(155/4,"->",195/4),(169/8,"< T =<",177/8))
+holdsAt_Func_Cont(water_right,(195/4,"->",115/4),(177/8,"< T =<",185/8))
+Assignment: [leftovers]
+aux__leftFillDurAtStep(0)=0
+aux__leftFillDurAtStep(1)=0
+aux__leftFillDurAtStep(2)=0
+aux__leftFillDurAtStep(3)=15/4
+aux__leftFillDurAtStep(4)=0
+aux__leftFillDurAtStep(5)=1
+aux__leftFillDurAtStep(6)=0
+aux__leftFillDurAtStep(7)=0
+aux__leftFillDurAtStep(8)=7/16
+aux__leftFillDurAtStep(9)=1
+aux__leftFillDurAtStep(10)=0
+aux__leftFillDurAtStep(11)=1
+aux__rightFillDurAtStep(0)=0
+aux__rightFillDurAtStep(1)=0
+aux__rightFillDurAtStep(2)=5/2
+aux__rightFillDurAtStep(3)=0
+aux__rightFillDurAtStep(4)=15/8
+aux__rightFillDurAtStep(5)=0
+aux__rightFillDurAtStep(6)=1/2
+aux__rightFillDurAtStep(7)=1
+aux__rightFillDurAtStep(8)=0
+aux__rightFillDurAtStep(9)=0
+aux__rightFillDurAtStep(10)=1
+aux__rightFillDurAtStep(11)=0
+valueAtStep(water_left,0)=100
+valueAtStep(water_right,0)=100
+SATISFIABLE
+
+Models       : 8
+Calls        : 1
+Time         : 0.233s (Solving: 0.17s 1st Model: 0.12s Unsat: 0.00s)
+CPU Time     : 0.217s
+
+Command exited with non-zero status 30
+
+  real      0:00.24
+  real [s]  0.24
+  user [s]  0.21
+  sys  [s]  0.00
+  mem  [KB] 10752
+  avgm [KB] 0
