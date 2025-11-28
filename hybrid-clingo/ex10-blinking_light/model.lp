@@ -17,6 +17,7 @@ happens(turn_light_on, T) :- not holdsAt(light_on, T), time(T),
 
 
 % ----- narrative & queries  -----
+initiallyN(light_on).
 
 in_happens(turn_light_on,      10).
 

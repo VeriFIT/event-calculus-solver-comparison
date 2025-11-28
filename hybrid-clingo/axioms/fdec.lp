@@ -205,6 +205,13 @@ normal_atom(A, leq, B) :- normal_atom(A, eq, B).
 normal_atom(A, geq, B) :- normal_atom(A, eq, B).
 normal_atom(A, geq, B) :- normal_atom(A, gt, B).
 
+% TODO any better way to do this? (than having normal_atom/3)
+{ normal_atom(A1, A2, (lt;eq;gt), B) } = 1 :- comparison(A1, A2, B).
+%
+&sum{ A1 + A2 } < B :- normal_atom(A1, A2, lt, B).
+&sum{ A1 + A2 } = B :- normal_atom(A1, A2, eq, B).
+&sum{ A1 + A2 } > B :- normal_atom(A1, A2, gt, B).
+
 % TODO can we not just say that there must be a step at which it equals the trigger value?
 % designating significant values of continuous fluents so that we do not miss them during trajectories
 comparison(fholdsAt(F,T), Val) :- trigger_value(F, Val), time(T).
@@ -318,6 +325,9 @@ anyTrajectory(F2, T2) :- not debug_prints,
 #defined antiTrajectory/5.
 
 #defined checkStep/1.
+
+#defined comparison/2.
+#defined comparison/3.
 
 #defined trigger_value/2.
 #defined trigger_value/3.
