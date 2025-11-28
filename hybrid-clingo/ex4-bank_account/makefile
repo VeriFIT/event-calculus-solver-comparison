@@ -3,9 +3,9 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 
 #-----------------------------------------------------------------------------------------------------------------------
 # base
-LPX_CMD_ZENO=clingo-lpx --strict -n0 ./model-zeno.lp ../axioms/fdec.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-LPX_CMD=clingo-lpx --strict -n0 ./model.lp ../axioms/fdec.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-LPX_CMD_FH=clingo-lpx --strict -n0 ./model.lp ../axioms/fdec-ffholds.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD_ZENO=clingo-lpx --strict -n10 ./model-zeno.lp ../axioms/fdec.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD=clingo-lpx --strict -n10 ./model.lp ../axioms/fdec.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD_FH=clingo-lpx --strict -n10 ./model.lp ../axioms/fdec-ffholds.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx-zeno:
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD_ZENO}  | ../utils/replace_assignments.sh | ../utils/make-readable.sh
@@ -20,8 +20,8 @@ run-lpx-fh:
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
-LPX_CMD_DBEC=clingo-lpx --strict -n0 ./model-dbec.lp ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=$$MAXSTEP
-LPX_CMD_EFF=clingo-lpx --strict -n0 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+LPX_CMD_DBEC=clingo-lpx --strict -n10 ./model-dbec.lp ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=$$MAXSTEP
+LPX_CMD_EFF=clingo-lpx --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
 
 run-lpx-dbec:
 	MAXSTEP=6; ${TIME} ${LPX_CMD_DBEC} | ../utils/replace_assignments.sh | ../utils/make-readable.sh

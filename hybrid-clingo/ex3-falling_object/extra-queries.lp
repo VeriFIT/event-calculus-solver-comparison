@@ -22,7 +22,7 @@ in_happens(checkAtT, 15).
 % TODO if we wanted to see the time at which the height is 2
 %% could add a triggered event
 happens(checkAtH, T) :- normal_atom(fholdsAt(height(O), T), eq, 2), time(T).
-trigger_value(height(O), 2) :- object(O).
+trigger_value(height(O), falling(O), 2) :- object(O).
 %% or can use this (there is one checkStep such that the height is 2)
 %{checkStep(T) : time(T)} = 1.
 %&sum{ fholdsAt(height(apple), T) } = 2 :- checkStep(T).
