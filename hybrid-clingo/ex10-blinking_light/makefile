@@ -17,7 +17,7 @@ run-lpx-50:
 
 run-lpx-fixed:
 	MAXSTEP=6; MAXTIME=15; ${TIME} ${LPX_CMD} ./model-fixed.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
-run-lpx-fixed-nosig:	# TODO causes problems here (many models with 'e')
+run-lpx-fixed-nosig:	# works for this example
 	MAXSTEP=6; MAXTIME=15; ${TIME} ${LPX_CMD} ./model-fixed.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 run-lpx-fixed-50:

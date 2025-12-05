@@ -12,7 +12,7 @@ run-lpx-zeno:
 run-lpx:
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
-run-lpx-nosig:	# TODO causes problems here (many models with 'e')
+run-lpx-nosig:	# TODO causes problems here (many models with 'e') -- maybe clingo-lpx bug
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD} -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 

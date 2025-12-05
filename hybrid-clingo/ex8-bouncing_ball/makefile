@@ -16,7 +16,7 @@ run-lpx-nocatch:
 run-lpx-nosig:	# works for this example
 	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative1.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
-run-lpx-nocatch-nosig:	# TODO does not work here since last step is disabled
+run-lpx-nocatch-nosig:	# does not work here since last step is disabled
 	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative2.lp -c disablelaststep=1 -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
