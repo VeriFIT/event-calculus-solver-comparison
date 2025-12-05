@@ -192,7 +192,7 @@ happens(chargeServiceFee(A), T) :-
     initiates(E, balance(A), T1),
     not startedIn(T1, balance(A), T),   % startedIn instead of stoppedIn because balance is a ffluent
     epsilon(EPS),
-    normal_atom(ftimeAtStep(T1), EPS, eq, ftimeAtStep(T)).
+    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), eq, EPS).
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
     normal_atom(fholdsAt(balance(A),T), lt, fholdsAt(minimumBalance(A),T)),
@@ -205,11 +205,60 @@ happens(chargeServiceFee(A), T) :-
     terminates(E, serviceFeeCharged(A), T1),
     not startedIn(T1, serviceFeeCharged(A), T),
     epsilon(EPS),
-    normal_atom(ftimeAtStep(T1), EPS, eq, ftimeAtStep(T)).
+    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), eq, EPS).
 
 comparison(fholdsAt(balance(A),T), fholdsAt(minimumBalance(A),T)) :- account(A), time(T).
-comparison(ftimeAtStep(T1), EPS, ftimeAtStep(T)) :- epsilon(EPS), T1 < T, time(T1), time(T).
-% TODO this needs some sort of trigger_value
+comparison(ftimeAtStep(T), -ftimeAtStep(T1), EPS) :- epsilon(EPS), T1 < T, time(T1), time(T).
+
+
+% TODO complicated trigger_value
+% cannot step over T1 + epsilon
+:-  % establish T1 (cause 1)
+    happens(E, T1),
+    initiates(E, balance(A), T1),
+    not startedIn(T1, balance(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
+    % cannot step over it
+    T > T1,
+    epsilon(EPS),
+    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), lt, EPS),
+    normal_atom(ftimeAtStep(T+1), -ftimeAtStep(T1), gt, EPS),
+    % if the trigger condition holds
+    normal_atom(fholdsAt(balance(A),T), lt, fholdsAt(minimumBalance(A),T)),
+    not holdsAt(serviceFeeCharged(A), T).
+:-  % establish T1 (cause 2)
+    happens(E, T1),
+    terminates(E, serviceFeeCharged(A), T1),
+    not startedIn(T1, serviceFeeCharged(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
+    % cannot step over it
+    T > T1,
+    epsilon(EPS),
+    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), lt, EPS),
+    normal_atom(ftimeAtStep(T+1), -ftimeAtStep(T1), gt, EPS),
+    % if the trigger condition holds
+    normal_atom(fholdsAt(balance(A),T), lt, fholdsAt(minimumBalance(A),T)),
+    not holdsAt(serviceFeeCharged(A), T).
+
+% TODO need a special case for T = T1 + 1 because &sum{time(T) - time(T)} < EPS is unsat
+:-  % establish T1 (cause 1)
+    happens(E, T1),
+    initiates(E, balance(A), T1),
+    % cannot step over it -- next step must not be later than after EPS
+    T = T1,
+    epsilon(EPS),
+    normal_atom(ftimeAtStep(T+1), -ftimeAtStep(T1), gt, EPS),
+    % if the trigger condition holds
+    normal_atom(fholdsAt(balance(A),T+1), lt, fholdsAt(minimumBalance(A),T+1)),
+    not holdsAt(serviceFeeCharged(A), T+1).
+:-  % establish T1 (cause 2)
+    happens(E, T1),
+    terminates(E, serviceFeeCharged(A), T1),
+    % cannot step over it -- next step must not be later than after EPS
+    T = T1,
+    epsilon(EPS),
+    normal_atom(ftimeAtStep(T+1), -ftimeAtStep(T1), gt, EPS),
+    % if the trigger condition holds
+    normal_atom(fholdsAt(balance(A),T+1), lt, fholdsAt(minimumBalance(A),T+1)),
+    not holdsAt(serviceFeeCharged(A), T+1).
 
 
 %-------------------------------------------------------------------------------
