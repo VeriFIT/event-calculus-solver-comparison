@@ -22,19 +22,19 @@ terminates(switch_left, right_filling, T) :- time(T).
 terminates(switch_right, left_filling, T) :- time(T).
 initiates(switch_right, right_filling, T) :- time(T).
 
-trajectory(left_filling, T1, water_left, (0, 1, 0, water_left, TotalFlow), T2) :-
+trajectory(left_filling, T1, water_left, (0, 1, 1, water_left, TotalFlow), T2) :-
     TotalFlow = 30 - 20, % in rate 30, out rate 20
     time(T1), time(T2).
 
-trajectory(right_filling, T1, water_left, (0, 1, 0, water_left, -TotalFlow), T2) :-
+trajectory(right_filling, T1, water_left, (0, 1, 1, water_left, -TotalFlow), T2) :-
     TotalFlow = 20, % out rate 20
     time(T1), time(T2).
 
-trajectory(right_filling, T1, water_right, (0, 1, 0, water_right, TotalFlow), T2) :-
+trajectory(right_filling, T1, water_right, (0, 1, 1, water_right, TotalFlow), T2) :-
     TotalFlow = 30 - 20, % in rate 30, out rate 20
     time(T1), time(T2).
 
-trajectory(left_filling, T1, water_right, (0, 1, 0, water_right, -TotalFlow), T2) :-
+trajectory(left_filling, T1, water_right, (0, 1, 1, water_right, -TotalFlow), T2) :-
     TotalFlow = 20, % out rate 20
     time(T1), time(T2).
 
@@ -61,7 +61,7 @@ trigger_value(water_right, left_filling, 50).
 
 initiallyP(water_left, 100).
 initiallyP(water_right, 100).
-initiallyN(F) :- not initiallyP(F), not initiallyP(F, _), fluent(F).
+initiallyN(F) :- not initiallyP(F), dfluent(F).
 
 in_happens(start(right),           10).
 

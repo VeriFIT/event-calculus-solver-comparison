@@ -50,7 +50,7 @@ event(monthlyReset(A)) :- account(A).
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 0, balance(A2)), T) :-
+initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 1, balance(A2)), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
     normal_atom(fholdsAt(balance(A1),T), geq, TransM12),
@@ -82,7 +82,7 @@ comparison(fholdsAt(balance(A1),T), TransM12) :-
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 0, balance(A1)), T) :-
+initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
     normal_atom(fholdsAt(balance(A1),T), geq, TransM12),
@@ -132,7 +132,7 @@ trigger_time(T) :- endOfMonth(T).
 %    account(A), time(T), money(OldM), money(FeeM).
 *%
 
-initiates(chargeServiceFee(A), balance(A), (-fholdsAt(serviceFee(A),T), 1, 0, balance(A)), T) :-
+initiates(chargeServiceFee(A), balance(A), (-fholdsAt(serviceFee(A),T), 1, 1, balance(A)), T) :-
     time(T), account(A).
 
 %*
@@ -200,7 +200,7 @@ initiallyP(minimumBalance(account1),  5).
 initiallyP(minimumBalance(account2),  5).
 initiallyP(    serviceFee(account1),  1).    
 initiallyP(    serviceFee(account2),  1).    
-initiallyN(F) :- not initiallyP(F), not initiallyP(F, _), fluent(F).
+initiallyN(F) :- not initiallyP(F), dfluent(F).
      
 
 

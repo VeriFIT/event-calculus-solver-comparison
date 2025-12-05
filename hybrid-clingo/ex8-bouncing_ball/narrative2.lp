@@ -10,7 +10,7 @@ initiallyP(constant_fall_rate(1)).
 initiallyP(velocity_loss_portion("0.75")).
 initiallyP(constant_velocity_loss_bounce(1)).   % relevant for the fixzeno version
 
-initiallyN(F) :- not initiallyP(F), fluent(F).
+initiallyN(F) :- not initiallyP(F), dfluent(F).
 
 in_happens(drop,                           10).
 

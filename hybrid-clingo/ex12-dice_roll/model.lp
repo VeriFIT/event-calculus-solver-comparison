@@ -20,7 +20,7 @@ ffluent(sideUp).    % functional fluent
 
 releases(roll, sideUp, T) :- time(T).
 
-initiates(land, sideUp, (0, 1, 0, sideUp), T) :- time(T).
+initiates(land, sideUp, (0, 1, 1, sideUp), T) :- time(T).
 
 
 %-------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ initiates(land, sideUp, (0, 1, 0, sideUp), T) :- time(T).
 %-------------------------------------------------------------------------------
 
 initiallyP(sideUp, 1).
-%initiallyN(F) :- not initiallyP(F), fluent(F).
+%initiallyN(F) :- not initiallyP(F), dfluent(F).
 
 
 %-------------------------------------------------------------------------------

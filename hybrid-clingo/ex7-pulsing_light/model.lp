@@ -31,9 +31,9 @@ terminates(turn_light_off, fading_out, T) :- holdsAt(fading_out, T).
 
 initiates(turn_light_off, brightness, (0, 0, 0, brightness), T) :- time(T).
 
-trajectory(fading_in, T1, brightness, (0, 1, 0, brightness, 1), T2) :- time(T1), time(T2).
+trajectory(fading_in, T1, brightness, (0, 0, 1, brightness, 1), T2) :- time(T1), time(T2).
 
-trajectory(fading_out, T1, brightness, (0, 1, 0, brightness, -1), T2) :- time(T1), time(T2).
+trajectory(fading_out, T1, brightness, (0, 0, 1, brightness, -1), T2) :- time(T1), time(T2).
 
 
 happens(fade_in_end, T) :-
@@ -41,20 +41,23 @@ happens(fade_in_end, T) :-
     normal_atom(fholdsAt(brightness, T), eq, 10),
     time(T).
     
-trigger_value(brightness, fading_in, 10).
-
+% TODO both trigger_value/2 and /3 works fine for this example
+trigger_value(brightness, 10).
+    %trigger_value(brightness, fading_in, 10).
+    
 happens(fade_out_end, T) :-
     holdsAt(fading_out, T),
     normal_atom(fholdsAt(brightness, T), eq, 0),
     time(T).
 
-trigger_value(brightness, fading_out, 0).
-       
-
+% TODO both trigger_value/2 and /3 works fine for this example
+trigger_value(brightness, 0).
+    %trigger_value(brightness, fading_out, 0).
+    
 % ----- narrative & queries  -----
 
 initiallyP(brightness, 0).
-initiallyN(F) :- not initiallyP(F), fluent(F).
+initiallyN(F) :- not initiallyP(F), dfluent(F).
 
 in_happens(turn_light_on,      10).
 in_happens(turn_light_off,     45).

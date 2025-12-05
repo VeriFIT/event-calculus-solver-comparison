@@ -22,7 +22,7 @@ in_happens(checkAtT, 15).
 % TODO if we wanted to see the time at which the height is 2
 %% could add a triggered event
 happens(checkAtH, T) :- normal_atom(fholdsAt(height(O), T), eq, 2), time(T).
-trigger_value(height(O), falling(O), 2) :- object(O).
+trigger_value(height(O), 2) :- object(O).
 %% or can use this (there is one checkStep such that the height is 2)
 %{checkStep(T) : time(T)} = 1.
 %&sum{ fholdsAt(height(apple), T) } = 2 :- checkStep(T).
@@ -35,8 +35,23 @@ trigger_value(height(O), falling(O), 2) :- object(O).
 %{happens(checkAtDur(T1), T2) : time(T2), T2 > T1} = 1 :- happens(drop(nathan,apple), T1), T1 < maxstep.
 %&sum{ftimeAtStep(T1) + 2} = ftimeAtStep(T2) :- happens(drop(nathan,apple), T1), T1 < maxstep, happens(checkAtDur(T1), T2).
 %
-{happens(checkAtDur(T1, O), T2) : time(T2), T2 > T1} = 1 :- happens(E, T1), initiates(E, falling(O), T1), T1 < maxstep.
-&sum{ftimeAtStep(T1) + 2} = ftimeAtStep(T2) :- happens(E, T1), initiates(E, falling(O), T1), T1 < maxstep, happens(checkAtDur(T1, O), T2).
+%{happens(checkAtDur(T1, O), T2) : time(T2), T2 > T1} = 1 :- happens(E, T1), initiates(E, falling(O), T1), T1 < maxstep.
+%&sum{ftimeAtStep(T1) + 2} = ftimeAtStep(T2) :- happens(E, T1), initiates(E, falling(O), T1), T1 < maxstep, happens(checkAtDur(T1, O), T2).
 %% or could use a checkStep instead
 %{checkStep(T) : time(T)} = 1.
 %&sum{ftimeAtStep(T1) + 2} = ftimeAtStep(T2) :- happens(drop(nathan,apple), T1), T1 < maxstep, checkStep(T2).
+%
+checkDuration(2).
+happens(checkAtDur, T) :-
+    holdsAt(falling(O), T),
+    % TODO would be nicer if hidden behind holdsAt/3
+    T1 < T,
+    happens(E, T1),
+    initiates(E, falling(O), T1),
+    not stoppedIn(T1, falling(O), T),
+    checkDuration(Dur),
+    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), eq, Dur),
+    time(T1), time(T).
+comparison(ftimeAtStep(T), -ftimeAtStep(T1), Dur) :- checkDuration(Dur), T1 < T, time(T1), time(T).
+% TODO this needs some sort of trigger_value
+

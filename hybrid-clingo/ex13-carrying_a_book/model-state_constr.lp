@@ -12,14 +12,16 @@
 
 agent(nathan).
 object(book).
-%! could also use (bellow) to treat agents as objects
+%! could also use (below) to treat agents as objects
 % object(A) :- agent(A).
+
+in_locations(L) :- in_happens(walk(_, L), _).  % grounding L only to actual occurrences
 
 ffluent(location(A)) :- agent(A).
 ffluent(location(O)) :- object(O).
 dfluent(holding(A, O)) :- agent(A), object(O).
 
-event(walk(A)) :- agent(A).
+event(walk(A, L)) :- agent(A), in_locations(L).
 event(pickUp(A, O)) :- agent(A), object(O).
 event(letGoOf(A, O)) :- agent(A), object(O).
 
@@ -30,7 +32,7 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
 % will be walking, and their location will continuously approach Location2
-initiates(walk(A), location(A), (fhappens(walk(A),T), 0, 0, location(A)), T) :- time(T), agent(A).
+initiates(walk(A, L), location(A), (L, 1, 0, location(A)), T) :- time(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
@@ -46,7 +48,7 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 %! indirect effect
 % if an agent lets go of an object while in a room, then the object will be
 % in that room and will no longer be released from CLoI (caused by initiates)
-initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 0, 0, location(O)), T) :- time(T), agent(A), object(O).
+initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O)), T) :- time(T), agent(A), object(O).
 
 
 %-------------------------------------------------------------------------------
@@ -63,11 +65,6 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 0, 0, location(O
 % when an agent is in a room and holding an object, then the object is in the same room
 &sum{fholdsAt(location(A),T)} = fholdsAt(location(O),T) :-
     holdsAt(holding(A,O), T),
-    agent(A), object(O), time(T).
-% TODO this is only needed for the fh version of the axioms
-holdsAt(location(O), T) :-
-    holdsAt(holding(A,O), T),
-    holdsAt(location(A), T),
     agent(A), object(O), time(T).
 
 
@@ -91,7 +88,7 @@ releases(pickUp(A,O), location(O), T) :-
 
 initiallyP(location(nathan), 0).
 initiallyP(location(book), 0).
-initiallyN(F) :- not initiallyP(F), not initiallyP(F, _), fluent(F).  % % nathan is initially not holding the book
+initiallyN(F) :- not initiallyP(F), dfluent(F).  % % nathan is initially not holding the book
 
 
 %-------------------------------------------------------------------------------
@@ -101,17 +98,11 @@ initiallyN(F) :- not initiallyP(F), not initiallyP(F, _), fluent(F).  % % nathan
 in_happens(pickUp(nathan, book), 10).
 
 % nathan walks to position 100 with the book
-in_happens(walk(nathan), 20).
-% TODO an attempt at making a functional event
-&sum{100} = fhappens(walk(nathan), T) :- in_happens(walk(nathan), 20), time(T), normal_atom(ftimeAtStep(T), eq, 20).
-comparison(ftimeAtStep(T), GT) :- time(T), in_happens(walk(A), GT).
+in_happens(walk(nathan, 100), 20).
 
 in_happens(letGoOf(nathan, book), 30).
 
 % nathan walks to position 200 without the book
-in_happens(walk(nathan), 40).
-% TODO an attempt at making a functional event
-&sum{200} = fhappens(walk(nathan), T) :- in_happens(walk(nathan), 40), time(T), normal_atom(ftimeAtStep(T), eq, 40).
-comparison(ftimeAtStep(T), GT) :- time(T), in_happens(walk(A), GT).
+in_happens(walk(nathan, 200), 40).
 
 % --> conclude that the book is at position 100 after time 20 and stays there 

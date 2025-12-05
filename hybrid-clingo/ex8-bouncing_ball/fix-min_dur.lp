@@ -43,7 +43,7 @@ terminates(reach_apex, rising, T) :- time(T).
 % stop everything by catching the ball
 terminates(catch, falling, T) :- time(T).
 terminates(catch, rising, T) :- time(T).
-initiates(catch, height, (0, 1, 0, height), T) :- time(T).
+initiates(catch, height, (0, 0, 1, height), T) :- time(T).
 initiates(catch, velocity, (0, 0, 0, velocity), T) :- time(T).
 
 % stop everything if the ball stops bouncing
@@ -51,18 +51,18 @@ initiates(stop_bouncing, height, (0, 0, 0, height), T) :- time(T).
 initiates(stop_bouncing, velocity, (0, 0, 0, velocity), T) :- time(T).
 
 % falling 
-trajectory(falling, T1, height, (0, 1, 0, height, -Rate), T2) :-
+trajectory(falling, T1, height, (0, 0, 1, height, -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     time(T1), time(T2).
-trajectory(falling, T1, velocity, (0, 1, 0, velocity, Rate), T2) :-
+trajectory(falling, T1, velocity, (0, 0, 1, velocity, Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     time(T1), time(T2).
 
 % rising
-trajectory(rising, T1, height, (0, 1, 0, height, Rate), T2) :-
+trajectory(rising, T1, height, (0, 0, 1, height, Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     time(T1), time(T2).
-trajectory(rising, T1, velocity, (0, "0.25", 0, velocity, -Rate), T2) :-
+trajectory(rising, T1, velocity, (0, 0, "0.25", velocity, -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     %initiallyP(velocity_loss_portion(LossPortion)), % ... 1 - LossPortion
     time(T1), time(T2).
@@ -77,28 +77,22 @@ happens(hit_ground, T) :-
 
 happens(bounce_up, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
-    % only bounce if the falling trajectory took some minimum duration
-    minDuration(MinDur),
-    normal_atom(aux__fallDurAtStep(T), gt, MinDur),
-    normal_atom(fholdsAt(velocity, T), gt, 0),
+    % only bounce if stop_bouncing did not happen
+    not happens(stop_bouncing, T),
     time(T).
-comparison(aux__fallDurAtStep(T), MinDur) :- minDuration(MinDur), time(T). 
 
-% TODO defining an auxiliary functional atom that represent the difference between two timepoints
-&sum{ftimeAtStep(T2) - ftimeAtStep(T1)} = aux__fallDurAtStep(T2) :-
-    happens(E,T1), initiates(E,falling,T1), T1<T2, trajectory(falling,T1,F2,_,T2), not stoppedIn(T1,falling,T2),
-    event(E), fluent(F1), fluent(F2), time(T1), time(T2).
-defined(aux__fallDurAtStep(T2)) :- 
-    happens(E,T1), initiates(E,falling,T1), T1<T2, trajectory(falling,T1,F2,_,T2), not stoppedIn(T1,falling,T2),
-    event(E), fluent(F1), fluent(F2), time(T1), time(T2).
-&sum{0} = aux__fallDurAtStep(T2) :- not defined(aux__fallDurAtStep(T2)), time(T2).
-
+% stop bouncing if the falling trajectory took shorter than some minimum duration
 happens(stop_bouncing, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
-    % stop bouncing if the falling trajectory took shorter than some minimum duration
+    % TODO would be nicer if hidden behind holdsAt/3
+    T1 < T,
+    happens(E, T1),
+    initiates(E, falling, T1),
+    not stoppedIn(T1, falling, T),
     minDuration(MinDur),
-    normal_atom(aux__fallDurAtStep(T), leq, MinDur),
-    time(T).
+    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), leq, MinDur),
+    time(T1), time(T).
+comparison(ftimeAtStep(T), -ftimeAtStep(T1), MinDur) :- minDuration(MinDur), T1 < T, time(T1), time(T).
 
 happens(reach_apex, T) :-
     holdsAt(rising, T),
@@ -106,8 +100,11 @@ happens(reach_apex, T) :-
 
 happens(fall_down, T) :- happens(reach_apex, T).
 
-trigger_value(height, falling, 0).
-trigger_value(velocity, rising, 0).
+% TODO both trigger_value/2 and /3 works fine for this example
+trigger_value(height, 0).
+trigger_value(velocity, 0).
+    %% trigger_value(height, falling, 0).
+    %% trigger_value(velocity, rising, 0).
 
 
 % NOTE

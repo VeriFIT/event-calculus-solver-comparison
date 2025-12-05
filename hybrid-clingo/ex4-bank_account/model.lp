@@ -50,7 +50,7 @@ event(monthlyReset(A)) :- account(A).
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 0, balance(A2)), T) :-
+initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 1, balance(A2)), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
     normal_atom(fholdsAt(balance(A1),T), geq, TransM12),
@@ -82,7 +82,7 @@ comparison(fholdsAt(balance(A1),T), TransM12) :-
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 0, balance(A1)), T) :-
+initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
     normal_atom(fholdsAt(balance(A1),T), geq, TransM12),
@@ -132,7 +132,7 @@ trigger_time(T) :- endOfMonth(T).
 %    account(A), time(T), money(OldM), money(FeeM).
 *%
 
-initiates(chargeServiceFee(A), balance(A), (-fholdsAt(serviceFee(A),T), 1, 0, balance(A)), T) :-
+initiates(chargeServiceFee(A), balance(A), (-fholdsAt(serviceFee(A),T), 1, 1, balance(A)), T) :-
     time(T), account(A).
 
 %*
@@ -178,24 +178,38 @@ initiates(chargeServiceFee(A), balance(A), (-fholdsAt(serviceFee(A),T), 1, 0, ba
 %    account(A), time(T), money(AccM), money(MinM).
 *%
 
+% time epsilon to trigger chargeServiceFee(A)
+epsilon("1.1"). % valid with clingo-lpx
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    normal_atom(fholdsAt(balance(A),T), lt, fholdsAt(minimumBalance(A),T)), 
+    normal_atom(fholdsAt(balance(A),T), lt, fholdsAt(minimumBalance(A),T)),
     not holdsAt(serviceFeeCharged(A), T),
-    account(A), time(T).
-    
-comparison(fholdsAt(balance(A),T), fholdsAt(minimumBalance(A),T)) :- 
-    account(A), time(T).
-
-% time epsilon to trigger chargeServiceFee(A)
-% TODO what if some other event happened in between T and T+1? --- probably need to ensure that epsilon is "small enough"?
-epsilon("1.1"). % valid with clingo-lpx
-&sum{ ftimeAtStep(T+1); -ftimeAtStep(T) } = E :- epsilon(E),
+    account(A), time(T),
+    % fixing zeno timepoint via an epsilon -- balance holds for EPS
+    % TODO would be nicer if hidden behind holdsAt/3
+    T1 < T,
+    happens(E, T1),
+    initiates(E, balance(A), T1),
+    not startedIn(T1, balance(A), T),   % startedIn instead of stoppedIn because balance is a ffluent
+    epsilon(EPS),
+    normal_atom(ftimeAtStep(T1), EPS, eq, ftimeAtStep(T)).
+happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    normal_atom(fholdsAt(balance(A),T+1), lt, fholdsAt(minimumBalance(A),T+1)), 
-    not holdsAt(serviceFeeCharged(A), T+1),
-    happens(chargeServiceFee(A), T+1),
-    account(A), time(T), time(T+1).
+    normal_atom(fholdsAt(balance(A),T), lt, fholdsAt(minimumBalance(A),T)),
+    not holdsAt(serviceFeeCharged(A), T),
+    account(A), time(T),
+    % fixing zeno timepoint via an epsilon -- serviceFeeCharged not holds for EPS
+    % TODO would be nicer if hidden behind holdsAt/3
+    T1 < T,
+    happens(E, T1),
+    terminates(E, serviceFeeCharged(A), T1),
+    not startedIn(T1, serviceFeeCharged(A), T),
+    epsilon(EPS),
+    normal_atom(ftimeAtStep(T1), EPS, eq, ftimeAtStep(T)).
+
+comparison(fholdsAt(balance(A),T), fholdsAt(minimumBalance(A),T)) :- account(A), time(T).
+comparison(ftimeAtStep(T1), EPS, ftimeAtStep(T)) :- epsilon(EPS), T1 < T, time(T1), time(T).
+% TODO this needs some sort of trigger_value
 
 
 %-------------------------------------------------------------------------------
@@ -210,7 +224,7 @@ initiallyP(minimumBalance(account1),  5).
 initiallyP(minimumBalance(account2),  5).
 initiallyP(    serviceFee(account1),  1).    
 initiallyP(    serviceFee(account2),  1).    
-initiallyN(F) :- not initiallyP(F), not initiallyP(F, _), fluent(F).
+initiallyN(F) :- not initiallyP(F), dfluent(F).
      
 
 

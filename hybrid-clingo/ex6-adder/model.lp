@@ -28,7 +28,7 @@ dfluent(powered_on).
 %-------------------------------------------------------------------------------
 
 % initiates(add(Add),  result(Res2), T) :- Add .>. 0, holdsAt(result(Res1), T), Res2 = Res1 + Add, time(T).
-initiates(add(Add), result, (Add, 1, 0, result), T) :-
+initiates(add(Add), result, (Add, 1, 1, result), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     % holdsAt(result, T),

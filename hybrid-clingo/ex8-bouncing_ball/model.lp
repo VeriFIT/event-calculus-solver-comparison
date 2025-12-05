@@ -43,7 +43,7 @@ terminates(reach_apex, rising, T) :- time(T).
 % stop everything by catching the ball
 terminates(catch, falling, T) :- time(T).
 terminates(catch, rising, T) :- time(T).
-initiates(catch, height, (0, 1, 0, height), T) :- time(T).
+initiates(catch, height, (0, 0, 1, height), T) :- time(T).
 initiates(catch, velocity, (0, 0, 0, velocity), T) :- time(T).
 
 % stop everything if the ball stops bouncing
@@ -51,18 +51,18 @@ initiates(stop_bouncing, height, (0, 0, 0, height), T) :- time(T).
 initiates(stop_bouncing, velocity, (0, 0, 0, velocity), T) :- time(T).
 
 % falling 
-trajectory(falling, T1, height, (0, 1, 0, height, -Rate), T2) :-
+trajectory(falling, T1, height, (0, 0, 1, height, -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     time(T1), time(T2).
-trajectory(falling, T1, velocity, (0, 1, 0, velocity, Rate), T2) :-
+trajectory(falling, T1, velocity, (0, 0, 1, velocity, Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     time(T1), time(T2).
 
 % rising
-trajectory(rising, T1, height, (0, 1, 0, height, Rate), T2) :-
+trajectory(rising, T1, height, (0, 0, 1, height, Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     time(T1), time(T2).
-trajectory(rising, T1, velocity, (0, "0.25", 0, velocity, -Rate), T2) :-
+trajectory(rising, T1, velocity, (0, 0, "0.25", velocity, -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     %initiallyP(velocity_loss_portion(LossPortion)), % ... 1 - LossPortion
     time(T1), time(T2).
@@ -75,7 +75,9 @@ happens(hit_ground, T) :-
 
 happens(bounce_up, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
-    normal_atom(fholdsAt(velocity, T), gt, 0).
+    % only bounce if stop_bouncing did not happen
+    not happens(stop_bouncing, T),
+    time(T).
 
 happens(stop_bouncing, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
@@ -87,5 +89,8 @@ happens(reach_apex, T) :-
 
 happens(fall_down, T) :- happens(reach_apex, T).
 
-trigger_value(height, falling, 0).
-trigger_value(velocity, rising, 0).
+trigger_value(height, 0).
+trigger_value(velocity, 0).
+    %% TODO this did not work when removing the significant_step constraint for fix-flat_loss
+    %% trigger_value(height, falling, 0).
+    %% trigger_value(velocity, rising, 0).

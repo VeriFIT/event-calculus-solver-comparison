@@ -34,7 +34,7 @@ terminates(land, up(X), T) :- not holdsAt(up(X), T), time(T), fluent(up(X)).
 %-------------------------------------------------------------------------------
 
 initiallyP(up(heads)).
-initiallyN(F) :- not initiallyP(F), fluent(F).
+initiallyN(F) :- not initiallyP(F), dfluent(F).
 
 
 %-------------------------------------------------------------------------------

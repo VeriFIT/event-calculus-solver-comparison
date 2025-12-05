@@ -25,7 +25,8 @@ log-all-parallel:
 	$(MAKE) -C ex10-* log &
 	$(MAKE) -C ex11-* log &
 	$(MAKE) -C ex12-* log &
-	$(MAKE) -C ex13-* log
+	$(MAKE) -C ex13-* log &
+	@true
 
 create-env-lpx:
 	conda env create -f ./utils/clingo_lpx_env.yml || \
