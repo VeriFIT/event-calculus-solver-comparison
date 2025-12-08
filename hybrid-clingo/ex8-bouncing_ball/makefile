@@ -30,7 +30,7 @@ run-lpx-fix-min_dur:
 	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD} ./fix-min_dur.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 	
 
-run-lpx-fix-flat_loss-nosig:	# TODO causes problems here (many models with 'e')
+run-lpx-fix-flat_loss-nosig:	# works for this example
 	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD} ./fix-flat_loss.lp ./narrative2.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 	
 run-lpx-fix-min_dur-nosig:	# works for this example

@@ -178,18 +178,18 @@ time(0..maxstep).
 
 % ftimeAtStep(S): the time of step S
 &sum{ ftimeAtStep(0) } = 0.                                     % step 0 is at time 0
-&sum{ ftimeAtStep(S) } > ftimeAtStep(S-1) :- S > 0, time(S).    % consecutive steps must have greater time                            
+&sum{ ftimeAtStep(S) } > ftimeAtStep(S-1) :- S > 0, time(S).    % consecutive steps must have greater time
 
-% map(GT, S): Map ground time point GT to time step S                                                                                      
+% map(GT, S): Map ground time point GT to time step S
   map(0, 0).                                                              % step 0 maps to time 0
 { map(GT, S) : time(S) } = 1 :- in_happens(_, GT), GT > 0, GT < maxtime.  % steps map to occurrence times of input events (facts from the narrative)
   map(maxtime, maxstep) :- not disable_laststep.                          % maxstep maps to maxtime (unless disabled)
 
-% if GT is mapped to S, then S is at time GT                                                                                     
-&sum{ ftimeAtStep(S) } = GT :- map(GT, S), time(S).                                                                                              
+% if GT is mapped to S, then S is at time GT
+&sum{ ftimeAtStep(S) } = GT :- map(GT, S), time(S).
 
 % mapping "happens at time" to "happens at step"
-happens(E, S) :- in_happens(E, GT), map(GT, S).                            
+happens(E, S) :- in_happens(E, GT), map(GT, S).
 
 % func. atom that represents the time difference between each pair of timepoints
 &sum{ftimeAtStep(T2) - ftimeAtStep(T1)} = timeDiff(T1, T2) :- time(T1), time(T2), T1 < T2.
