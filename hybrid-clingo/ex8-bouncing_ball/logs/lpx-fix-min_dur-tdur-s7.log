@@ -1,11 +1,11 @@
-$ clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=7 -c maxtime=1000 ./fix-min_dur.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+$ clingo-lpx --strict -n0 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=7 -c maxtime=1000 ./fix-min_dur-tdur.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ../axioms/fdec-tdur.lp ...
 Solving...
 Answer: 1
-(Time: 0.058s)
+(Time: 0.062s)
 happens(bounce_up,20)
 happens(bounce_up,25)
 happens(drop,10)
@@ -48,19 +48,19 @@ releasedAt(velocity,(45/2,"< T =<",25))
 releasedAt(velocity,(25,"< T =<",205/8))
 releasedAt(velocity,(205/8,"< T =<",105/4))
 fholdsAt(height,10,(0,"< T =<",10))
+fholdsAt(height,0,(10,"< T =<",20))
+fholdsAt(height,5/2,(20,"< T =<",45/2))
+fholdsAt(height,0,(45/2,"< T =<",25))
+fholdsAt(height,5/8,(25,"< T =<",205/8))
+fholdsAt(height,0,(205/8,"< T =<",105/4))
 fholdsAt(height,0,(105/4,"< T =<",1000))
 fholdsAt(velocity,0,(0,"< T =<",10))
+fholdsAt(velocity,10,(10,"< T =<",20))
+fholdsAt(velocity,0,(20,"< T =<",45/2))
+fholdsAt(velocity,5/2,(45/2,"< T =<",25))
+fholdsAt(velocity,0,(25,"< T =<",205/8))
+fholdsAt(velocity,5/8,(205/8,"< T =<",105/4))
 fholdsAt(velocity,0,(105/4,"< T =<",1000))
-fholdsAtC(height,(10,"->",0),(10,"< T =<",20),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(10),"+",inc(-1),"*",dur(20,"-",10)))
-fholdsAtC(height,(0,"->",5/2),(20,"< T =<",45/2),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(45/2,"-",20)))
-fholdsAtC(height,(5/2,"->",0),(45/2,"< T =<",25),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(5/2),"+",inc(-1),"*",dur(25,"-",45/2)))
-fholdsAtC(height,(0,"->",5/8),(25,"< T =<",205/8),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(205/8,"-",25)))
-fholdsAtC(height,(5/8,"->",0),(205/8,"< T =<",105/4),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(5/8),"+",inc(-1),"*",dur(105/4,"-",205/8)))
-fholdsAtC(velocity,(0,"->",10),(10,"< T =<",20),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(20,"-",10)))
-fholdsAtC(velocity,(10,"->",0),(20,"< T =<",45/2),eq(off1(0),"*",koef1(0),"+",koef2("0.25"),"*",base(10),"+",inc(-1),"*",dur(45/2,"-",20)))
-fholdsAtC(velocity,(0,"->",5/2),(45/2,"< T =<",25),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(25,"-",45/2)))
-fholdsAtC(velocity,(5/2,"->",0),(25,"< T =<",205/8),eq(off1(0),"*",koef1(0),"+",koef2("0.25"),"*",base(5/2),"+",inc(-1),"*",dur(205/8,"-",25)))
-fholdsAtC(velocity,(0,"->",5/8),(205/8,"< T =<",105/4),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(105/4,"-",205/8)))
 Assignment: [leftovers]
 fholdsAt(height,0)=10
 fholdsAt(velocity,0)=0
@@ -104,14 +104,14 @@ SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.058s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
-CPU Time     : 0.041s
+Time         : 0.062s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
+CPU Time     : 0.045s
 
 Command exited with non-zero status 30
 
   real      0:00.07
   real [s]  0.07
   user [s]  0.03
-  sys  [s]  0.00
-  mem  [KB] 9856
+  sys  [s]  0.01
+  mem  [KB] 9984
   avgm [KB] 0
