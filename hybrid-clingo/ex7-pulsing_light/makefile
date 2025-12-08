@@ -14,7 +14,11 @@ run-lpx-nosig:	# TODO causes problems here (many models with 'e') -- maybe cling
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
+LPX_CMD_TDUR=clingo-lpx --strict -n10 ./model-tdur.lp ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 LPX_CMD_EFF=clingo-lpx --strict -n0 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+
+run-lpx-tdur:
+	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 #TODO#run-lpx-eff:
 #TODO#	MAXSTEP=5; ${TIME} ${LPX_CMD_EFF} | ../utils/make-readable.sh
@@ -26,5 +30,7 @@ LPX_CMD_EFF=clingo-lpx --strict -n0 ./model-efficient.lp ../axioms/clingo_lpx-ef
 log:
 	@mkdir -p ./logs ; rm -f ./logs/*.log
 	NAME=; 		MAXSTEP=6;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} 		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0
+
+	NAME=-tdur;	MAXSTEP=6;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0
 
 #TODO#	NAME=-eff; 	MAXSTEP=5;	../../scripts/maketrace.sh "${LPX_CMD_EFF} 	| ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0

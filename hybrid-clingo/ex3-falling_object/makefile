@@ -21,7 +21,12 @@ run-lpx-queries-nosig:	# TODO causes problems here (many models with 'e')
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
+LPX_CMD_TDUR=clingo-lpx --strict -n10 ./model-tdur.lp ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
 LPX_CMD_EFF=clingo-lpx --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP -c paramHeight=$$HEIGHT
+
+run-lpx-tdur:
+	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
 
 run-lpx-eff:
 	MAXSTEP=2; HEIGHT=20; ${TIME} ${LPX_CMD_EFF} | ../utils/make-readable.sh
@@ -41,5 +46,7 @@ log:
 	NAME=-miss;	MAXSTEP=3;	MAXTIME=1000; 	HEIGHT=3;   ../../scripts/maketrace.sh "${LPX_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
 	
 	NAME=-queries;	MAXSTEP=6;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD} ./extra-queries.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+
+	NAME=-tdur;	MAXSTEP=3;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
 
 	NAME=-eff;	MAXSTEP=2;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD_EFF} 	| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0

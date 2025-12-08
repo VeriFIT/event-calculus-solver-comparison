@@ -23,9 +23,11 @@ run-lpx-state-cont-nosig:		# works for this example
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
-LPX_CMD_DBEC=clingo-lpx --strict -n10 ../axioms/dbec-clingo_lpx-choice.lp -c maxstep=$$MAXSTEP
+LPX_CMD_TDUR=clingo-lpx --strict -n10 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 #TODO#LPX_CMD_EFF=clingo-lpx --strict -n10 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
 
+run-lpx-state-cont-tdur:
+	MAXSTEP=9; MAXTIME=1000; ${TIME} ${LPX_CMD_TDUR} ./model-state_constr-continuous-tdur.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
@@ -35,3 +37,5 @@ log:
 	MODEL=-effect_constr;			NAME=; 		MAXSTEP=5;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL$$NAME.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=-state_constr;			NAME=; 		MAXSTEP=5;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL$$NAME.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=-state_constr-continuous;	NAME=; 		MAXSTEP=9;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL$$NAME.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+
+	MODEL=-state_constr-continuous;	NAME=-tdur;	MAXSTEP=9;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} ./model$$MODEL$$NAME.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0

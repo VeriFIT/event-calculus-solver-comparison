@@ -34,7 +34,13 @@ run-lpx-fix3:
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
+LPX_CMD_TDUR=clingo-lpx --strict -n0 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 LPX_CMD_EFF=clingo-lpx --strict -n0 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+
+run-lpx:
+	MAXSTEP=5; MAXTIME=19; ${TIME} ${LPX_CMD_TDUR} ./model-tdur.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+run-lpx-fix:
+	MAXSTEP=8; MAXTIME=22; ${TIME} ${LPX_CMD_TDUR} ./model-fixed-tdur.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 #TODO#run-lpx-eff:
 #TODO#	MAXSTEP=6; ${TIME} ${LPX_CMD_EFF} ./model-efficient.lp | ../utils/make-readable.sh
@@ -50,3 +56,7 @@ log:
 	MODEL=-fixed; 		NAME=;		MAXSTEP=8;	MAXTIME=22;		../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 #	MODEL=-fixed2; 	 	NAME=;		MAXSTEP=14;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 #	MODEL=-fixed3; 	 	NAME=;		MAXSTEP=14;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+
+
+	MODEL=; 			NAME=-tdur;	MAXSTEP=5;	MAXTIME=19;		../../scripts/maketrace.sh "${LPX_CMD_TDUR} ./model$$MODEL$$NAME.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+	MODEL=-fixed; 		NAME=-tdur;	MAXSTEP=8;	MAXTIME=22;		../../scripts/maketrace.sh "${LPX_CMD_TDUR} ./model$$MODEL$$NAME.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0

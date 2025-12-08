@@ -39,7 +39,15 @@ run-lpx-fix-min_dur-nosig:	# works for this example
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
+LPX_CMD_TDUR=clingo-lpx --strict -n0 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 LPX_CMD_EFF=clingo-lpx --strict -n0 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+
+run-lpx-tdur:
+	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD_TDUR} ./model-tdur.lp ./narrative1.lp  | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+run-lpx-fix-flat_loss-tdur:
+	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD_TDUR} ./fix-flat_loss-tdur.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+run-lpx-fix-min_dur-tdur:
+	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD_TDUR} ./fix-min_dur-tdur.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 #TODO#run-lpx-eff:
 #TODO#	MAXSTEP=6; ${TIME} ${LPX_CMD_EFF} ./model-efficient.lp ./narrative1.lp | ../utils/make-readable.sh
@@ -54,6 +62,10 @@ log:
 	MODEL=model; 			NAME=;		MAXSTEP=50;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=fix-flat_loss; 	NAME=;		MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=fix-min_dur; 	 	NAME=;		MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+
+	MODEL=model; 			NAME=-tdur;	MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} ./$$MODEL$$NAME.lp ./narrative1.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+	MODEL=fix-flat_loss; 	NAME=-tdur;	MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} ./$$MODEL$$NAME.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+	MODEL=fix-min_dur; 	 	NAME=-tdur;	MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} ./$$MODEL$$NAME.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 
 #TODO#	MODEL=model-efficient; MAXSTEP=6;  ../../scripts/maketrace.sh "${LPX_CMD_EFF} ./$$MODEL.lp ./narrative1.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL-s$$MAXSTEP.log ; exit 0
 #TODO#	MODEL=model-efficient; MAXSTEP=50; ../../scripts/maketrace.sh "${LPX_CMD_EFF} ./$$MODEL.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL-s$$MAXSTEP.log ; exit 0
