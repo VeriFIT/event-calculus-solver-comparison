@@ -111,17 +111,17 @@ releasedAt(F,T+1) :- happens(E,T), releases(E,F,T), event(E),
 %-------------------------------------------------------------------------------
 
 % FDEC13 (corresponds to DEC3)
-&sum{ A1*A2; B*fholdsAt(F,T1); INC*(ftimeAtStep(T2) - ftimeAtStep(T1)) } = fholdsAt(F2,T2) :-
+&sum{ A1*A2; B*fholdsAt(F0,T1); INC*(ftimeAtStep(T2) - ftimeAtStep(T1)) } = fholdsAt(F2,T2) :-
   happens(E,T1), initiates(E,F1,T1), T1<T2,
-  trajectory(F1,T1,F2,(A1,A2,B,F,INC),T2),
+  trajectory(F1,T1,F2,(A1,A2,B,F0,INC),T2),
   not stoppedIn(T1,F1,T2),
   event(E), dfluent(F1), ffluent(F2), time(T1), time(T2).
   %T1+T2<maxstep.  % TODO
 
 % FDEC14 (corresponds to DEC4)
-&sum{ A1*A2; B*fholdsAt(F,T1); INC*(ftimeAtStep(T2) - ftimeAtStep(T1)) } = fholdsAt(F2,T2) :-
+&sum{ A1*A2; B*fholdsAt(F0,T1); INC*(ftimeAtStep(T2) - ftimeAtStep(T1)) } = fholdsAt(F2,T2) :-
   happens(E,T1), terminates(E,F1,T1), T1<T2,
-  antiTrajectory(F1,T1,F2,(A1,A2,B,F,INC),T2),
+  antiTrajectory(F1,T1,F2,(A1,A2,B,F0,INC),T2),
   not startedIn(T1,F1,T2),
   event(E), dfluent(F1), ffluent(F2), time(T1), time(T2).
   %T1+T2<maxstep.  % TODO
@@ -190,6 +190,10 @@ time(0..maxstep).
 
 % mapping "happens at time" to "happens at step"
 happens(E, S) :- in_happens(E, GT), map(GT, S).                            
+
+% func. atom that represents the time difference between each pair of timepoints
+&sum{ftimeAtStep(T2) - ftimeAtStep(T1)} = timeDiff(T1, T2) :- time(T1), time(T2), T1 < T2.
+&sum{0} = timeDiff(T, T) :- time(T).
 
 % TODO this constraint should not be strictly necessary, but disabling it leads to problems with bugs in clingo-lpx and makes things more complicated
 % restrict free floating steps to avoid seeing useless steps:
@@ -294,4 +298,3 @@ negated_prints :- negprints = 1.
 :- holdsAt(F, 0), initiallyN(F), dfluent(F).
 holdsAt(F, 0) :- initiallyP(F), dfluent(F).
 &sum{ fholdsAt(F,0) } = V :- initiallyP(F, V), ffluent(F).
-&sum{ fholdsAt(F,0) } = 0 :- initiallyN(F), ffluent(F).

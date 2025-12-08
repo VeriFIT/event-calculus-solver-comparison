@@ -90,9 +90,11 @@ happens(stop_bouncing, T) :- happens(hit_ground, T),
     initiates(E, falling, T1),
     not stoppedIn(T1, falling, T),
     minDuration(MinDur),
-    normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), leq, MinDur),
+    normal_atom(timeDiff(T1, T), leq, MinDur),
+        %normal_atom(ftimeAtStep(T), -ftimeAtStep(T1), leq, MinDur),
     time(T1), time(T).
-comparison(ftimeAtStep(T), -ftimeAtStep(T1), MinDur) :- minDuration(MinDur), T1 < T, time(T1), time(T).
+comparison(timeDiff(T1, T), MinDur) :- minDuration(MinDur), T1 < T, time(T1), time(T).
+    %comparison(ftimeAtStep(T), -ftimeAtStep(T1), MinDur) :- minDuration(MinDur), T1 < T, time(T1), time(T).
 
 happens(reach_apex, T) :-
     holdsAt(rising, T),
