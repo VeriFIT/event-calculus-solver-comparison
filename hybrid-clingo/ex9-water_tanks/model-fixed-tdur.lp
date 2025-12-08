@@ -96,7 +96,7 @@ happens(switch_right, T) :-
 % TODO trigger_value must be more complex here, so manual
 % cannot step over 50, if the duration is already over the minimum
 %%comparison(ftimeAtStep(T), -ftimeAtStep(T1), MinDur) :- minDuration(MinDur), T1 < T, time(T1), time(T).
-comparison(timeDiff(T1,T), MinDur) :- minDuration(MinDur), T1 < T, time(T1), time(T).
+comparison(timeDiff(T1,T), MinDur) :- minDuration(MinDur), T1 <= T, time(T1), time(T).
 comparison(fholdsAt(water_left,T), 50) :- time(T).
 :-  normal_atom(fholdsAt(water_left, T), gt, 50),
     normal_atom(fholdsAt(water_left, T+1), lt, 50),
@@ -124,7 +124,7 @@ comparison(fholdsAt(water_right,T), 50) :- time(T).
 
 
 % cannot step over the minimum duration time, if the level is already below 50
-:-  T1 < T+1,
+:-  T1 <= T+1,
     happens(E, T1),
     initiates(E, left_filling, T1),
     not stoppedIn(T1, left_filling, T+1),
@@ -136,7 +136,7 @@ comparison(fholdsAt(water_right,T), 50) :- time(T).
         % normal_atom(ftimeAtStep(T+1), -ftimeAtStep(T1), gt, MinDur),
     time(T), time(T+1),
     normal_atom(fholdsAt(water_right, T+1), lt, 50).
-:-  T1 < T+1,
+:-  T1 <= T+1,
     happens(E, T1),
     initiates(E, right_filling, T1),
     not stoppedIn(T1, right_filling, T+1),

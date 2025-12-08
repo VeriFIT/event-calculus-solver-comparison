@@ -12,11 +12,11 @@ run-lpx-nosig:	# works for this example
 	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
-run-lpx-queries:	# TODO work in progress 
+run-lpx-queries:
 	MAXSTEP=6; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} ./extra-queries.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
-run-lpx-queries-nosig:	# TODO causes problems here (many models with 'e')
-	MAXSTEP=6; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} ./extra-queries.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+run-lpx-queries-nosig:	# works for this example
+	MAXSTEP=6; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} ./extra-queries.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -26,6 +26,8 @@ LPX_CMD_EFF=clingo-lpx --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-e
 
 run-lpx-tdur:
 	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+run-lpx-queries-tdur:
+	MAXSTEP=6; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} ./extra-queries.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 run-lpx-eff:

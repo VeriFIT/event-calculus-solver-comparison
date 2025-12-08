@@ -37,9 +37,9 @@ run-lpx-fix3:
 LPX_CMD_TDUR=clingo-lpx --strict -n0 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 LPX_CMD_EFF=clingo-lpx --strict -n0 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
 
-run-lpx:
+run-lpx-tdur:
 	MAXSTEP=5; MAXTIME=19; ${TIME} ${LPX_CMD_TDUR} ./model-tdur.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
-run-lpx-fix:
+run-lpx-fix-tdur:
 	MAXSTEP=8; MAXTIME=22; ${TIME} ${LPX_CMD_TDUR} ./model-fixed-tdur.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 #TODO#run-lpx-eff:
