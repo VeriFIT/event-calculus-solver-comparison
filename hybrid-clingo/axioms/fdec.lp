@@ -132,8 +132,8 @@ releasedAt(F,T+1) :- happens(E,T), releases(E,F,T), event(E),
   not initiated1(F,T), ffluent(F), time(T), T<maxstep.
 
 % FDEC16 (corresponds to DEC9)
-&sum{ A1*A2; B*fholdsAt(F,T) } = fholdsAt(F,T+1) :-
-  happens(E,T), initiates(E,F,(A1,A2,B,F),T), event(E),
+&sum{ A1*A2; B*fholdsAt(F0,T) } = fholdsAt(F,T+1) :-
+  happens(E,T), initiates(E,F,(A1,A2,B,F0),T), event(E),
   ffluent(F), time(T), T<maxstep.
 
 
