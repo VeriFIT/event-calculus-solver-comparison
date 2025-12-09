@@ -1,31 +1,7 @@
-% log of changes to get FDEC from DEC:
-%   renamed maxtime to maxstep
-%   renamed fluent to dfluent
-%   TODO maybe should also rename "time" to "timeStep" or "dtime"?
-%   then re-introduced "fluent" with rules fluent :- dfluent. fluent :- ffluent.
-%   add initiates/3 :- initiates/4      (needed to reuse axioms for releasedAt)
-%?  DEC 7,8,12 refer to fluent, initiated1/released1 refer to fluent
-%   add FDEC 13-16
-%   add normal_atom for comparing func. values -- TODO workaround due to lpx not allowing func. atoms in the body
-%   add mapping of time to steps
-% 
-% overview of: ffluent vs dfluent vs fluent
-%   DEC  1-4   -- dfluent   (trajectories)
-%   DEC  5,6   -- dfluent   (inertia holdsAt)
-%   DEC  7,8   -- fluent    (inertia releasedAt)
-%   DEC  9,10  -- dfluent   (init/term holdsAt)
-%   DEC  11,12 -- fluent    (init/term releasedAt)
-%   FDEC 13-16 -- ffluent   (correspond to DEC 3,4,5,9)
-%
-%
-% needed improvements:
-%   removing normal_atom (by &sum{} in the body)
-%
-% possible extensions:
-%   holdsAt for ffluents
-%   trajectory controlled by a ffluent
-%   functional events
-%
+% version of fdec.lp that preserves the original formulation of the trajectory predicate
+%   fdec.lp uses trajectory(F1,T1,F2,T2) where both T1 and T2 are steps/timepoints [--> holdsAt(F2,T2)]
+%   in this version T2 represents the duration of the trajectory [--> holdsAt(F2,T1+T2)]
+% however, this is a bit more complicated since T2 as duration is a functional/non-ground atom
 
 %! added 3 rules -- only used in DEC12 and in initiated1/released1
 initiates(E,F,T) :- initiates(E,F,EQ,T).
@@ -54,7 +30,7 @@ startedIn(T1,F,T2) :- happens(E,T), T1<T, T<T2,
 
 % DEC3
 holdsAt(F2,T2) :- happens(E,T1), initiates(E,F1,T1), T1<T2,
-  trajectory(F1,T1,F2,T2), not stoppedIn(T1,F1,T2),
+  trajectory(F1,T1,F2,timeDiff(T1, T2)), not stoppedIn(T1,F1,T2),
   event(E), dfluent(F1), dfluent(F2), time(T1), time(T2).         %? dfluent
   %T1+T2<maxstep.  % TODO
 
