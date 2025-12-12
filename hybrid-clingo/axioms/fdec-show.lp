@@ -7,58 +7,58 @@
 
 #show.
 
-#show happens(E,ftimeAtStep(T)) : happens(E,T), not debug_prints.
+#show happens(E,time(S)) : happens(E,S), not debug_prints.
 
 %% discrete fluents have values between steps
-#show holdsAt(F, (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1))) :  holdsAt(F, T+1), time(T), time(T+1), dfluent(F), not debug_prints.
-#show -holdsAt(F, (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1))) :  not holdsAt(F, T+1), time(T), time(T+1), dfluent(F), not debug_prints, negated_prints.
+#show holdsAt(F, (time(S), "< S =<", time(S+1))) :  holdsAt(F, S+1), step(S), step(S+1), dfluent(F), not debug_prints.
+#show -holdsAt(F, (time(S), "< S =<", time(S+1))) :  not holdsAt(F, S+1), step(S), step(S+1), dfluent(F), not debug_prints, negated_prints.
 
 %%% discrete fluents can be released between steps
-#show releasedAt(F, (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1))) :  releasedAt(F, T+1), time(T), time(T+1), fluent(F), not debug_prints.
-#show -releasedAt(F, (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1))) :  not releasedAt(F, T+1), time(T), time(T+1), fluent(F), not debug_prints, negated_prints.
+#show releasedAt(F, (time(S), "< S =<", time(S+1))) :  releasedAt(F, S+1), step(S), step(S+1), fluent(F), not debug_prints.
+#show -releasedAt(F, (time(S), "< S =<", time(S+1))) :  not releasedAt(F, S+1), step(S), step(S+1), fluent(F), not debug_prints, negated_prints.
  
 %% functional fluents have values between steps
-#show fholdsAt(F, fholdsAt(F,T+1), (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1))) :
-  % holdsAt(F, T+1),  % functional fluents always hold
-  not anyTrajectory(F, T+1), time(T), time(T+1), ffluent(F), not debug_prints.
-anyTrajectory(F2, T2) :- not debug_prints,
-  T1 < T2,
-  initiates(E, F1, T1),
-  happens(E, T1),
-  trajectory(F1, T1, F2, _, T2),
-  not stoppedIn(T1, F1, T2),
-  time(T1), time(T2).
-anyTrajectory(F2, T2) :- not debug_prints,
-  T1 < T2,
-  terminates(E, F1, T1),
-  happens(E, T1),
-  antiTrajectory(F1, T1, F2, _, T2),
-  not stoppedIn(T1, F1, T2),
-  time(T1), time(T2).
-#show -fholdsAt(F, (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1))) :
-  not holdsAt(F, T+1), time(T), time(T+1), ffluent(F), not debug_prints, negated_prints.
+#show fholdsAt(F, (F,S+1), (time(S), "< S =<", time(S+1))) :
+  % holdsAt(F, S+1),  % functional fluents always hold
+  not anyTrajectory(F, S+1), step(S), step(S+1), ffluent(F), not debug_prints.
+anyTrajectory(F2, S2) :- not debug_prints,
+  S1 < S2,
+  initiates(E, F1, S1),
+  happens(E, S1),
+  trajectory(F1, S1, F2, _, S2),
+  not stoppedIn(S1, F1, S2),
+  step(S1), step(S2).
+anyTrajectory(F2, S2) :- not debug_prints,
+  S1 < S2,
+  terminates(E, F1, S1),
+  happens(E, S1),
+  antiTrajectory(F1, S1, F2, _, S2),
+  not stoppedIn(S1, F1, S2),
+  step(S1), step(S2).
+#show -fholdsAt(F, (time(S), "< S =<", time(S+1))) :
+  not holdsAt(F, S+1), step(S), step(S+1), ffluent(F), not debug_prints, negated_prints.
 
 %% functional fluents can be continuous with their value defined by a trajectory (continuous value between steps)
-#show fholdsAtC(F2, (fholdsAt(F2, T), "->", fholdsAt(F2, T+1)), (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1)), eq(off1(A1), "*", koef1(A2), "+", koef2(B), "*", base(fholdsAt(F2,SStart)), "+", inc(INC), "*", dur(ftimeAtStep(T+1), "-", ftimeAtStep(SStart)))) :
-  SStart < T+1,
+#show fholdsAtC(F2, ((F2, S), "->", (F2, S+1)), (time(S), "< S =<", time(S+1)), eq(off1(A1), "*", koef1(A2), "+", koef2(B), "*", base((F2,SStart)), "+", inc(INC), "*", dur(time(S+1), "-", time(SStart)))) :
+  SStart < S+1,
   initiates(E, F1, SStart),
   happens(E, SStart),
-  trajectory(F1, SStart, F2, (A1,A2,B,F2,INC), T+1),
-  not stoppedIn(SStart, F1, T+1),
-  time(T), time(T+1), time(SStart),
+  trajectory(F1, SStart, F2, (A1,A2,B,F2,INC), S+1),
+  not stoppedIn(SStart, F1, S+1),
+  step(S), step(S+1), step(SStart),
   not debug_prints.
-#show fholdsAtC(F2, (fholdsAt(F2, T), "->", fholdsAt(F2, T+1)), (ftimeAtStep(T), "< T =<", ftimeAtStep(T+1)), eq(off1(A1), "*", koef1(A2), "+", koef2(B), "*", base(fholdsAt(F2,SStart)), "+", inc(INC), "*", dur(ftimeAtStep(T+1), "-", ftimeAtStep(SStart)))) :
-  SStart < T+1,
+#show fholdsAtC(F2, ((F2, S), "->", (F2, S+1)), (time(S), "< S =<", time(S+1)), eq(off1(A1), "*", koef1(A2), "+", koef2(B), "*", base((F2,SStart)), "+", inc(INC), "*", dur(time(S+1), "-", time(SStart)))) :
+  SStart < S+1,
   terminates(E, F1, SStart),
   happens(E, SStart),
-  antiTrajectory(F1, SStart, F2, (A1,A2,B,F2,INC), T+1),
-  not stoppedIn(SStart, F1, T+1),
-  time(T), time(T+1), time(SStart),
+  antiTrajectory(F1, SStart, F2, (A1,A2,B,F2,INC), S+1),
+  not stoppedIn(SStart, F1, S+1),
+  step(S), step(S+1), step(SStart),
   not debug_prints.
 
 % show all for debug
-#show happens(E,T) : happens(E,T), debug_prints.
-#show holdsAt(F,T) : holdsAt(F,T), debug_prints.
-#show releasedAt(F,T) : releasedAt(F,T), debug_prints.
+#show happens(E,S) : happens(E,S), debug_prints.
+#show holdsAt(F,S) : holdsAt(F,S), debug_prints.
+#show releasedAt(F,S) : releasedAt(F,S), debug_prints.
 
-#show map(GT, S) : map(GT, S), debug_prints.
+#show map(T, S) : map(T, S), debug_prints.
