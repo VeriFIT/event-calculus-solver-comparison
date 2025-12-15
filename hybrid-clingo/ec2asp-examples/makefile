@@ -43,3 +43,23 @@ log:
 
 	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./Yale3-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/Yale3-ea.log
 	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./Yale40-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/Yale40-ea.log
+
+
+
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithAntiTrajectory5-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithAntiTrajectory5-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithAntiTrajectory15-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithAntiTrajectory15-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithAntiTrajectory25-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithAntiTrajectory25-ea.log
+
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithEvents5-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithEvents5-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithEvents20-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithEvents20-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithEvents25-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithEvents25-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./FallingObjectWithEvents40-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/FallingObjectWithEvents40-ea.log
+
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./HotAirBalloon3-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/HotAirBalloon3-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./HotAirBalloon15-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/HotAirBalloon15-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./HotAirBalloon20-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/HotAirBalloon20-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./HotAirBalloon40-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/HotAirBalloon40-ea.log
+
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./Telephone3-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/Telephone3-ea.log
+	clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp ./Telephone40-ea.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh > logs/Telephone40-ea.log
+

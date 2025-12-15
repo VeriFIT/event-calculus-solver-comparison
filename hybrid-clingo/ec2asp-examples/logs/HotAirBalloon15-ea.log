@@ -1,0 +1,25 @@
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.035s)
+happens(turnOffHeater(nathan,balloon),6)
+happens(turnOnHeater(nathan,balloon),0)
+holdsAt(heaterOn(balloon),(0,"< S =<",6))
+releasedAt(height(balloon),(0,"< S =<",6))
+releasedAt(height(balloon),(6,"< S =<",15))
+fholdsAtC(height(balloon),(0,"->",6),(0,"< S =<",6),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(6,"-",0)))
+fholdsAtC(height(balloon),(6,"->",-3),(6,"< S =<",15),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(6),"+",inc(-1),"*",dur(15,"-",6)))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=6
+timeDiff(0,2)=15
+timeDiff(1,1)=0
+timeDiff(1,2)=9
+timeDiff(2,2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.035s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.017s
