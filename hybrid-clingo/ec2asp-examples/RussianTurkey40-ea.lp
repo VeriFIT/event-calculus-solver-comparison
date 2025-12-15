@@ -36,4 +36,4 @@ in_happens(shoot,30).
 
 negated_prints.
 
-% --> conclude 2 models: one with alive after shoot and one with no alive after shoot
+% --> find 2 models: one with alive after shoot and one with no alive after shoot

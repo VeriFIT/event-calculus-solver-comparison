@@ -17,6 +17,8 @@ initiates(close1,blocked1,S) :- step(S).
 
 initiates(close2,blocked2,S) :- step(S).
 
+% note: the 3 rules below represent an equivalence "stuffy <--> bocked1 and blocked2"
+
 holdsAt(blocked2,S) :- holdsAt(stuffy,S).
 
 holdsAt(blocked1,S) :- holdsAt(stuffy,S).

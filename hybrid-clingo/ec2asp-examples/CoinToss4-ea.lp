@@ -30,4 +30,4 @@ holdsAt(itsHeads,0).    % TODO step 0 is the same as time 0
 
 in_holdsAt(itsHeads, 4).
 
-% --> conclude 8 models (all combinations of coin toss results for 3 tosses)
+% --> find 8 models (all combinations of coin toss results for 3 tosses)

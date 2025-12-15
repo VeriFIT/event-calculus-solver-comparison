@@ -96,13 +96,22 @@ releasedAt(F,T+1) :- happens(E,T), releases(E,F,T), event(E),
 %   event(E), dfluent(F1), ffluent(F2), time(T1), time(T2).
 %   %T1+T2<maxstep.  % TODO
 
-% TODO timeDiff/2 causes a lot of grounding 
+% could use something like this, but this would need the "T1+T2" in timeDiff evaluated into an auxiliary atom or would need timeDiff/3 or something like that 
+%&sum{ A1*A2; B*fholdsAt(F,T1); INC*timeDiff(T1, T1+T2)} = fholdsAt(F2,T1+T2) :-
+%  happens(E,T1), initiates(E,F1,T1), 0<T2,
+%  trajectory(F1,T1,F2,(A1,A2,B,F,INC),T2),
+%  not stoppedIn(T1,F1,T1+T2),
+%  event(E), dfluent(F1), ffluent(F2), time(T1), time(T2).
+%  %T1+T2<maxstep.  % TODO
+
+% or can replace "duration in steps" with "functional duration" using timeDiff/2
 &sum{ A1*A2; B*fholdsAt(F0,T1); INC*timeDiff(T1, T2)} = fholdsAt(F2,T2) :-
   happens(E,T1), initiates(E,F1,T1), T1<T2,
   trajectory(F1,T1,F2,(A1,A2,B,F0,INC), timeDiff(T1, T2)),
   not stoppedIn(T1,F1,T2),
   event(E), dfluent(F1), ffluent(F2), time(T1), time(T2).
   %T1+T2<maxstep.  % TODO
+
 
 %% % TODO this would need trajectory predicate changed in a similar way as DEC inertia (referring to T and T+1 instead of T1 and T2)
 %% &sum{ftimeAtStep(T+1) - ftimeAtStep(T)} = timeDiff(T, T+1) :- time(T+1), time(T).

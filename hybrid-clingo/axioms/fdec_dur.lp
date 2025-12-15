@@ -1,32 +1,4 @@
-% log of changes to get FDEC from DEC:
-%   renamed maxtime to maxstep
-%   renamed fluent to dfluent
-%   renamed time to step
-%   then re-introduced "fluent" with rules fluent :- dfluent. fluent :- ffluent.
-%   add initiates/3 :- initiates/4      (needed to reuse axioms for releasedAt)
-%?  DEC 7,8,12 refer to fluent, initiated1/released1 refer to fluent
-%   add FDEC 13-16
-%   add normal_atom for comparing func. values -- TODO workaround due to lpx not allowing func. atoms in the body
-%   add mapping of time to steps
-%   use in_* for observations: in_happens, in_holdsAt, in_not_holdsAt, in_releasedAt, in_not_releasedAt, in_fvalue
-% 
-% overview of: ffluent vs dfluent vs fluent
-%   DEC  1-4   -- dfluent   (trajectories)
-%   DEC  5,6   -- dfluent   (inertia holdsAt)
-%   DEC  7,8   -- fluent    (inertia releasedAt)
-%   DEC  9,10  -- dfluent   (init/term holdsAt)
-%   DEC  11,12 -- fluent    (init/term releasedAt)
-%   FDEC 13-16 -- ffluent   (correspond to DEC 3,4,5,9)
-%
-%
-% needed improvements:
-%   removing normal_atom (by &sum{} in the body)
-%
-% possible extensions:
-%   holdsAt for ffluents
-%   trajectory controlled by a ffluent
-%   functional events
-%
+% version of FDEC for happens3 -- events with duration
 
 %! added 3 rules -- only used in DEC12 and in initiated1/released1
 initiates(E,F,S) :- initiates(E,F,EQ,S).
@@ -44,33 +16,33 @@ step(0..maxstep).
 {releasedAt(F,S)} :-  fluent(F), step(S).                         %! fluent
 
 % DEC1
-stoppedIn(S1,F,S2) :- happens(E,S), S1<S, S<S2,
-  terminates(E,F,S), event(E), dfluent(F), step(S),               %? dfluent
-  step(S1), step(S2).
+stoppedIn(S1,F,S4) :- happens3(E,S2,S3), S1<S3, S2<S4,
+  terminates(E,F,S2), event(E), dfluent(F), step(S),              %? dfluent
+  step(S1), step(S2), step(S3), step(S4).
 
 % DEC2
-startedIn(S1,F,S2) :- happens(E,S), S1<S, S<S2,
-  initiates(E,F,S), event(E), dfluent(F), step(S),                %? dfluent
-  step(S1), step(S2).
+startedIn(S1,F,S2) :- happens3(E,S2,S3), S1<S3, S2<S4,
+  initiates(E,F,S2), event(E), dfluent(F), step(S),              %? dfluent
+  step(S1), step(S2), step(S3), step(S4).
 
 % DEC3
-holdsAt(F2,S2) :- happens(E,S1), initiates(E,F1,S1), S1<S2,
-  trajectory(F1,S1,F2,S2), not stoppedIn(S1,F1,S2),
-  event(E), dfluent(F1), dfluent(F2), step(S1), step(S2).         %? dfluent
+holdsAt(F2,S3) :- happens3(E,S1,S2), initiates(E,F1,S1), S2<S3,
+  trajectory(F1,S1,F2,S3), not stoppedIn(S1,F1,S3),
+  event(E), dfluent(F1), dfluent(F2), step(S1), step(S2), step(S3), step(S4).         %? dfluent
   %S1+S2<maxstep.  % TODO
 
 % DEC4
-holdsAt(F2,S2) :- happens(E,S1), terminates(E,F1,S1), S1<S2,
-  antiTrajectory(F1,S1,F2,S2), not startedIn(S1,F1,S2),
-  event(E), dfluent(F1), dfluent(F2), step(S1), step(S2).         %? dfluent
+holdsAt(F2,S3) :- happens3(E,S1,S2), initiates(E,F1,S1), S2<S3,
+  antiTrajectory(F1,S1,F2,S3), not startedIn(S1,F1,S3),
+  event(E), dfluent(F1), dfluent(F2), step(S1), step(S2), step(S3), step(S4).         %? dfluent
   %S1+S2<maxstep.  % TODO
 
-initiated1(F,S) :- happens(E,S), initiates(E,F,S), event(E),
-  fluent(F), step(S).                                             %! fluent
-terminated1(F,S) :- happens(E,S), terminates(E,F,S), event(E),
-  fluent(F), step(S).                                             %! fluent
-released1(F,S) :- happens(E,S), releases(E,F,S), event(E),
-  fluent(F), step(S).                                             %! fluent
+initiated1(F,S2) :- happens3(E,S1,S2), initiates(E,F,S1), event(E),
+  fluent(F), step(S1), step(S2).                                             %! fluent
+terminated1(F,S2) :- happens3(E,S1,S2), terminates(E,F,S1), event(E),
+  fluent(F), step(S1), step(S2).                                             %! fluent
+released1(F,S2) :- happens3(E,S1,S2), releases(E,F,S1), event(E),
+  fluent(F), step(S1), step(S2).                                             %! fluent
 
 % DEC5
 holdsAt(F,S+1) :- holdsAt(F,S), not releasedAt(F,S+1),
@@ -89,42 +61,48 @@ releasedAt(F,S+1) :- releasedAt(F,S), not initiated1(F,S),
   fluent(F), step(S), S<maxstep.                                  %! fluent
 
 % DEC9
-holdsAt(F,S+1) :- happens(E,S), initiates(E,F,S), event(E),
-  dfluent(F), step(S), S<maxstep.                                 %? dfluent
+holdsAt(F,S2+1) :- happens3(E,S1,S2), initiates(E,F,S1), event(E),
+  dfluent(F), step(S1), step(S2), S2<maxstep.                                 %? dfluent
 
 % DEC10
-:- holdsAt(F,S+1), happens(E,S), terminates(E,F,S), event(E),
-  dfluent(F), step(S), S<maxstep.                                 %? dfluent
+:- holdsAt(F,S2+1), happens3(E,S1,S2), terminates(E,F,S1), event(E),
+  dfluent(F), step(S1), step(S2), S2<maxstep.                                 %? dfluent
 
 % DEC11
-releasedAt(F,S+1) :- happens(E,S), releases(E,F,S), event(E),
-  fluent(F), step(S), S<maxstep.
+releasedAt(F,S2+1) :- happens3(E,S1,S2), releases(E,F,S1), event(E),
+  fluent(F), step(S1), step(S2), S2<maxstep.
 
 % DEC12
-:- releasedAt(F,S+1), happens(E,S), initiates(E,F,S),
-  event(E), fluent(F), step(S), S<maxstep.                        %! fluent
-:- releasedAt(F,S+1), happens(E,S), terminates(E,F,S),
-  event(E), fluent(F), step(S), S<maxstep.                        %! fluent
+:- releasedAt(F,S2+1), happens3(E,S1,S2), initiates(E,F,S1),
+  event(E), fluent(F), step(S1), step(S2), S2<maxstep.                        %! fluent
+:- releasedAt(F,S2+1), happens3(E,S1,S2), terminates(E,F,S1),
+  event(E), fluent(F), step(S1), step(S2), S2<maxstep.                        %! fluent
 
+% DEC 17
+:- in_happens3(E,T1,T2), T1 > T2.
+:- happens3(E,S1,S2), S1 > S2.
+
+% DEC 18
+happens(E,S) :- happens3(E,S,S).
 
 %-------------------------------------------------------------------------------
 % 4 new FDEC axioms
 %-------------------------------------------------------------------------------
 
 % FDEC13 (corresponds to DEC3)
-&sum{ A1*A2; B*(F0,S1); INC*(time(S2) - time(S1)) } = (F2,S2) :-
-  happens(E,S1), initiates(E,F1,S1), S1<S2,
-  trajectory(F1,S1,F2,(A1,A2,B,F0,INC),S2),
-  not stoppedIn(S1,F1,S2),
-  event(E), dfluent(F1), ffluent(F2), step(S1), step(S2).
+&sum{ A1*A2; B*(F0,S2); INC*(time(S3) - time(S2)) } = (F2,S3) :-
+  happens3(E,S1,S2), initiates(E,F1,S1), S2<S3,
+  trajectory(F1,S1,F2,(A1,A2,B,F0,INC),S3),
+  not stoppedIn(S1,F1,S3),
+  event(E), dfluent(F1), ffluent(F2), step(S1), step(S2), step(S3).
   %S1+S2<maxstep.  % TODO
 
 % FDEC14 (corresponds to DEC4)
-&sum{ A1*A2; B*(F0,S1); INC*(time(S2) - time(S1)) } = (F2,S2) :-
-  happens(E,S1), terminates(E,F1,S1), S1<S2,
-  antiTrajectory(F1,S1,F2,(A1,A2,B,F0,INC),S2),
-  not startedIn(S1,F1,S2),
-  event(E), dfluent(F1), ffluent(F2), step(S1), step(S2).
+&sum{ A1*A2; B*(F0,S2); INC*(time(S3) - time(S2)) } = (F2,S3) :-
+  happens3(E,S1,S2), terminates(E,F1,S1), S2<S3,
+  antiTrajectory(F1,S1,F2,(A1,A2,B,F0,INC),S3),
+  not startedIn(S1,F1,S3),
+  event(E), dfluent(F1), ffluent(F2), step(S1), step(S2), step(S3).
   %S1+S2<maxstep.  % TODO
 
 % FDEC15 (corresponds to DEC5)
@@ -133,9 +111,9 @@ releasedAt(F,S+1) :- happens(E,S), releases(E,F,S), event(E),
   not initiated1(F,S), ffluent(F), step(S), S<maxstep.
 
 % FDEC16 (corresponds to DEC9)
-&sum{ A1*A2; B*(F0,S) } = (F,S+1) :-
-  happens(E,S), initiates(E,F,(A1,A2,B,F0),S), event(E),
-  ffluent(F), step(S), S<maxstep.
+&sum{ A1*A2; B*(F0,S1) } = (F,S2+1) :-
+  happens3(E,S1,S2), initiates(E,F,(A1,A2,B,F0),S1), event(E),
+  ffluent(F), step(S1), step(S2), S2<maxstep.
 
 
 %-------------------------------------------------------------------------------
@@ -184,7 +162,8 @@ step(0..maxstep).
 % map(T, S): Map ground time point T to time step S
   map(0, 0).                                                                % step 0 maps to time 0
   map(maxtime, maxstep) :- not disable_laststep.                            % maxstep maps to maxtime (unless disabled)
-{ map(T, S) : step(S) } = 1 :- in_happens(_, T), T > 0, T < maxtime.        % steps map to occurrence times of input events (facts from the narrative)
+{ map(T, S) : step(S) } = 1 :- in_happens3(_, T, _), T > 0, T < maxtime.    % steps map to occurrence times of input events (facts from the narrative)
+{ map(T, S) : step(S) } = 1 :- in_happens3(_, _, T), T > 0, T < maxtime.    % steps map to occurrence times of input events (facts from the narrative)
 { map(T, S) : step(S) } = 1 :- in_holdsAt(_, T), T > 0, T < maxtime.        % steps map to times of input observations (facts from the narrative)
 { map(T, S) : step(S) } = 1 :- in_releasedAt(_, T), T > 0, T < maxtime.     % steps map to times of input observations (facts from the narrative)
 { map(T, S) : step(S) } = 1 :- in_not_holdsAt(_, T), T > 0, T < maxtime.    % steps map to times of negative input observations (facts from the narrative)
@@ -194,8 +173,8 @@ step(0..maxstep).
 % if T is mapped to S, then S is at time T
 &sum{ time(S) } = T :- map(T, S), step(S).
 
-% mapping "happens at time" to "happens at step"
-happens(E, S) :- in_happens(E, T), map(T, S).
+% mapping "happens3 at time" to "happens3 at step"
+happens3(E, S1, S2) :- in_happens3(E, T1, T2), map(T1, S1), map(T2, S2).
 % mapping "holdsAt time" to "holdsAt step"
 holdsAt(F, S) :- in_holdsAt(F, T), map(T, S).
 checkStep(S) :- in_holdsAt(F, T), map(T, S).    % in case there is no event at that step
@@ -222,7 +201,8 @@ checkStep(S) :- in_fvalue(F, _, T), map(T, S).    % in case there is no event at
     not disable_significant_constr.                 % unless this constraint is disabled
 significant_step(0).                                % step zero is significant
 significant_step(maxstep) :- not disable_laststep.  % last step is significant (unless last step is disabled)
-significant_step(S) :- happens(E, S).               % step is significant if an event happens
+significant_step(S) :- happens3(E, S, _).           % step is significant if an event happens3
+significant_step(S) :- happens3(E, _, S).           % step is significant if an event happens3
 significant_step(S) :- checkStep(S).                % step is significant if its a checkStep % TODO up to debate, can just insert dummy events instead
 
 
@@ -252,7 +232,7 @@ checkStep(T) :- trigger_time(TriggT), normal_atom(time(T), eq, TriggT).
 % define #const maxstep
 % define #const maxtime
 
-#defined in_happens/2.
+#defined in_happens3/3.
 #defined in_holdsAt/2.
 #defined in_releasedAt/2.
 #defined in_not_holdsAt/2.

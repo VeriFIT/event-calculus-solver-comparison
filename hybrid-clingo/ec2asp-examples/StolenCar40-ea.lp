@@ -32,5 +32,5 @@ in_not_holdsAt(carParked, 40).
 
 negated_prints.
 
-% --> conclude happens steal after park (time between 20 and 40), i.e., in step 2 (initial is step 0, end is step 2)
+% --> abduce happens steal after park (time between 20 and 40), i.e., in step 2 (initial is step 0, end is step 2)
 % TODO the example gives no time information for step 1 --> solution says time(2)=40-e (happened "some" short time before time 40)
