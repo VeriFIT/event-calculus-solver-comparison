@@ -1,0 +1,32 @@
+
+==========
+Answer: 1
+
+0
+idle(phone2)
+idle(phone1)
+happens(pickUp(agent1,phone1),0)
+
+1
+-idle(phone1)
++dialTone(phone1)
+idle(phone2)
+happens(dial(agent1,phone1,phone2),1)
+
+2
+-idle(phone2)
+-dialTone(phone1)
++ringing(phone1,phone2)
+happens(pickUp(agent2,phone2),2)
+
+3
+-ringing(phone1,phone2)
++connected(phone1,phone2)
+
+4
+-ringing(phone1,phone2)
+P
+Models       : 1
+Calls        : 1
+Time         : 0.018s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.009s

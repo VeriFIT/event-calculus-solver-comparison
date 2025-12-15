@@ -1,0 +1,41 @@
+
+==========
+Answer: 1
+
+0
+height(0)
+happens(tapOn,0)
+
+1
+-height(0)
++height(1)
++filling
+
+2
+-height(1)
++height(2)
+filling
+
+3
+-height(2)
++height(3)
+filling
+happens(overflow,3)
+
+4
+-filling
++spilling
+height(3)
+
+5
+height(3)
+spilling
+
+6
+-spilling
+-height(3)
+P
+Models       : 1
+Calls        : 1
+Time         : 0.018s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.007s

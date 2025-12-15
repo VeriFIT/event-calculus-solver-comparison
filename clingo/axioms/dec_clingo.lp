@@ -2,9 +2,10 @@
 %! modification -- T2 in trajectory changed to timepoint instead of duration (T1->T2 instead of T1->T1+T2)
 
 %%%% below was added to make these axioms compatible with the BEC/DBEC examples without a need to modify the examples
-:- releasedAt(F,0), fluent(F). % nothing is initially released from CLoI
 holdsAt(F, 0) :- initiallyP(F), fluent(F).
 :- holdsAt(F, 0), initiallyN(F), fluent(F).
+#defined initiallyP/1.
+#defined initiallyN/1.
 %%%% end
 
 time(0..maxtime).
@@ -110,3 +111,23 @@ releasedAt(F,T+1) :-
   happens(E,T),
   terminates(E,F,T),
   event(E), fluent(F), time(T), T<maxtime.
+
+%-------------------------------------------------------------------------------
+% Defined
+%-------------------------------------------------------------------------------
+
+% define #const maxstep
+% define #const maxtime
+
+#defined time/1.
+
+#defined fluent/1.
+
+#defined happens/2.
+
+
+#defined initiates/3.
+#defined terminates/3.
+#defined releases/3.
+#defined trajectory/4.
+#defined antiTrajectory/4.

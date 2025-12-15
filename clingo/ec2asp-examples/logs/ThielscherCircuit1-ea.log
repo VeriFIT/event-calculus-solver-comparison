@@ -1,0 +1,23 @@
+
+==========
+Answer: 1
+
+0
+happens(open2,0)
+happens(closeRelay,0)
+switch3
+switch2
+happens(close1,0)
+
+1
+-switch2
++relay
++switch1
+switch3
+
+2
+P
+Models       : 1
+Calls        : 1
+Time         : 0.023s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.006s

@@ -1,14 +1,14 @@
 TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  [s]  %S\n  mem  [KB] %M\n  avgm [KB] %K"
 
-AXIOMS=../axioms/bec_clingo.pl
-#AXIOMS=../axioms/dbec_clingo.pl
-#AXIOMS=../axioms/dec_clingo.pl
-#AXIOMS=../axioms/ec_clingo.pl
+AXIOMS=../axioms/bec_clingo.lp
+#AXIOMS=../axioms/dbec_clingo.lp
+#AXIOMS=../axioms/dec_clingo.lp
+#AXIOMS=../axioms/ec_clingo.lp
 
 #-----------------------------------------------------------------------------------------------------------------------
 # base
 
-CMD=clingo -c maxtime=$$MAXTIME -n 0 ${AXIOMS} ./model.pl
+CMD=clingo -c maxtime=$$MAXTIME -n 0 ${AXIOMS} ./model.lp
 run:
 	MAXTIME=30; ${TIME} ${CMD} 2> .tmp987654321.tmp | ../utils/format-output/format-output-rework 1; cat .tmp987654321.tmp 1>&2; rm -f .tmp987654321.tmp
 

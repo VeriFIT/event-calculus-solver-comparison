@@ -1,0 +1,31 @@
+
+==========
+Answer: 1
+
+0
+alive
+happens(load,0)
+
+1
++loaded
+alive
+happens(sneeze,1)
+
+2
+alive
+loaded
+happens(shoot,2)
+
+3
+-alive
+-loaded
++dead
+
+4
+-alive
+-loaded
+P
+Models       : 1
+Calls        : 1
+Time         : 0.015s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s

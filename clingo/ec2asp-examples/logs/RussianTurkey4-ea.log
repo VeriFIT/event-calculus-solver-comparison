@@ -1,0 +1,56 @@
+
+==========
+Answer: 1
+
+0
+alive
+
+1
+alive
+happens(load,1)
+
+2
++loaded
+alive
+happens(spin,2)
+
+3
+alive
+loaded
+happens(shoot,3)
+
+4
+-loaded
+-alive
+P
+
+==========
+Answer: 2
+
+0
+alive
+
+1
+alive
+happens(load,1)
+
+2
++loaded
+alive
+happens(spin,2)
+
+3
+-loaded
+alive
+happens(shoot,3)
+
+4
+alive
+
+5
+-alive
+P
+Models       : 2
+Calls        : 1
+Time         : 0.014s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s

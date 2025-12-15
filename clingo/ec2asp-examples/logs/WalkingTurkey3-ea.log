@@ -1,0 +1,30 @@
+
+==========
+Answer: 1
+
+0
+walking
+loaded
+alive
+
+1
+walking
+alive
+loaded
+happens(shoot,1)
+
+2
+-walking
+-alive
+loaded
+
+3
+loaded
+
+4
+-loaded
+P
+Models       : 1
+Calls        : 1
+Time         : 0.014s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.004s

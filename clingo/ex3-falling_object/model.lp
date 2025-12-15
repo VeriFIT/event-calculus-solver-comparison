@@ -71,6 +71,7 @@ trajectory(falling(O), T1, height(O,H - (G)*(T2-T1)), T2) :-
 
 initiallyP(height(apple, H)) :- initHeight(H).  % apples height initially is something
 initiallyN(F) :- not initiallyP(F), fluent(F).  % apple is initially not falling
+:- releasedAt(F,0), fluent(F). % nothing is initially released from CLoI
 
 happens(drop(nathan,apple), 1).                 % nathan drop the apple at time 1
 

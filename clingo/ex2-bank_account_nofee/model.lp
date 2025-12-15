@@ -1,27 +1,22 @@
 % Bank account example
 % from T.Mueller, 2014 - Commonsense reasoning - an event calculus based approach
 % based on page 70, section 4.2
+% - modified by removing the service fee
 
-% There are multiple bank accounts and money can be transferred between them. If the balance is below a specified minimum, then a monthly fee is charged.
+% There are multiple bank accounts and money can be transferred between them.
 
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
 
-endOfMonth(5).
 money(0..maxmoney). 
 
 account(account1).
 account(account2).
 
 fluent(balance(A, M)) :- account(A), money(M).
-fluent(minimumBalance(A, M)) :- account(A), money(M).
-fluent(serviceFee(A, M)) :- account(A), money(M).
-fluent(serviceFeeCharged(A)) :- account(A).
 
 event(transfer(A1, A2, M)) :- account(A1), account(A2), money(M).
-event(chargeServiceFee(A)) :- account(A).
-event(monthlyReset(A)) :- account(A).
 
 
 %-------------------------------------------------------------------------------
@@ -62,27 +57,6 @@ terminates(transfer(A1, A2, TransM12), balance(A1, SrcM1), T) :-
     account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
 
 
-% when a service fee is charged, then a note is made to avoid repeated charging
-initiates(chargeServiceFee(A), serviceFeeCharged(A), T) :-
-    account(A), time(T).
-% this is reset every month
-happens(monthlyReset(A), T) :- endOfMonth(T),
-    account(A), time(T).
-terminates(monthlyReset(A), serviceFeeCharged(A), T):- 
-    account(A), time(T).
-
-% if a service fee is charged, then the balance of the account is decreased
-% new balance
-initiates(chargeServiceFee(A), balance(A, OldM - FeeM), T) :-
-    holdsAt(balance(A, OldM), T),
-    holdsAt(serviceFee(A, FeeM), T),
-    account(A), time(T), money(OldM), money(FeeM).
-% terminate old balance
-terminates(chargeServiceFee(A), balance(A, OldM), T) :-
-    holdsAt(balance(A, OldM), T),
-    account(A), time(T), money(OldM).
-
-
 %-------------------------------------------------------------------------------
 % state constraints
 %-------------------------------------------------------------------------------
@@ -95,39 +69,15 @@ M1=M2 :- holdsAt(balance(A, M1), T), holdsAt(balance(A, M2), T),
 M1=M2 :- holdsAt(minimumBalance(A, M1), T), holdsAt(minimumBalance(A, M2), T),
     account(A), time(T), money(M1), money(M2).
 
-% an account can only have a single unique serviceFee at a time % modif -- added
-M1=M2 :- holdsAt(serviceFee(A, M1), T), holdsAt(serviceFee(A, M2), T),
-    account(A), time(T), money(M1), money(M2).
-
-
-%-------------------------------------------------------------------------------
-% triggered events
-%-------------------------------------------------------------------------------
-
-% if the balance of an account falls below the minimum
-% and a service fee has not yet been charged
-% then a service fee will be charged
-happens(chargeServiceFee(A), T) :-
-    holdsAt(balance(A,AccM), T), holdsAt(minimumBalance(A, MinM), T), AccM < MinM,
-    not holdsAt(serviceFeeCharged(A), T),
-    account(A), time(T), money(AccM), money(MinM).
-
-
 
 %-------------------------------------------------------------------------------
 % observations
 %-------------------------------------------------------------------------------
 
-
-initiallyN(serviceFeeCharged(account1)).
-initiallyN(serviceFeeCharged(account2)).
 initiallyP(balance(account1, 10)).      
 initiallyP(balance(account2, 10)).      
-initiallyP(minimumBalance(account1, 5)).
-initiallyP(minimumBalance(account2, 5)).
-initiallyP(serviceFee(account1, 1)).    
-initiallyP(serviceFee(account2, 1)).    
-initiallyN(F) :- not initiallyP(F), fluent(F).
+:- releasedAt(F,0), fluent(F). % nothing is initially released from CLoI
+
 
 %-------------------------------------------------------------------------------
 % narrative 
@@ -135,10 +85,7 @@ initiallyN(F) :- not initiallyP(F), fluent(F).
 
 happens(transfer(account1, account2, 2), 1).
 happens(transfer(account1, account2, 4), 2).
+initiallyN(F) :- not initiallyP(F), fluent(F).
 
 % --> conclude that
-%   a service fee is charged to account1 "in response to transfer at time 2" due to the balance being 4
-%   the balance of account1 will be 3 at time 4
-%   the service fee flag is reset at time 5
-%   a service fee is again charged to account1 "in response to reset at time 5"
-%   the balance of account1 will be 2 at time 7
+%   the balance of account1 will be 4 at time 3

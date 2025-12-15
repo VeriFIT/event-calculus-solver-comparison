@@ -23,6 +23,7 @@ terminates(turn_light_off, light_on, T) :- time(T).
 %-------------------------------------------------------------------------------
 
 initiallyN(light_on).
+:- releasedAt(F,0), fluent(F). % nothing is initially released from CLoI
 
 
 %-------------------------------------------------------------------------------

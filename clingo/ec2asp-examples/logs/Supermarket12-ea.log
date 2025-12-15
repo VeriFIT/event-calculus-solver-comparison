@@ -1,0 +1,43 @@
+
+==========
+Answer: 1
+
+0
+1
+2
+3
+4
+5
+happens(pull,5)
+happens(push,5)
+
+6
++spinning
+
+7
+spinning
+
+8
+spinning
+
+9
+spinning
+
+10
+spinning
+happens(push,10)
+happens(pull,10)
+
+11
+spinning
+
+12
+spinning
+
+13
+-spinning
+P
+Models       : 1
+Calls        : 1
+Time         : 0.016s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s

@@ -1,0 +1,32 @@
+
+==========
+Answer: 1
+
+0
+height(balloon,0)
+happens(turnOnHeater(nathan,balloon),0)
+
+1
+-height(balloon,0)
++height(balloon,1)
++heaterOn(balloon)
+
+2
+-height(balloon,1)
++height(balloon,2)
+heaterOn(balloon)
+happens(turnOffHeater(nathan,balloon),2)
+
+3
+-heaterOn(balloon)
+-height(balloon,2)
++height(balloon,1)
+
+4
+-height(balloon,2)
+-heaterOn(balloon)
+P
+Models       : 1
+Calls        : 1
+Time         : 0.017s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s

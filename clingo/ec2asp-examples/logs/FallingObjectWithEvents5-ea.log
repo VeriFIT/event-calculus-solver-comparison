@@ -1,0 +1,38 @@
+
+==========
+Answer: 1
+
+0
+height(apple,3)
+happens(drop(nathan,apple),0)
+
+1
+-height(apple,3)
++height(apple,2)
++falling(apple)
+
+2
+-height(apple,2)
++height(apple,1)
+falling(apple)
+
+3
+-height(apple,1)
++height(apple,0)
+falling(apple)
+happens(hitGround(apple),3)
+
+4
+-falling(apple)
+height(apple,0)
+
+5
+height(apple,0)
+
+6
+-height(apple,0)
+P
+Models       : 1
+Calls        : 1
+Time         : 0.019s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.007s
