@@ -22,53 +22,53 @@ event(dial(Agent,Phone,Phone2)) :- agent(Agent), phone(Phone), phone(Phone2).
 
 
 
-initiates(pickUp(Agent,Phone),dialTone(Phone),Time) :- holdsAt(idle(Phone),Time), agent(Agent).
+initiates(pickUp(Agent,Phone),dialTone(Phone),S) :- holdsAt(idle(Phone),S), agent(Agent).
 
-terminates(pickUp(Agent,Phone),idle(Phone),Time) :- holdsAt(idle(Phone),Time), agent(Agent).
+terminates(pickUp(Agent,Phone),idle(Phone),S) :- holdsAt(idle(Phone),S), agent(Agent).
 
-initiates(setDown(Agent,Phone),idle(Phone),Time) :- holdsAt(dialTone(Phone),Time), agent(Agent).
+initiates(setDown(Agent,Phone),idle(Phone),S) :- holdsAt(dialTone(Phone),S), agent(Agent).
 
-terminates(setDown(Agent,Phone),dialTone(Phone),Time) :- holdsAt(dialTone(Phone),Time), agent(Agent).
+terminates(setDown(Agent,Phone),dialTone(Phone),S) :- holdsAt(dialTone(Phone),S), agent(Agent).
 
-initiates(dial(Agent,Phone1,Phone2),ringing(Phone1,Phone2),Time) :- holdsAt(dialTone(Phone1),Time), holdsAt(idle(Phone2),Time), agent(Agent).
+initiates(dial(Agent,Phone1,Phone2),ringing(Phone1,Phone2),S) :- holdsAt(dialTone(Phone1),S), holdsAt(idle(Phone2),S), agent(Agent).
 
-terminates(dial(Agent,Phone1,Phone2),dialTone(Phone1),Time) :- holdsAt(dialTone(Phone1),Time), holdsAt(idle(Phone2),Time), agent(Agent).
+terminates(dial(Agent,Phone1,Phone2),dialTone(Phone1),S) :- holdsAt(dialTone(Phone1),S), holdsAt(idle(Phone2),S), agent(Agent).
 
-terminates(dial(Agent,Phone1,Phone2),idle(Phone2),Time) :- holdsAt(dialTone(Phone1),Time), holdsAt(idle(Phone2),Time), agent(Agent).
+terminates(dial(Agent,Phone1,Phone2),idle(Phone2),S) :- holdsAt(dialTone(Phone1),S), holdsAt(idle(Phone2),S), agent(Agent).
 
-initiates(dial(Agent,Phone1,Phone2),busySignal(Phone1),Time) :- holdsAt(dialTone(Phone1),Time), not holdsAt(idle(Phone2),Time), phone(Phone2), agent(Agent).
+initiates(dial(Agent,Phone1,Phone2),busySignal(Phone1),S) :- holdsAt(dialTone(Phone1),S), not holdsAt(idle(Phone2),S), phone(Phone2), agent(Agent).
 
-terminates(dial(Agent,Phone1,Phone2),dialTone(Phone1),Time) :- holdsAt(dialTone(Phone1),Time), not holdsAt(idle(Phone2),Time), phone(Phone2), agent(Agent).
+terminates(dial(Agent,Phone1,Phone2),dialTone(Phone1),S) :- holdsAt(dialTone(Phone1),S), not holdsAt(idle(Phone2),S), phone(Phone2), agent(Agent).
 
-initiates(setDown(Agent,Phone),idle(Phone),Time) :- holdsAt(busySignal(Phone),Time), agent(Agent).
+initiates(setDown(Agent,Phone),idle(Phone),S) :- holdsAt(busySignal(Phone),S), agent(Agent).
 
-terminates(setDown(Agent,Phone),busySignal(Phone),Time) :- holdsAt(busySignal(Phone),Time), agent(Agent).
+terminates(setDown(Agent,Phone),busySignal(Phone),S) :- holdsAt(busySignal(Phone),S), agent(Agent).
 
-initiates(setDown(Agent,Phone1),idle(Phone1),Time) :- holdsAt(ringing(Phone1,Phone2),Time), agent(Agent).
+initiates(setDown(Agent,Phone1),idle(Phone1),S) :- holdsAt(ringing(Phone1,Phone2),S), agent(Agent).
 
-initiates(setDown(Agent,Phone1),idle(Phone2),Time) :- holdsAt(ringing(Phone1,Phone2),Time), agent(Agent).
+initiates(setDown(Agent,Phone1),idle(Phone2),S) :- holdsAt(ringing(Phone1,Phone2),S), agent(Agent).
 
-terminates(setDown(Agent,Phone1),ringing(Phone1,Phone2),Time) :- holdsAt(ringing(Phone1,Phone2),Time), agent(Agent).
+terminates(setDown(Agent,Phone1),ringing(Phone1,Phone2),S) :- holdsAt(ringing(Phone1,Phone2),S), agent(Agent).
 
-initiates(pickUp(Agent,Phone2),connected(Phone1,Phone2),Time) :- holdsAt(ringing(Phone1,Phone2),Time), agent(Agent).
+initiates(pickUp(Agent,Phone2),connected(Phone1,Phone2),S) :- holdsAt(ringing(Phone1,Phone2),S), agent(Agent).
 
-terminates(pickUp(Agent,Phone2),ringing(Phone1,Phone2),Time) :- holdsAt(ringing(Phone1,Phone2),Time), agent(Agent).
+terminates(pickUp(Agent,Phone2),ringing(Phone1,Phone2),S) :- holdsAt(ringing(Phone1,Phone2),S), agent(Agent).
 
-initiates(setDown(Agent,Phone1),idle(Phone1),Time) :- holdsAt(connected(Phone1,Phone2),Time), agent(Agent).
+initiates(setDown(Agent,Phone1),idle(Phone1),S) :- holdsAt(connected(Phone1,Phone2),S), agent(Agent).
 
-initiates(setDown(Agent,Phone1),disconnected(Phone2),Time) :- holdsAt(connected(Phone1,Phone2),Time), agent(Agent).
+initiates(setDown(Agent,Phone1),disconnected(Phone2),S) :- holdsAt(connected(Phone1,Phone2),S), agent(Agent).
 
-terminates(setDown(Agent,Phone1),connected(Phone1,Phone2),Time) :- holdsAt(connected(Phone1,Phone2),Time), agent(Agent).
+terminates(setDown(Agent,Phone1),connected(Phone1,Phone2),S) :- holdsAt(connected(Phone1,Phone2),S), agent(Agent).
 
-initiates(setDown(Agent,Phone2),idle(Phone2),Time) :- holdsAt(connected(Phone1,Phone2),Time), agent(Agent).
+initiates(setDown(Agent,Phone2),idle(Phone2),S) :- holdsAt(connected(Phone1,Phone2),S), agent(Agent).
 
-initiates(setDown(Agent,Phone2),disconnected(Phone1),Time) :- holdsAt(connected(Phone1,Phone2),Time), agent(Agent).
+initiates(setDown(Agent,Phone2),disconnected(Phone1),S) :- holdsAt(connected(Phone1,Phone2),S), agent(Agent).
 
-terminates(setDown(Agent,Phone2),connected(Phone1,Phone2),Time) :- holdsAt(connected(Phone1,Phone2),Time), agent(Agent).
+terminates(setDown(Agent,Phone2),connected(Phone1,Phone2),S) :- holdsAt(connected(Phone1,Phone2),S), agent(Agent).
 
-initiates(setDown(Agent,Phone),idle(Phone),Time) :- holdsAt(disconnected(Phone),Time), agent(Agent).
+initiates(setDown(Agent,Phone),idle(Phone),S) :- holdsAt(disconnected(Phone),S), agent(Agent).
 
-terminates(setDown(Agent,Phone),disconnected(Phone),Time) :- holdsAt(disconnected(Phone),Time), agent(Agent).
+terminates(setDown(Agent,Phone),disconnected(Phone),S) :- holdsAt(disconnected(Phone),S), agent(Agent).
 
 in_happens(pickUp(agent1,phone1),0).
 

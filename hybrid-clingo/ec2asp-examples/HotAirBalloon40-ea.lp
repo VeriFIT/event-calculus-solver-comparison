@@ -18,27 +18,27 @@ event(turnOffHeater(Agent,Balloon)) :- agent(Agent), balloon(Balloon).
 
 
 
-initiates(turnOnHeater(Agent,Balloon),heaterOn(Balloon),Time) :- agent(Agent), balloon(Balloon), step(Time).
+initiates(turnOnHeater(Agent,Balloon),heaterOn(Balloon),S) :- agent(Agent), balloon(Balloon), step(S).
 
-terminates(turnOffHeater(Agent,Balloon),heaterOn(Balloon),Time):- agent(Agent), balloon(Balloon), step(Time).
+terminates(turnOffHeater(Agent,Balloon),heaterOn(Balloon),S):- agent(Agent), balloon(Balloon), step(S).
 
 in_happens(turnOnHeater(nathan,balloon),0).
 
 in_happens(turnOffHeater(nathan,balloon),20).
 
 % implicit
-%:- holdsAt(height(Balloon,Height1),Time), holdsAt(height(Balloon,Height2),Time), Height1!=Height2.
+%:- holdsAt(height(Balloon,Height1),S), holdsAt(height(Balloon,Height2),S), Height1!=Height2.
 
-trajectory(heaterOn(Balloon),Time,height(Balloon), (0,0,1,height(Balloon),1), Time2) :- balloon(Balloon), step(Time), step(Time2).
+trajectory(heaterOn(Balloon),S,height(Balloon), (0,0,1,height(Balloon),1), S2) :- balloon(Balloon), step(S), step(S2).
 
-antiTrajectory(heaterOn(Balloon),Time,height(Balloon), (0,0,1,height(Balloon),-1), Time2) :- balloon(Balloon), step(Time), step(Time2).
+antiTrajectory(heaterOn(Balloon),S,height(Balloon), (0,0,1,height(Balloon),-1), S2) :- balloon(Balloon), step(S), step(S2).
 
 %holdsAt(height(balloon,0),0).
 in_fvalue(height(balloon), 0, 0).    % TODO fluent value time 
 
 :- holdsAt(heaterOn(balloon),0).
 
-releasedAt(height(Balloon),Time) :- balloon(Balloon), step(Time).
+releasedAt(height(Balloon),S) :- balloon(Balloon), step(S).
 
 :- releasedAt(heaterOn(Balloon),0).
 

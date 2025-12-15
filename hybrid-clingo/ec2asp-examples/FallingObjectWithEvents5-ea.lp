@@ -16,23 +16,23 @@ event(hitGround(Object)) :- object(Object).
 
 
 
-initiates(drop(Agent,Object),falling(Object),Time) :- agent(Agent), object(Object), step(Time).
+initiates(drop(Agent,Object),falling(Object),S) :- agent(Agent), object(Object), step(S).
 
-releases(drop(Agent,Object),height(Object),Time) :- agent(Agent), object(Object), step(Time).
+releases(drop(Agent,Object),height(Object),S) :- agent(Agent), object(Object), step(S).
 
-terminates(hitGround(Object),falling(Object),Time) :- object(Object), step(Time).
+terminates(hitGround(Object),falling(Object),S) :- object(Object), step(S).
 
-initiates(hitGround(Object),height(Object), (0,0,1,height(Object)),Time) :- object(Object), step(Time).
+initiates(hitGround(Object),height(Object), (0,0,1,height(Object)),S) :- object(Object), step(S).
 
-happens(hitGround(Object),Time) :- holdsAt(falling(Object),Time), normal_atom((height(Object), Time), eq, 0).
+happens(hitGround(Object),S) :- holdsAt(falling(Object),S), normal_atom((height(Object), S), eq, 0).
 trigger_value(height(Object), falling(Object), 0) :- object(Object).
 
 in_happens(drop(nathan,apple),0).
 
 % not needed, implicit
-% :- holdsAt(height(Object,Height1),Time), holdsAt(height(Object,Height2),Time), Height1!=Height2.
+% :- holdsAt(height(Object,Height1),S), holdsAt(height(Object,Height2),S), Height1!=Height2.
 
-trajectory(falling(Object),Time,height(Object), (0,0,1,height(Object),-1),Time2) :- object(Object), step(Time), step(Time2).
+trajectory(falling(Object),S,height(Object), (0,0,1,height(Object),-1),S2) :- object(Object), step(S), step(S2).
 
 :- holdsAt(falling(apple),0).
 
