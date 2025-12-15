@@ -17,9 +17,9 @@ dfluent(light_on).
 % effects 
 %-------------------------------------------------------------------------------
 
-initiates(toggle_light,  light_on, T) :- not holdsAt(light_on, T), time(T).
+initiates(toggle_light,  light_on, T) :- not holdsAt(light_on, T), step(T).
 
-terminates(toggle_light, light_on, T) :- holdsAt(light_on, T), time(T).
+terminates(toggle_light, light_on, T) :- holdsAt(light_on, T), step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -27,6 +27,7 @@ terminates(toggle_light, light_on, T) :- holdsAt(light_on, T), time(T).
 %-------------------------------------------------------------------------------
 
 initiallyN(light_on).
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------

@@ -18,9 +18,9 @@ dfluent(light_on).
 % effects 
 %-------------------------------------------------------------------------------
 
-initiates(turn_light_on,  light_on, T) :- time(T).
+initiates(turn_light_on,  light_on, T) :- step(T).
 
-terminates(turn_light_off, light_on, T) :- time(T).
+terminates(turn_light_off, light_on, T) :- step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ terminates(turn_light_off, light_on, T) :- time(T).
 %-------------------------------------------------------------------------------
 
 initiallyN(light_on).
-
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 %-------------------------------------------------------------------------------
 % narrative 

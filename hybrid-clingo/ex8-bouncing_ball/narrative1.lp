@@ -11,6 +11,7 @@ initiallyP(velocity_loss_portion("0.75")).
 initiallyP(constant_velocity_loss_bounce(1)).   % relevant for the fixzeno version
 
 initiallyN(F) :- not initiallyP(F), dfluent(F).
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 in_happens(drop,                           10).
 

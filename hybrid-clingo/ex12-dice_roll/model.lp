@@ -11,16 +11,16 @@ event(land).
 ffluent(sideUp).    % functional fluent
 
 % the fluent can only have positive fholdsAts
-&sum{ fholdsAt(sideUp, T) } > 0 :- holdsAt(sideUp, T), not releasedAt(sideUp, T), time(T).
+&sum{ (sideUp, T) } > 0 :- holdsAt(sideUp, T), not releasedAt(sideUp, T), step(T).
 
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
-releases(roll, sideUp, T) :- time(T).
+releases(roll, sideUp, T) :- step(T).
 
-initiates(land, sideUp, (0, 1, 1, sideUp), T) :- time(T).
+initiates(land, sideUp, (0, 1, 1, sideUp), T) :- step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ initiates(land, sideUp, (0, 1, 1, sideUp), T) :- time(T).
 %-------------------------------------------------------------------------------
 
 % the dice must always be exactly one of the sides up
-% 1{holdsAt(sideUp, T)}1 :- time(T).
+% 1{holdsAt(sideUp, T)}1 :- step(T).
 
 %-------------------------------------------------------------------------------
 % observations
@@ -36,6 +36,7 @@ initiates(land, sideUp, (0, 1, 1, sideUp), T) :- time(T).
 
 initiallyP(sideUp, 1).
 %initiallyN(F) :- not initiallyP(F), dfluent(F).
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
@@ -48,7 +49,7 @@ in_happens(land,      20). % TODO could be triggered
 
 % enforce a result that we are looking for
 % (since its not really useful to list all non-ground fholdsAts...)
-&sum{ fholdsAt(sideUp, 3) } = X :- goal(X).
+&sum{ (sideUp, 3) } = X :- goal(X).
 
 % TODO the goal is grounded but the point of the example is to show a non-ground non-deterministic fholdsAt during the roll
 {goal(1;2;3;4;5;6)} = 1.

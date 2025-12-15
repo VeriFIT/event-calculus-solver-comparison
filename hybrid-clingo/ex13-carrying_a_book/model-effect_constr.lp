@@ -32,18 +32,18 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent walks from Location1 to Location2, then they will no longer be in Location1
 % and will be in Location2
-initiates(walk(A, L), location(A), (L, 1, 0, location(A)), T) :- time(T), agent(A), in_locations(L).
+initiates(walk(A, L), location(A), (L, 1, 0, location(A)), T) :- step(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
-    normal_atom(fholdsAt(location(A), T), eq, fholdsAt(location(O), T)),
-    agent(A), object(O), time(T).
-comparison(fholdsAt(location(A), T), fholdsAt(location(O), T)) :- happens(pickUp(A, O), T).
+    normal_atom((location(A), T), eq, (location(O), T)),
+    agent(A), object(O), step(T).
+comparison((location(A), T), (location(O), T)) :- happens(pickUp(A, O), T).
 
 %% % if an agent is holding an object and lets go of it, then they will no longer be holding it
 terminates(letGoOf(A, O), holding(A, O), T) :-
     holdsAt(holding(A, O), T),
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -52,9 +52,9 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 
 % % an object can only be in one room at a time (same for agents...)
 % R1=R2 :- holdsAt(location(O,R1), T), holdsAt(location(O,R2), T),
-%     object(A), room(R1), room(R2), time(T).
+%     object(A), room(R1), room(R2), step(T).
 % R1=R2 :- holdsAt(location(A,R1), T), holdsAt(location(A,R2), T),
-%     agent(A), room(R1), room(R2), time(T).
+%     agent(A), room(R1), room(R2), step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -63,11 +63,11 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 
 %! indirect effect
 % TODO maybe the (A,B,C,F) should be (A,B,C,F1,F2)
-% TODO axioms would then have &sum{ A; B*(fholdsAt(F1,T) + C) } = fholdsAt(F2,T+1)
+% TODO axioms would then have &sum{ A; B*((F1,T) + C) } = (F2,T+1)
 initiates(E, location(O), (FA1, FA2, FB, location(O)), T) :-
     holdsAt(holding(A, O), T),
     initiates(E, location(A), (FA1, FA2, FB, location(A)), T),
-    time(T), object(O).
+    step(T), object(O).
 
 
 %-------------------------------------------------------------------------------
@@ -85,6 +85,7 @@ initiates(E, location(O), (FA1, FA2, FB, location(O)), T) :-
 initiallyP(location(nathan), 0).
 initiallyP(location(book), 0).
 initiallyN(F) :- not initiallyP(F), dfluent(F).  % % nathan is initially not holding the book
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------

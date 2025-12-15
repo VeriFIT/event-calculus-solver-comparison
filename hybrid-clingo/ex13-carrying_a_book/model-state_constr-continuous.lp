@@ -37,54 +37,54 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
 % will be walking, and their location will continuously approach Location2
-initiates(walk(A, L), walking(A), T) :- time(T), agent(A), in_locations(L).
-initiates(walk(A, L), walkingTo(A), (L, 1, 0, walkingTo(A)), T) :- time(T), agent(A), in_locations(L).    % TODO need a second fluent because trajectories can only be controlled by dfluents
-&sum{0} = fholdsAt(walkingTo(A),T) :- not holdsAt(walking(A), T), time(T), agent(A).
+initiates(walk(A, L), walking(A), T) :- step(T), agent(A), in_locations(L).
+initiates(walk(A, L), walkingTo(A), (L, 1, 0, walkingTo(A)), T) :- step(T), agent(A), in_locations(L).    % TODO need a second fluent because trajectories can only be controlled by dfluents
+&sum{0} = (walkingTo(A),T) :- not holdsAt(walking(A), T), step(T), agent(A).
 
-releases(walk(A, L), location(A), T) :- agent(A), time(T), in_locations(L).
+releases(walk(A, L), location(A), T) :- agent(A), step(T), in_locations(L).
 
-terminates(arrive(A), walking(A), T) :- agent(A), time(T).
-%terminates(arrive(A), walkingTo(A), T) :- agent(A), time(T).
-initiates(arrive(A), walkingTo(A), (0,0,0,walkingTo(A)), T) :- agent(A), time(T).
+terminates(arrive(A), walking(A), T) :- agent(A), step(T).
+%terminates(arrive(A), walkingTo(A), T) :- agent(A), step(T).
+initiates(arrive(A), walkingTo(A), (0,0,0,walkingTo(A)), T) :- agent(A), step(T).
 
-initiates(arrive(A), location(A), (0, 0, 1, location(A)), T) :- time(T), agent(A).
+initiates(arrive(A), location(A), (0, 0, 1, location(A)), T) :- step(T), agent(A).
 
-trajectory(walking(A), T1, location(A), (0, 0, 1, location(A), 10), T2) :- agent(A), time(T1), time(T2).
-% trajectory(walkingTo(A), T1, location(A), (0, 0, 1, location(A), 10), T2) :- agent(A), time(T1), time(T2).
+trajectory(walking(A), T1, location(A), (0, 0, 1, location(A), 10), T2) :- agent(A), step(T1), step(T2).
+% trajectory(walkingTo(A), T1, location(A), (0, 0, 1, location(A), 10), T2) :- agent(A), step(T1), step(T2).
 
 happens(arrive(A), T) :-
     holdsAt(walking(A), T), % holdsAt(walkingTo(A), T),
-    normal_atom(fholdsAt(location(A), T), eq, fholdsAt(walkingTo(A), T)), 
-    time(T).
+    normal_atom((location(A), T), eq, (walkingTo(A), T)), 
+    step(T).
 % TODO trigger_value for two func fluents
-comparison(fholdsAt(location(A), T), fholdsAt(walkingTo(A), T)) :- agent(A), time(T).
+comparison((location(A), T), (walkingTo(A), T)) :- agent(A), step(T).
 % TODO this constraint doesnt really work
 % TODO at T location might be 100 and walkingTo is 0 (not holds), and then at T+1 location might be 150 and walkingTo 200 -- killing the model (at T 100 > 0 and at T+1 150 < 200)
 % TODO the problem is that walkingTo is initiated at T to value 200 buts its value is still 0 at T
-    %:- holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
-    %:- holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+    %:- holdsAt(walking(A), T+1), normal_atom((location(A), T), gt, (walkingTo(A), T)), normal_atom((location(A), T+1), lt, (walkingTo(A), T+1)), step(T), step(T+1).
+    %:- holdsAt(walking(A), T+1), normal_atom((location(A), T), lt, (walkingTo(A), T)), normal_atom((location(A), T+1), gt, (walkingTo(A), T+1)), step(T), step(T+1).
 %% either the agent is already walking at T
-:- holdsAt(walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), gt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
-:- holdsAt(walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), lt, fholdsAt(walkingTo(A), T)), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+:- holdsAt(walking(A), T), holdsAt(walking(A), T+1), normal_atom((location(A), T), gt, (walkingTo(A), T)), normal_atom((location(A), T+1), lt, (walkingTo(A), T+1)), step(T), step(T+1).
+:- holdsAt(walking(A), T), holdsAt(walking(A), T+1), normal_atom((location(A), T), lt, (walkingTo(A), T)), normal_atom((location(A), T+1), gt, (walkingTo(A), T+1)), step(T), step(T+1).
 %% or the agent just started walking at T
-:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), gt, L), normal_atom(fholdsAt(location(A), T+1), lt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
-:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), normal_atom(fholdsAt(location(A), T), lt, L), normal_atom(fholdsAt(location(A), T+1), gt, fholdsAt(walkingTo(A), T+1)), time(T), time(T+1).
+:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), normal_atom((location(A), T), gt, L), normal_atom((location(A), T+1), lt, (walkingTo(A), T+1)), step(T), step(T+1).
+:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), normal_atom((location(A), T), lt, L), normal_atom((location(A), T+1), gt, (walkingTo(A), T+1)), step(T), step(T+1).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
-    normal_atom(fholdsAt(location(A), T), eq, fholdsAt(location(O), T)),
-    agent(A), object(O), time(T).
-comparison(fholdsAt(location(A), T), fholdsAt(location(O), T)) :- happens(pickUp(A, O), T).
+    normal_atom((location(A), T), eq, (location(O), T)),
+    agent(A), object(O), step(T).
+comparison((location(A), T), (location(O), T)) :- happens(pickUp(A, O), T).
 
 %% % if an agent is holding an object and lets go of it, then they will no longer be holding it
 terminates(letGoOf(A, O), holding(A, O), T) :-
     holdsAt(holding(A, O), T),
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 %! indirect effect
 % if an agent lets go of an object while in a room, then the object will be
 % in that room and will no longer be released from CLoI (caused by initiates)
-initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O)), T) :- time(T), agent(A), object(O).
+initiates(letGoOf(A, O), location(O), ((location(A),T), 1, 0, location(O)), T) :- step(T), agent(A), object(O).
 
 
 %-------------------------------------------------------------------------------
@@ -93,15 +93,15 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O
 
 % % an object can only be in one room at a time (same for agents...)
 % R1=R2 :- holdsAt(location(O,R1), T), holdsAt(location(O,R2), T),
-%     object(A), room(R1), room(R2), time(T).
+%     object(A), room(R1), room(R2), step(T).
 % R1=R2 :- holdsAt(location(A,R1), T), holdsAt(location(A,R2), T),
-%     agent(A), room(R1), room(R2), time(T).
+%     agent(A), room(R1), room(R2), step(T).
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
-&sum{fholdsAt(location(A),T)} = fholdsAt(location(O),T) :-
+&sum{(location(A),T)} = (location(O),T) :-
     holdsAt(holding(A,O), T),
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O
 % when an agent pickups an object, then the location of that object will
 % be released from CLoI
 releases(pickUp(A,O), location(O), T) :-
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 %-------------------------------------------------------------------------------
 % observations
@@ -125,6 +125,7 @@ releases(pickUp(A,O), location(O), T) :-
 initiallyP(location(nathan), 0).
 initiallyP(location(book), 0).
 initiallyN(F) :- not initiallyP(F), dfluent(F).  % nathan is initially not holding the book and % nathan is initially not walking
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------

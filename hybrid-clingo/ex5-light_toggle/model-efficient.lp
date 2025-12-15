@@ -14,10 +14,10 @@ fluent(light_on).
 %-------------------------------------------------------------------------------
 
 % TODO this feels strange because the effect of an event is defined based on "holds" from the previous step instead of the current step
-% initiates(toggle_light,  light_on, T) :- time(T).
+% initiates(toggle_light,  light_on, T) :- step(T).
 holds(light_on, true, S) :- happens_state(toggle_light, S), holds(light_on, false, S-1).
 
-% terminates(toggle_light, light_on, T) :- time(T).
+% terminates(toggle_light, light_on, T) :- step(T).
 holds(light_on, false, S) :- happens_state(toggle_light, S), holds(light_on, true, S-1).
 
 

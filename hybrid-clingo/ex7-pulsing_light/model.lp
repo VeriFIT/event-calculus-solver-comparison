@@ -14,32 +14,32 @@ ffluent(brightness).        % range 0-10
 dfluent(fading_in).
 dfluent(fading_out).
 
-terminates(fade_in_end, fading_in, T) :- time(T).
-initiates(fade_in_end, fading_out, T) :- time(T).
+terminates(fade_in_end, fading_in, T) :- step(T).
+initiates(fade_in_end, fading_out, T) :- step(T).
 
-terminates(fade_out_end, fading_out, T) :- time(T).
-initiates(fade_out_end, fading_in, T) :- time(T).
+terminates(fade_out_end, fading_out, T) :- step(T).
+initiates(fade_out_end, fading_in, T) :- step(T).
 
-initiates(turn_light_on,  light_on, T) :- time(T).
-initiates(turn_light_on, fading_in, T) :- time(T).
+initiates(turn_light_on,  light_on, T) :- step(T).
+initiates(turn_light_on, fading_in, T) :- step(T).
 
-releases(turn_light_on, brightness, T) :- time(T).
+releases(turn_light_on, brightness, T) :- step(T).
 
-terminates(turn_light_off, light_on, T) :- time(T).
+terminates(turn_light_off, light_on, T) :- step(T).
 terminates(turn_light_off, fading_in, T) :- holdsAt(fading_in, T).
 terminates(turn_light_off, fading_out, T) :- holdsAt(fading_out, T).
 
-initiates(turn_light_off, brightness, (0, 0, 0, brightness), T) :- time(T).
+initiates(turn_light_off, brightness, (0, 0, 0, brightness), T) :- step(T).
 
-trajectory(fading_in, T1, brightness, (0, 0, 1, brightness, 1), T2) :- time(T1), time(T2).
+trajectory(fading_in, T1, brightness, (0, 0, 1, brightness, 1), T2) :- step(T1), step(T2).
 
-trajectory(fading_out, T1, brightness, (0, 0, 1, brightness, -1), T2) :- time(T1), time(T2).
+trajectory(fading_out, T1, brightness, (0, 0, 1, brightness, -1), T2) :- step(T1), step(T2).
 
 
 happens(fade_in_end, T) :-
     holdsAt(fading_in, T),
-    normal_atom(fholdsAt(brightness, T), eq, 10),
-    time(T).
+    normal_atom((brightness, T), eq, 10),
+    step(T).
     
 % TODO both trigger_value/2 and /3 works fine for this example
 trigger_value(brightness, 10).
@@ -47,8 +47,8 @@ trigger_value(brightness, 10).
     
 happens(fade_out_end, T) :-
     holdsAt(fading_out, T),
-    normal_atom(fholdsAt(brightness, T), eq, 0),
-    time(T).
+    normal_atom((brightness, T), eq, 0),
+    step(T).
 
 % TODO both trigger_value/2 and /3 works fine for this example
 trigger_value(brightness, 0).
@@ -58,6 +58,7 @@ trigger_value(brightness, 0).
 
 initiallyP(brightness, 0).
 initiallyN(F) :- not initiallyP(F), dfluent(F).
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 in_happens(turn_light_on,      10).
 in_happens(turn_light_off,     45).

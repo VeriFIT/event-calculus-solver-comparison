@@ -43,14 +43,14 @@ fluent(serviceFeeCharged(A)) :- account(A).
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 %% terminate old balance of A2
 %terminates(transfer(A1, A2, TransM12), balance(A2, DstM2), T) :-
 %    holdsAt(balance(A2, DstM2), T),
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 
 &sum{ (balance(A2),S-1); TransM12 } = (balance(A2),S) :- 
@@ -72,14 +72,14 @@ defined((balance(A2),S)) :-
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 %% terminate old balance of A1
 %terminates(transfer(A1, A2, TransM12), balance(A1, SrcM1), T) :-
 %    holdsAt(balance(A2, DstM2), T),
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 
 &sum{ (balance(A1),S-1); -TransM12 } = (balance(A1),S) :- 
@@ -101,24 +101,24 @@ comparison((balance(A1),S-1), TransM12) :-
 
 % when a service fee is charged, then a note is made to avoid repeated charging
 % initiates(chargeServiceFee(A), serviceFeeCharged(A), T) :-
-%    account(A), time(T).
+%    account(A), step(T).
 holds(serviceFeeCharged(A), true, S) :- happens_state(chargeServiceFee(A), S).
 
 % this is reset every month
 % happens(monthlyReset(A), T) :- endOfMonth(T),
-%    account(A), time(T).
-% happens_state(monthlyReset(A), S) :- &sum{ time(S) } = T, endOfMonth(T), account(A), step(S).
-happens_state(monthlyReset(A), S) :- normal_atom(time(S), eq, T), endOfMonth(T), account(A), step(S).
-% :- &sum{ time(S) } < T, &sum{ time(S-1) } > T, endOfMonth(T), step(S).
-:- normal_atom(time(S), lt, T), normal_atom(time(S-1), gt, T), endOfMonth(T), step(S).
-% :- &sum{ time(S) } > T, &sum{ time(S-1) } < T, endOfMonth(T), step(S).
-:- normal_atom(time(S), gt, T), normal_atom(time(S-1), lt, T), endOfMonth(T), step(S).
+%    account(A), step(T).
+% happens_state(monthlyReset(A), S) :- &sum{ step(S) } = T, endOfMonth(T), account(A), step(S).
+happens_state(monthlyReset(A), S) :- normal_atom(step(S), eq, T), endOfMonth(T), account(A), step(S).
+% :- &sum{ step(S) } < T, &sum{ step(S-1) } > T, endOfMonth(T), step(S).
+:- normal_atom(step(S), lt, T), normal_atom(step(S-1), gt, T), endOfMonth(T), step(S).
+% :- &sum{ step(S) } > T, &sum{ step(S-1) } < T, endOfMonth(T), step(S).
+:- normal_atom(step(S), gt, T), normal_atom(step(S-1), lt, T), endOfMonth(T), step(S).
 
-comparison(time(S  ), T) :- endOfMonth(T), step(S).
-comparison(time(S-1), T) :- endOfMonth(T), step(S).
+comparison(step(S  ), T) :- endOfMonth(T), step(S).
+comparison(step(S-1), T) :- endOfMonth(T), step(S).
 
 % terminates(monthlyReset(A), serviceFeeCharged(A), T):- 
-%    account(A), time(T).
+%    account(A), step(T).
 holds(serviceFeeCharged(A), false, S) :- happens_state(monthlyReset(A), S).
 
 % if a service fee is charged, then the balance of the account is decreased
@@ -127,11 +127,11 @@ holds(serviceFeeCharged(A), false, S) :- happens_state(monthlyReset(A), S).
 %initiates(chargeServiceFee(A), balance(A, OldM - FeeM), T) :-
 %    holdsAt(balance(A, OldM), T),
 %    holdsAt(serviceFee(A, FeeM), T),
-%    account(A), time(T), money(OldM), money(FeeM).
+%    account(A), step(T), money(OldM), money(FeeM).
 %% terminate old balance
 %terminates(chargeServiceFee(A), balance(A, OldM), T) :-
 %    holdsAt(balance(A, OldM), T),
-%    account(A), time(T), money(OldM).
+%    account(A), step(T), money(OldM).
 *%
 &sum{ (balance(A),S-1); -(serviceFee(A),S-1) } = (balance(A),S) :- 
     happens_state(chargeServiceFee(A), S).
@@ -146,15 +146,15 @@ defined((balance(A),S)) :-
 %*
 %% an account has a single unique balance at a time
 %M1=M2 :- holdsAt(balance(A, M1), T), holdsAt(balance(A, M2), T),
-%    account(A), time(T), money(M1), money(M2).
+%    account(A), step(T), money(M1), money(M2).
 %
 %% an account can only have a single unique minimumBalance at a time % modif -- added
 %M1=M2 :- holdsAt(minimumBalance(A, M1), T), holdsAt(minimumBalance(A, M2), T),
-%    account(A), time(T), money(M1), money(M2).
+%    account(A), step(T), money(M1), money(M2).
 %
 %% an account can only have a single unique serviceFee at a time % modif -- added
 %M1=M2 :- holdsAt(serviceFee(A, M1), T), holdsAt(serviceFee(A, M2), T),
-%    account(A), time(T), money(M1), money(M2).
+%    account(A), step(T), money(M1), money(M2).
 *%
 
 %-------------------------------------------------------------------------------
@@ -168,7 +168,7 @@ defined((balance(A),S)) :-
 %happens(chargeServiceFee(A), T) :-
 %    holdsAt(balance(A,AccM), T), holdsAt(minimumBalance(A, MinM), T), AccM < MinM,
 %    not holdsAt(serviceFeeCharged(A), T),
-%    account(A), time(T), money(AccM), money(MinM).
+%    account(A), step(T), money(AccM), money(MinM).
 *%
 
 happens_state(chargeServiceFee(A), S) :-
@@ -184,7 +184,7 @@ comparison((balance(A),S-1), (minimumBalance(A),S-1)) :-
 % epsilon(1). 
 epsilon("1.1"). % valid with clingo-lpx
 %
-&sum{ time(S); -time(S-1) } = E :- epsilon(E),
+&sum{ step(S); -step(S-1) } = E :- epsilon(E),
     % &sum{ (balance(A),S-1) } < (minimumBalance(A),S-1), 
     normal_atom((balance(A),S-1), lt, (minimumBalance(A),S-1)), 
     holds(serviceFeeCharged(A), false, S-1),
@@ -235,6 +235,6 @@ happens(transfer(account1, account2, 4), 2).
 %   the balance of account1 will be 2 at time 7
 
 % TODO this is required, otherwise we see multiple models
-&sum{ time(maxstep) } = 7.
+&sum{ step(maxstep) } = 7.
 % TODO no need for the above when using the below constraint
 % :- not happens_state(_, S), step(S), S > 0. 

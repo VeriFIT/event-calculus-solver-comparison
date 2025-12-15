@@ -40,7 +40,7 @@ holds(falling(O), true, S) :-
 
 % [effect + CLoI]
 % releases(drop(A,O), height(O,H), T) :-
-%     agent(A), object(O), fHeight(H), time(T).
+%     agent(A), object(O), fHeight(H), step(T).
 
 % [triggered event]
 % an object hits the ground when its falling and its height becomes zero
@@ -48,7 +48,7 @@ holds(falling(O), true, S) :-
 %happens(hitGround(O), T) :-
 %    holdsAt(falling(O), T),
 %    holdsAt(height(O,0), T),
-%    object(O), time(T).
+%    object(O), step(T).
 *%
 
 happens_state(hitGround(O), S) :-
@@ -77,7 +77,7 @@ comparison((height(O),S  ), 0) :- object(O), step(S).
 % if an object hits the ground, then it will stop falling
 %*
 %terminates(hitGround(O), falling(O), T) :-
-%    object(O), time(T).
+%    object(O), step(T).
 *%
 holds(falling(O), false, S) :- happens_state(hitGround(O), S).
 
@@ -86,23 +86,23 @@ holds(falling(O), false, S) :- happens_state(hitGround(O), S).
 %*
 %initiates(hitGround(O), height(O, H), T) :-
 %    holdsAt(height(O, H), T),
-%    object(O), fHeight(H), time(T).
+%    object(O), fHeight(H), step(T).
 *%
 
 % [state constraint]
 % an object only has one unique height at a time
 % H1 = H2 :- holdsAt(height(O,H1), T), holdsAt(height(O,H2), T),
-%     agent(A), object(O), fHeight(H1), fHeight(H2), time(T).
+%     agent(A), object(O), fHeight(H1), fHeight(H2), step(T).
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
 %*
 %trajectory(falling(O), T1, height(O,H - (G)*(T2-T1)), T2) :-
 %    T1 < T2,
 %    holdsAt(height(O,H), T1),
-%    fGravity(G), object(O), fHeight(H), time(T1), time(T2).
+%    fGravity(G), object(O), fHeight(H), step(T1), step(T2).
 *%
 
-&sum{ (height(O),S-1); -G*time(S); G*time(S-1) } = (height(O),S) :-
+&sum{ (height(O),S-1); -G*step(S); G*step(S-1) } = (height(O),S) :-
     holds(falling(O), true, S-1), 
     fGravity(G), step(S).
 

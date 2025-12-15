@@ -32,23 +32,23 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
 % will be walking, and their location will continuously approach Location2
-initiates(walk(A, L), location(A), (L, 1, 0, location(A)), T) :- time(T), agent(A), in_locations(L).
+initiates(walk(A, L), location(A), (L, 1, 0, location(A)), T) :- step(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
-    normal_atom(fholdsAt(location(A), T), eq, fholdsAt(location(O), T)),
-    agent(A), object(O), time(T).
-comparison(fholdsAt(location(A), T), fholdsAt(location(O), T)) :- happens(pickUp(A, O), T).
+    normal_atom((location(A), T), eq, (location(O), T)),
+    agent(A), object(O), step(T).
+comparison((location(A), T), (location(O), T)) :- happens(pickUp(A, O), T).
 
 %% % if an agent is holding an object and lets go of it, then they will no longer be holding it
 terminates(letGoOf(A, O), holding(A, O), T) :-
     holdsAt(holding(A, O), T),
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 %! indirect effect
 % if an agent lets go of an object while in a room, then the object will be
 % in that room and will no longer be released from CLoI (caused by initiates)
-initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O)), T) :- time(T), agent(A), object(O).
+initiates(letGoOf(A, O), location(O), ((location(A),T), 1, 0, location(O)), T) :- step(T), agent(A), object(O).
 
 
 %-------------------------------------------------------------------------------
@@ -57,15 +57,15 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O
 
 % % an object can only be in one room at a time (same for agents...)
 % R1=R2 :- holdsAt(location(O,R1), T), holdsAt(location(O,R2), T),
-%     object(A), room(R1), room(R2), time(T).
+%     object(A), room(R1), room(R2), step(T).
 % R1=R2 :- holdsAt(location(A,R1), T), holdsAt(location(A,R2), T),
-%     agent(A), room(R1), room(R2), time(T).
+%     agent(A), room(R1), room(R2), step(T).
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
-&sum{fholdsAt(location(A),T)} = fholdsAt(location(O),T) :-
+&sum{(location(A),T)} = (location(O),T) :-
     holdsAt(holding(A,O), T),
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ initiates(letGoOf(A, O), location(O), (fholdsAt(location(A),T), 1, 0, location(O
 % when an agent pickups an object, then the location of that object will
 % be released from CLoI
 releases(pickUp(A,O), location(O), T) :-
-    agent(A), object(O), time(T).
+    agent(A), object(O), step(T).
 
 %-------------------------------------------------------------------------------
 % observations
@@ -89,6 +89,7 @@ releases(pickUp(A,O), location(O), T) :-
 initiallyP(location(nathan), 0).
 initiallyP(location(book), 0).
 initiallyN(F) :- not initiallyP(F), dfluent(F).  % % nathan is initially not holding the book
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------

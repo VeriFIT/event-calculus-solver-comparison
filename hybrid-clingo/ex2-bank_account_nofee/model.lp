@@ -40,19 +40,19 @@ event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), acco
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 1, balance(A2)), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom(fholdsAt(balance(A1),T), geq, TransM12),
-    account(A1), account(A2), time(T).
+    normal_atom((balance(A1),T), geq, TransM12),
+    account(A1), account(A2), step(T).
 
 % needed for normal_atom
-comparison(fholdsAt(balance(A1),T), TransM12) :- 
+comparison((balance(A1),T), TransM12) :- 
     TransM12 > 0,
     happens(transfer(A1, A2, TransM12), T),
-    account(A1), account(A2), time(T).
+    account(A1), account(A2), step(T).
 
 %*
 %% terminate old balance of A2
@@ -61,7 +61,7 @@ comparison(fholdsAt(balance(A1),T), TransM12) :-
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 % TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
 
@@ -72,16 +72,16 @@ comparison(fholdsAt(balance(A1),T), TransM12) :-
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom(fholdsAt(balance(A1),T), geq, TransM12),
-    account(A1), account(A2), time(T).
+    normal_atom((balance(A1),T), geq, TransM12),
+    account(A1), account(A2), step(T).
 
 % already defined with the initiates above
-%comparison(fholdsAt(balance(A1),T), TransM12) :-  ...
+%comparison((balance(A1),T), TransM12) :-  ...
 
 
 %*
@@ -91,7 +91,7 @@ initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)
 %    holdsAt(balance(A1, SrcM1), T),
 %    TransM12 > 0,
 %    SrcM1 >= TransM12,
-%    account(A1), account(A2), time(T), money(TransM12), money(DstM2), money(SrcM1).
+%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 % TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
 
@@ -103,11 +103,11 @@ initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)
 %*
 %% an account has a single unique balance at a time
 %M1=M2 :- holdsAt(balance(A, M1), T), holdsAt(balance(A, M2), T),
-%    account(A), time(T), money(M1), money(M2).
+%    account(A), step(T), money(M1), money(M2).
 %
 %% an account can only have a single unique minimumBalance at a time % modif -- added
 %M1=M2 :- holdsAt(minimumBalance(A, M1), T), holdsAt(minimumBalance(A, M2), T),
-%    account(A), time(T), money(M1), money(M2).
+%    account(A), step(T), money(M1), money(M2).
 *%
 % TODO state constraint is not needed because functional fluents cannot have multiple values
 
@@ -117,6 +117,7 @@ initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)
 
 initiallyP(balance(account1), 10).      
 initiallyP(balance(account2), 10).      
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------

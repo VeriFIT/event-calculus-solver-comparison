@@ -27,41 +27,41 @@ dfluent(powered_on).
 % effects 
 %-------------------------------------------------------------------------------
 
-% initiates(add(Add),  result(Res2), T) :- Add .>. 0, holdsAt(result(Res1), T), Res2 = Res1 + Add, time(T).
+% initiates(add(Add),  result(Res2), T) :- Add .>. 0, holdsAt(result(Res1), T), Res2 = Res1 + Add, step(T).
 initiates(add(Add), result, (Add, 1, 1, result), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     % holdsAt(result, T),
-    addDomain(Add), time(T).
+    addDomain(Add), step(T).
 
-% terminates(add(Add), result(OldRes), T) :- Add .>. 0, holdsAt(OldRes, T), time(T).
+% terminates(add(Add), result(OldRes), T) :- Add .>. 0, holdsAt(OldRes, T), step(T).
 % TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiates/4
 
 
-% initiates(turn_on, powered_on, T) :- -holdsAt(powered_on, T), time(T).
+% initiates(turn_on, powered_on, T) :- -holdsAt(powered_on, T), step(T).
 initiates(turn_on, powered_on, T) :-
     not holdsAt(powered_on, T),
-    time(T).
+    step(T).
 
-% terminates(turn_off, powered_on, T) :- holdsAt(powered_on, T), time(T).
+% terminates(turn_off, powered_on, T) :- holdsAt(powered_on, T), step(T).
 terminates(turn_off, powered_on, T) :-
     holdsAt(powered_on, T).
 
 
-% initiates(turn_on, result(0), T) :- time(T).
+% initiates(turn_on, result(0), T) :- step(T).
 initiates(turn_on, result, (0, 0, 0, result), T) :-
     Add > 0,
     not holdsAt(powered_on, T),
     %not holdsAt(result, T),
-    addDomain(Add), time(T).
+    addDomain(Add), step(T).
 
-% terminates(turn_off, result(_), T) :- holdsAt(powered_on, T), time(T).
+% terminates(turn_off, result(_), T) :- holdsAt(powered_on, T), step(T).
 % TODO default FDEC cannot terminate ffluents, instead initiate zero
 initiates(turn_off, result, (0, 0, 0, result), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     %holdsAt(result, T),
-    addDomain(Add), time(T).
+    addDomain(Add), step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -70,6 +70,7 @@ initiates(turn_off, result, (0, 0, 0, result), T) :-
 
 initiallyN(powered_on).
 initiallyP(result, 0).  % TODO default FDEC needs a value for ffluents at all times
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
