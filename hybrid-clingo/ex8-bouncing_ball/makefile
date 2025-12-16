@@ -4,20 +4,28 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 #-----------------------------------------------------------------------------------------------------------------------
 # base
 LPX_CMD=clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD=clingcon -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx:
 	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative1.lp  | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 # takes around 50sec, need to disable last step because zeno behavior never exceeds the zeno timepoint
 run-lpx-nocatch:
-	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative2.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative2.lp -c disablelaststep=1 | ../utils/make-readable.sh
 
 
 run-lpx-nosig:	# works for this example
 	MAXSTEP=7; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative1.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 run-lpx-nocatch-nosig:	# does not work here since last step is disabled
-	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative2.lp -c disablelaststep=1 -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp ./narrative2.lp -c disablelaststep=1 -c disablesignificantconstr=1 | ../utils/make-readable.sh
+
+
+run-con: # TODO currently not working, uses rational numbers
+	MAXSTEP=7; MAXTIME=1000; ${TIME} ${CON_CMD} ./model.lp ./narrative1.lp  | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+run-con-nocatch:  # TODO currently not working, uses rational numbers
+	MAXSTEP=50; MAXTIME=1000; ${TIME} ${CON_CMD} ./model.lp ./narrative2.lp -c disablelaststep=1 | ../utils/make-readable.sh
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -59,7 +67,7 @@ run-lpx-fix-min_dur-tdur:
 log:
 	@mkdir -p ./logs ; rm -f ./logs/*.log
 	MODEL=model; 			NAME=;		MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative1.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
-	MODEL=model; 			NAME=;		MAXSTEP=50;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+	MODEL=model; 			NAME=;		MAXSTEP=50;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp -c disablelaststep=1 | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=fix-flat_loss; 	NAME=;		MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=fix-min_dur; 	 	NAME=;		MAXSTEP=7;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx-$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 

@@ -4,14 +4,23 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 #-----------------------------------------------------------------------------------------------------------------------
 # base
 LPX_CMD=clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD=clingcon -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx:
 	MAXSTEP=5; MAXTIME=19; ${TIME} ${LPX_CMD} ./model.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
 run-lpx-nosig:	# works for this example
 	MAXSTEP=5; MAXTIME=19; ${TIME} ${LPX_CMD} ./model.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 run-lpx-50:
-	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+	MAXSTEP=50; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp -c disablelaststep=1 | ../utils/make-readable.sh
+
+
+run-con: # TODO currently not working, uses rational numbers
+	MAXSTEP=5; MAXTIME=19; ${TIME} ${CON_CMD} ./model.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+run-con-50: # TODO currently not working, uses rational numbers
+	MAXSTEP=50; MAXTIME=1000; ${TIME} ${CON_CMD} ./model.lp -c disablelaststep=1 | ../utils/make-readable.sh
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -52,7 +61,7 @@ run-lpx-fix-tdur:
 log:
 	@mkdir -p ./logs ; rm -f ./logs/*.log
 	MODEL=; 			NAME=;		MAXSTEP=5;	MAXTIME=19;		../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
-	MODEL=; 			NAME=;		MAXSTEP=50;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
+	MODEL=; 			NAME=;		MAXSTEP=50;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp -c disablelaststep=1 | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 	MODEL=-fixed; 		NAME=;		MAXSTEP=8;	MAXTIME=22;		../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 #	MODEL=-fixed2; 	 	NAME=;		MAXSTEP=14;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0
 #	MODEL=-fixed3; 	 	NAME=;		MAXSTEP=14;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$MODEL$$NAME-s$$MAXSTEP.log ; exit 0

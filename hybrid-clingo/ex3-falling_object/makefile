@@ -4,6 +4,7 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 #-----------------------------------------------------------------------------------------------------------------------
 # base
 LPX_CMD=clingo-lpx --strict -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
+CON_CMD=clingcon -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
 
 run-lpx:
 	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
@@ -17,6 +18,10 @@ run-lpx-queries:
 
 run-lpx-queries-nosig:	# works for this example
 	MAXSTEP=6; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} ./extra-queries.lp -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+
+run-con:
+	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -52,3 +57,12 @@ log:
 	NAME=-tdur;	MAXSTEP=3;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
 
 	NAME=-eff;	MAXSTEP=2;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD_EFF} 	| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+
+	
+	NAME=; 		MAXSTEP=3;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+	NAME=; 		MAXSTEP=3;	MAXTIME=1000;	HEIGHT=40;	../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+	NAME=; 		MAXSTEP=3;	MAXTIME=1000;	HEIGHT=80;	../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+	NAME=; 		MAXSTEP=3;	MAXTIME=1000;	HEIGHT=160; ../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+	NAME=; 		MAXSTEP=3;	MAXTIME=1000;	HEIGHT=320; ../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+	NAME=-hit; 	MAXSTEP=3;	MAXTIME=1000; 	HEIGHT=4;   ../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
+	NAME=-miss;	MAXSTEP=3;	MAXTIME=1000; 	HEIGHT=3;   ../../scripts/maketrace.sh "${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0

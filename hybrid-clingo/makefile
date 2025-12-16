@@ -11,6 +11,8 @@ log-all:
 	$(MAKE) -C ex10-* log
 	$(MAKE) -C ex11-* log
 	$(MAKE) -C ex12-* log
+	$(MAKE) -C ex13-* log
+	$(MAKE) -C ex14-* log
 
 log-all-parallel:
 	$(MAKE) -C ex1-* log &
@@ -26,6 +28,7 @@ log-all-parallel:
 	$(MAKE) -C ex11-* log &
 	$(MAKE) -C ex12-* log &
 	$(MAKE) -C ex13-* log &
+	$(MAKE) -C ex14-* log &
 	@true
 
 create-env-lpx:

@@ -5,32 +5,32 @@ clingo-lpx version 1.3.0
 Reading from ./model.lp ...
 Solving...
 Answer: 1
-(Time: 0.042s)
+(Time: 0.046s)
 happens(fade_in_end,20)
 happens(fade_in_end,40)
 happens(fade_out_end,30)
 happens(turn_light_off,45)
 happens(turn_light_on,10)
-holdsAt(fading_in,(10,"< T =<",20))
-holdsAt(fading_in,(30,"< T =<",40))
-holdsAt(fading_out,(20,"< T =<",30))
-holdsAt(fading_out,(40,"< T =<",45))
-holdsAt(light_on,(10,"< T =<",20))
-holdsAt(light_on,(20,"< T =<",30))
-holdsAt(light_on,(30,"< T =<",40))
-holdsAt(light_on,(40,"< T =<",45))
-releasedAt(brightness,(10,"< T =<",20))
-releasedAt(brightness,(20,"< T =<",30))
-releasedAt(brightness,(30,"< T =<",40))
-releasedAt(brightness,(40,"< T =<",45))
-fholdsAt(brightness,0,(0,"< T =<",10))
-fholdsAt(brightness,0,(45,"< T =<",1000))
-fholdsAtC(brightness,(0,"->",10),(10,"< T =<",20),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(20,"-",10)))
-fholdsAtC(brightness,(10,"->",0),(20,"< T =<",30),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(10),"+",inc(-1),"*",dur(30,"-",20)))
-fholdsAtC(brightness,(0,"->",10),(30,"< T =<",40),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(40,"-",30)))
-fholdsAtC(brightness,(10,"->",5),(40,"< T =<",45),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(10),"+",inc(-1),"*",dur(45,"-",40)))
+holdsAt(fading_in,(10,"< S =<",20))
+holdsAt(fading_in,(30,"< S =<",40))
+holdsAt(fading_out,(20,"< S =<",30))
+holdsAt(fading_out,(40,"< S =<",45))
+holdsAt(light_on,(10,"< S =<",20))
+holdsAt(light_on,(20,"< S =<",30))
+holdsAt(light_on,(30,"< S =<",40))
+holdsAt(light_on,(40,"< S =<",45))
+releasedAt(brightness,(10,"< S =<",20))
+releasedAt(brightness,(20,"< S =<",30))
+releasedAt(brightness,(30,"< S =<",40))
+releasedAt(brightness,(40,"< S =<",45))
+fholdsAt(brightness,0,(0,"< S =<",10))
+fholdsAt(brightness,0,(45,"< S =<",1000))
+fholdsAtC(brightness,(0,"->",10),(10,"< S =<",20),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(20,"-",10)))
+fholdsAtC(brightness,(10,"->",0),(20,"< S =<",30),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(10),"+",inc(-1),"*",dur(30,"-",20)))
+fholdsAtC(brightness,(0,"->",10),(30,"< S =<",40),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(40,"-",30)))
+fholdsAtC(brightness,(10,"->",5),(40,"< S =<",45),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(10),"+",inc(-1),"*",dur(45,"-",40)))
 Assignment: [leftovers]
-fholdsAt(brightness,0)=0
+(brightness,0)=0
 timeDiff(0,0)=0
 timeDiff(0,1)=10
 timeDiff(0,2)=20
@@ -63,14 +63,14 @@ SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.042s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.027s
+Time         : 0.046s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.032s
 
 Command exited with non-zero status 30
 
   real      0:00.05
   real [s]  0.05
-  user [s]  0.03
-  sys  [s]  0.00
-  mem  [KB] 9472
+  user [s]  0.02
+  sys  [s]  0.01
+  mem  [KB] 9984
   avgm [KB] 0

@@ -132,7 +132,7 @@ trigger_time(T) :- endOfMonth(T).
 %    account(A), step(T), money(OldM), money(FeeM).
 *%
 
-initiates(chargeServiceFee(A), balance(A), (-(serviceFee(A),T), 1, 1, balance(A)), T) :-
+initiates(chargeServiceFee(A), balance(A), ((serviceFee(A),T), -1, 1, balance(A)), T) :-
     step(T), account(A).
 
 %*

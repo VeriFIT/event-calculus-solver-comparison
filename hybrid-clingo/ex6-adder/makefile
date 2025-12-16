@@ -4,12 +4,17 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 #-----------------------------------------------------------------------------------------------------------------------
 # base
 LPX_CMD=clingo-lpx --strict -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD=clingcon -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx:
 	MAXSTEP=5; MAXTIME=1000; ${TIME} ${LPX_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 run-lpx-nosig:	# works for this example
 	MAXSTEP=5; MAXTIME=1000; ${TIME} ${LPX_CMD} -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+
+run-con:
+	MAXSTEP=5; MAXTIME=1000; ${TIME} ${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -28,3 +33,5 @@ log:
 	NAME=; 		MAXSTEP=5;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} 		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0
 
 #TODO#	NAME=-eff; 	MAXSTEP=5;	../../scripts/maketrace.sh "${LPX_CMD_EFF} 	| ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0
+
+	NAME=; 		MAXSTEP=5;	MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD} 		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP.log ; exit 0
