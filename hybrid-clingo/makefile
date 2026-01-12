@@ -31,12 +31,23 @@ log-all-parallel:
 	$(MAKE) -C ex14-* log &
 	@true
 
-create-env-lpx:
-	conda env create -f ./utils/clingo_lpx_env.yml || \
-	conda env update -f ./utils/clingo_lpx_env.yml
+create-env-fdec:
+	conda env create -f ./utils/fdec.yml || \
+	conda env update -f ./utils/fdec.yml
+
+#create-env-lpx:
+#	conda create -n clingo-lpx -c potassco/label/dev-20 -c conda-forge clingo-lpx
+#	conda env create -f ./utils/clingo_lpx_env.yml || \
+#	conda env update -f ./utils/clingo_lpx_env.yml
+
+#create-env-con:
+#	conda env create -f ./utils/clingcon_env.yml || \
+#	conda env update -f ./utils/clingcon_env.yml
 
 activate-clingo-lpx-env:
 	@echo "run this manually: conda activate clingo-lpx"
+activate-clingo-con-env:
+	@echo "run this manually: conda activate clingcon"
 
 build-format_output:
 	$(MAKE) -C ./utils/format-output/

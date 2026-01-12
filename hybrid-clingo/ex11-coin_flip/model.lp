@@ -8,8 +8,8 @@
 event(toss).
 event(land).
 
-dfluent(up(heads)).
-dfluent(up(tails)).
+fluent(up(heads)).
+fluent(up(tails)).
 
 
 %-------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ terminates(land, up(X), T) :- not holdsAt(up(X), T), step(T), fluent(up(X)).
 %-------------------------------------------------------------------------------
 
 initiallyP(up(heads)).
-initiallyN(F) :- not initiallyP(F), dfluent(F).
+initiallyN(F) :- not initiallyP(F), fluent(F).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
 
@@ -42,7 +42,7 @@ initiallyN(F) :- not initiallyP(F), dfluent(F).
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(toss,      10).
-in_happens(land,      20). % TODO could be triggered
+obs(happens(toss),      10).
+obs(happens(land),      20). % TODO could be triggered
 
 % --> two models heads or tails

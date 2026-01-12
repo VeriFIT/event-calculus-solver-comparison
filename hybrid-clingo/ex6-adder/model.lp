@@ -21,14 +21,16 @@ event(turn_on).
 event(turn_off).
 
 ffluent(result).
-dfluent(powered_on).
+fluent(powered_on).
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
 % initiates(add(Add),  result(Res2), T) :- Add .>. 0, holdsAt(result(Res1), T), Res2 = Res1 + Add, step(T).
-initiates(add(Add), result, (Add, 1, 1, result), T) :-
+%initiates(add(Add), result, ( (1, Add), (1, (result, T)) ), T) :-
+&sum{one} = 1.  % TODO workaround for lpx
+initiates(add(Add), result, ( (Add, one), (1, (result, T)) ), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     % holdsAt(result, T),
@@ -49,7 +51,7 @@ terminates(turn_off, powered_on, T) :-
 
 
 % initiates(turn_on, result(0), T) :- step(T).
-initiates(turn_on, result, (0, 0, 0, result), T) :-
+initiates(turn_on, result, ( (0, (result, T)) ), T) :-
     Add > 0,
     not holdsAt(powered_on, T),
     %not holdsAt(result, T),
@@ -57,7 +59,7 @@ initiates(turn_on, result, (0, 0, 0, result), T) :-
 
 % terminates(turn_off, result(_), T) :- holdsAt(powered_on, T), step(T).
 % TODO default FDEC cannot terminate ffluents, instead initiate zero
-initiates(turn_off, result, (0, 0, 0, result), T) :-
+initiates(turn_off, result, ( (0, (result, T)) ), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     %holdsAt(result, T),
@@ -71,16 +73,17 @@ initiates(turn_off, result, (0, 0, 0, result), T) :-
 initiallyN(powered_on).
 initiallyP(result, 0).  % TODO default FDEC needs a value for ffluents at all times
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(turn_on,        5).
-in_happens(add(5),         10).
-in_happens(add(1000000),   20).
-in_happens(turn_off,       25).
+obs(happens(turn_on),        5).
+obs(happens(add(5)),         10).
+obs(happens(add(1000000)),   20).
+obs(happens(turn_off),       25).
 
 % conclude that result will be 1000005 after time 20
 

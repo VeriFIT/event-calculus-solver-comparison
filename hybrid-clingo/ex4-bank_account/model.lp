@@ -24,7 +24,7 @@ account(account2).
 ffluent(          balance(A)) :- account(A).
 ffluent(   minimumBalance(A)) :- account(A).
 ffluent(       serviceFee(A)) :- account(A).
-dfluent(serviceFeeCharged(A)) :- account(A).
+fluent(serviceFeeCharged(A)) :- account(A).
 
 % event(transfer(A1, A2, M)) :- account(A1), account(A2), money(M).
 event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), account(A2).
@@ -50,17 +50,17 @@ event(monthlyReset(A)) :- account(A).
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 1, balance(A2)), T) :-
+%initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
+&sum{one} = 1.  % TODO workaround for lpx
+initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom((balance(A1),T), geq, TransM12),
-    account(A1), account(A2), step(T).
+    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
-% needed for normal_atom
-comparison((balance(A1),T), TransM12) :- 
-    TransM12 > 0,
-    happens(transfer(A1, A2, TransM12), T),
-    account(A1), account(A2), step(T).
+% needed for sum
+comparison( ( (1, (balance(A1), T)) ), TransM12) :-
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 %*
 %% terminate old balance of A2
@@ -82,11 +82,13 @@ comparison((balance(A1),T), TransM12) :-
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)), T) :-
+%initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
+% TODO workaround for lpx
+initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom((balance(A1),T), geq, TransM12),
-    account(A1), account(A2), step(T).
+    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % already defined with the initiates above
 %comparison((balance(A1),T), TransM12) :-  ...
@@ -110,17 +112,13 @@ initiates(chargeServiceFee(A), serviceFeeCharged(A), T) :- account(A), step(T).
 
 % this is reset every month
 % happens(monthlyReset(A), T) :- &sum{ step(T) } = T, endOfMonth(T), account(A), step(T).
-happens(monthlyReset(A), T) :- normal_atom(time(T), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
+happens(monthlyReset(A), T) :- sum(( (1, (time, T)) ), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
 
 terminates(monthlyReset(A), serviceFeeCharged(A), T):- account(A), step(T).
 
 % restrict that there must exist a state with its ftimeAtStep exactly equal to endOfMonth
 % (by saying that there cannot be two subsequent states in which one is lt/gt and the next gt/lt, i.e. there is no state with exactly eq)
-trigger_time(T) :- endOfMonth(T).
-    % :- normal_atom(time(T), lt, TriggerT), normal_atom(time(T+1), gt, TriggerT), endOfMonth(TriggerT), step(T), step(T+1).
-    % :- normal_atom(time(T), gt, TriggerT), normal_atom(time(T+1), lt, TriggerT), endOfMonth(TriggerT), step(T), step(T+1).
-    %
-    % comparison(time(T), TriggerT) :- endOfMonth(TriggerT), step(T).
+no_jump(time, T, EndT) :- endOfMonth(EndT), step(T).
 
 
 % if a service fee is charged, then the balance of the account is decreased
@@ -132,7 +130,7 @@ trigger_time(T) :- endOfMonth(T).
 %    account(A), step(T), money(OldM), money(FeeM).
 *%
 
-initiates(chargeServiceFee(A), balance(A), ((serviceFee(A),T), -1, 1, balance(A)), T) :-
+initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (balance(A), T)) ), T) :-
     step(T), account(A).
 
 %*
@@ -182,21 +180,21 @@ initiates(chargeServiceFee(A), balance(A), ((serviceFee(A),T), -1, 1, balance(A)
 epsilon("1.1"). % valid with clingo-lpx
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    normal_atom((balance(A),T), lt, (minimumBalance(A),T)),
+    sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), T),
     account(A), step(T),
     % fixing zeno timepoint via an epsilon -- balance holds for EPS
     % TODO would be nicer if hidden behind holdsAt/3
     T1 < T,
     happens(E, T1),
-    initiates(E, balance(A), T1),
+    initiates(E, balance(A), _, T1),
     not startedIn(T1, balance(A), T),   % startedIn instead of stoppedIn because balance is a ffluent
     epsilon(EPS),
-    normal_atom(timeDiff(T1, T), eq, EPS).
-    %normal_atom(time(T), -time(T1), eq, EPS).
+    sum( ( (1, (timeDiff, T1, T)) ), eq, EPS).
+    %sum(time(T), -time(T1), eq, EPS).
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    normal_atom((balance(A),T), lt, (minimumBalance(A),T)),
+    sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), T),
     account(A), step(T),
     % fixing zeno timepoint via an epsilon -- serviceFeeCharged not holds for EPS
@@ -206,36 +204,37 @@ happens(chargeServiceFee(A), T) :-
     terminates(E, serviceFeeCharged(A), T1),
     not startedIn(T1, serviceFeeCharged(A), T),
     epsilon(EPS),
-    normal_atom(timeDiff(T1, T), eq, EPS).
-    %normal_atom(time(T), -time(T1), eq, EPS).
+    sum( ( (1, (timeDiff, T1, T)) ), eq, EPS).
+    %sum(time(T), -time(T1), eq, EPS).
 
-comparison((balance(A),T), (minimumBalance(A),T)) :- account(A), step(T).
-comparison(timeDiff(T1,T), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
+comparison( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), 0) :- account(A), step(T).
+comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 
-%%% :-  % establish T1 (cause 1)
-%%%     happens(E, T1),
-%%%     initiates(E, balance(A), T1),
-%%%     not startedIn(T1, balance(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
-%%%     % cannot step over it
-%%%     T >= T1,
-%%%     epsilon(EPS),
-%%%     normal_atom(timeDiff(T1, T), lt, EPS),
-%%%     normal_atom(timeDiff(T1, T+1), gt, EPS),
-%%%     % if the trigger condition holds
-%%%     normal_atom((balance(A),T+1), lt, (minimumBalance(A),T+1)),
-%%%     not holdsAt(serviceFeeCharged(A), T+1).
-%%% :-  % establish T1 (cause 2)
-%%%     happens(E, T1),
-%%%     terminates(E, serviceFeeCharged(A), T1),
-%%%     not startedIn(T1, serviceFeeCharged(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
-%%%     % cannot step over it
-%%%     T >= T1,
-%%%     epsilon(EPS),
-%%%     normal_atom(timeDiff(T1, T), lt, EPS),
-%%%     normal_atom(timeDiff(T1, T+1), gt, EPS),
-%%%     % if the trigger condition holds
-%%%     normal_atom((balance(A),T+1), lt, (minimumBalance(A),T+1)),
-%%%     not holdsAt(serviceFeeCharged(A), T+1).
+
+:-  % establish T1 (cause 1)
+    happens(E, T1),
+    initiates(E, balance(A), _, T1),
+    not startedIn(T1, balance(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
+    % cannot step over it
+    T >= T1,
+    epsilon(EPS),
+    sum(( (1, (timeDiff, T1, T)) ), lt, EPS),
+    sum(( (1, (timeDiff, T1, T+1)) ), gt, EPS),
+    % if the trigger condition holds
+    sum( ( (1, (balance(A), T+1)), (-1, (minimumBalance(A), T+1)) ), lt, 0),
+    not holdsAt(serviceFeeCharged(A), T+1).
+:-  % establish T1 (cause 2)
+    happens(E, T1),
+    terminates(E, serviceFeeCharged(A), T1),
+    not startedIn(T1, serviceFeeCharged(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
+    % cannot step over it
+    T >= T1,
+    epsilon(EPS),
+    sum(( (1, (timeDiff, T1, T)) ), lt, EPS),
+    sum(( (1, (timeDiff, T1, T+1)) ), gt, EPS),
+    % if the trigger condition holds
+    sum( ( (1, (balance(A), T+1)), (-1, (minimumBalance(A), T+1)) ), lt, 0),
+    not holdsAt(serviceFeeCharged(A), T+1).
 
 
 %% % TODO complicated trigger_value
@@ -248,10 +247,10 @@ comparison(timeDiff(T1,T), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 %%     % cannot step over it
 %%     T > T1,
 %%     epsilon(EPS),
-%%     normal_atom(time(T), -time(T1), lt, EPS),
-%%     normal_atom(time(T+1), -time(T1), gt, EPS),
+%%     sum(time(T), -time(T1), lt, EPS),
+%%     sum(time(T+1), -time(T1), gt, EPS),
 %%     % if the trigger condition holds
-%%     normal_atom((balance(A),T), lt, (minimumBalance(A),T)),
+%%     sum((balance(A),T), lt, (minimumBalance(A),T)),
 %%     not holdsAt(serviceFeeCharged(A), T).
 %% :-  % establish T1 (cause 2)
 %%     happens(E, T1),
@@ -260,10 +259,10 @@ comparison(timeDiff(T1,T), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 %%     % cannot step over it
 %%     T > T1,
 %%     epsilon(EPS),
-%%     normal_atom(time(T), -time(T1), lt, EPS),
-%%     normal_atom(time(T+1), -time(T1), gt, EPS),
+%%     sum(time(T), -time(T1), lt, EPS),
+%%     sum(time(T+1), -time(T1), gt, EPS),
 %%     % if the trigger condition holds
-%%     normal_atom((balance(A),T), lt, (minimumBalance(A),T)),
+%%     sum((balance(A),T), lt, (minimumBalance(A),T)),
 %%     not holdsAt(serviceFeeCharged(A), T).
 %% 
 %% % TODO need a special case for T = T1 + 1 because &sum{step(T) - step(T)} < EPS is unsat
@@ -273,9 +272,9 @@ comparison(timeDiff(T1,T), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 %%     % cannot step over it -- next step must not be later than after EPS
 %%     T = T1,
 %%     epsilon(EPS),
-%%     normal_atom(time(T+1), -time(T1), gt, EPS),
+%%     sum(time(T+1), -time(T1), gt, EPS),
 %%     % if the trigger condition holds
-%%     normal_atom((balance(A),T+1), lt, (minimumBalance(A),T+1)),
+%%     sum((balance(A),T+1), lt, (minimumBalance(A),T+1)),
 %%     not holdsAt(serviceFeeCharged(A), T+1).
 %% :-  % establish T1 (cause 2)
 %%     happens(E, T1),
@@ -283,9 +282,9 @@ comparison(timeDiff(T1,T), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 %%     % cannot step over it -- next step must not be later than after EPS
 %%     T = T1,
 %%     epsilon(EPS),
-%%     normal_atom(time(T+1), -time(T1), gt, EPS),
+%%     sum(time(T+1), -time(T1), gt, EPS),
 %%     % if the trigger condition holds
-%%     normal_atom((balance(A),T+1), lt, (minimumBalance(A),T+1)),
+%%     sum((balance(A),T+1), lt, (minimumBalance(A),T+1)),
 %%     not holdsAt(serviceFeeCharged(A), T+1).
 
 
@@ -301,17 +300,18 @@ initiallyP(minimumBalance(account1),  5).
 initiallyP(minimumBalance(account2),  5).
 initiallyP(    serviceFee(account1),  1).    
 initiallyP(    serviceFee(account2),  1).    
-initiallyN(F) :- not initiallyP(F), dfluent(F).
+initiallyN(F) :- not initiallyP(F), fluent(F).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
-     
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
+initiallyN(F) :- not initiallyP(F), fluent(F).
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(transfer(account1, account2, 2), 10).
-in_happens(transfer(account1, account2, 4), 20).
+obs(happens(transfer(account1, account2, 2)), 10).
+obs(happens(transfer(account1, account2, 4)), 20).
 
 % --> conclude that
 %   a service fee is charged to account1 "in response to transfer at time 20" due to the balance being 4

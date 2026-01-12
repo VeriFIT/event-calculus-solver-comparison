@@ -42,17 +42,17 @@ event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), acco
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 1, balance(A2)), T) :-
+%initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
+&sum{one} = 1.  % TODO workaround for lpx
+initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom((balance(A1),T), geq, TransM12),
-    account(A1), account(A2), step(T).
+    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
-% needed for normal_atom
-comparison((balance(A1),T), TransM12) :- 
-    TransM12 > 0,
-    happens(transfer(A1, A2, TransM12), T),
-    account(A1), account(A2), step(T).
+% needed for sum
+comparison( ( (1, (balance(A1), T)) ), TransM12) :-
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 %*
 %% terminate old balance of A2
@@ -74,11 +74,13 @@ comparison((balance(A1),T), TransM12) :-
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)), T) :-
+%initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
+% TODO workaround for lpx
+initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom((balance(A1),T), geq, TransM12),
-    account(A1), account(A2), step(T).
+    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % already defined with the initiates above
 %comparison((balance(A1),T), TransM12) :-  ...
@@ -118,15 +120,16 @@ initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)
 initiallyP(balance(account1), 10).      
 initiallyP(balance(account2), 10).      
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
+initiallyN(F) :- not initiallyP(F), fluent(F).
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(transfer(account1, account2, 2), 10).
-in_happens(transfer(account1, account2, 4), 20).
-initiallyN(F) :- not initiallyP(F), dfluent(F).
+obs(happens(transfer(account1, account2, 2)), 10).
+obs(happens(transfer(account1, account2, 4)), 20).
 
 % --> conclude that
 %   the balance of account1 will be 4 after time 20

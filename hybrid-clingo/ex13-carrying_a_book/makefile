@@ -3,8 +3,8 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 
 #-----------------------------------------------------------------------------------------------------------------------
 # base
-LPX_CMD=clingo-lpx --strict -n10 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-CON_CMD=clingcon -n10 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD=python -m clingolpx --enable-python --strict -n10 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD=python -m clingcon --enable-python -n10 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx-effect:
 	MAXSTEP=5; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model-effect_constr.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
@@ -32,8 +32,8 @@ run-con-state-cont:
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
-LPX_CMD_TDUR=clingo-lpx --strict -n10 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-#TODO#LPX_CMD_EFF=clingo-lpx --strict -n10 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+LPX_CMD_TDUR=python -m clingolpx --enable-python --strict -n10 ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+#TODO#LPX_CMD_EFF=python -m clingolpx --enable-python --strict -n10 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
 
 run-lpx-state-cont-tdur:
 	MAXSTEP=9; MAXTIME=1000; ${TIME} ${LPX_CMD_TDUR} ./model-state_constr-continuous-tdur.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh

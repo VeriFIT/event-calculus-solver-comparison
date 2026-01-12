@@ -3,8 +3,8 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 
 #-----------------------------------------------------------------------------------------------------------------------
 # base
-LPX_CMD=clingo-lpx --strict -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
-CON_CMD=clingcon -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
+LPX_CMD=python -m clingolpx --enable-python --strict -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
+CON_CMD=python -m clingcon --enable-python -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
 
 run-lpx:
 	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
@@ -26,14 +26,7 @@ run-con:
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
-LPX_CMD_TDUR=clingo-lpx --strict -n10 ./model-tdur.lp ../axioms/fdec-tdur.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT
-LPX_CMD_EFF=clingo-lpx --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP -c paramHeight=$$HEIGHT
-
-run-lpx-tdur:
-	MAXSTEP=3; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
-run-lpx-queries-tdur:
-	MAXSTEP=6; MAXTIME=1000; HEIGHT=20; ${TIME} ${LPX_CMD} ./extra-queries.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
-
+LPX_CMD_EFF=python -m clingolpx --enable-python --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP -c paramHeight=$$HEIGHT
 
 run-lpx-eff:
 	MAXSTEP=2; HEIGHT=20; ${TIME} ${LPX_CMD_EFF} | ../utils/make-readable.sh
@@ -53,8 +46,6 @@ log:
 	NAME=-miss;	MAXSTEP=3;	MAXTIME=1000; 	HEIGHT=3;   ../../scripts/maketrace.sh "${LPX_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
 	
 	NAME=-queries;	MAXSTEP=6;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD} ./extra-queries.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
-
-	NAME=-tdur;	MAXSTEP=3;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD_TDUR} | ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
 
 	NAME=-eff;	MAXSTEP=2;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD_EFF} 	| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP-h$$HEIGHT.log ; exit 0
 

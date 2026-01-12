@@ -11,7 +11,7 @@
 event(turn_light_on).
 event(turn_light_off).
 
-dfluent(light_on).
+fluent(light_on).
 
 
 %-------------------------------------------------------------------------------
@@ -34,8 +34,8 @@ initiallyN(light_on).
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(turn_light_on,   10).
-in_happens(turn_light_off,  20).
+obs(happens(turn_light_on),   10).
+obs(happens(turn_light_off),  25).
 
 % conclude that the light is on between 10 and 20
 

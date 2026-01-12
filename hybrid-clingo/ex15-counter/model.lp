@@ -1,43 +1,45 @@
-% light can be turned on and off
+% counter example from Mueller, E. T. Chapter 17 event calculus. In Handbook of Knowledge Representation 2008
 
-#const maxstep=3.
+#const maxstep=5.
 #const maxtime=1000.
-
 
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
 
-event(toggle_light).
+event(increment).
+event(reset).
 
-fluent(light_on).
+ffluent(value).
 
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
-initiates(toggle_light,  light_on, T) :- not holdsAt(light_on, T), step(T).
+%initiates(increment, value, ( (1,1), (1, (value, S)) ), S) :- step(S).
+&sum{one} = 1.  % TODO workaround for lpx
+initiates(increment, value, ( (1,one), (1, (value, S)) ), S) :- step(S).
 
-terminates(toggle_light, light_on, T) :- holdsAt(light_on, T), step(T).
+%initiates(reset, value, ( (0,0) ), S) :- step(S).
+&sum{zero} = 0. % TODO workaround for lpx
+initiates(reset, value, ( (0, (value, S)) ), S) :- step(S).
 
 
 %-------------------------------------------------------------------------------
 % observations
 %-------------------------------------------------------------------------------
 
-initiallyN(light_on).
+initiallyP(value, 0).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(toggle_light),   10).
-obs(happens(toggle_light),   20).
-
-% conclude that the light is on between 10 and 20
-
-% enables showing of -holdsAt and -releasedAt
-negated_prints.
+obs(happens(increment),   10).
+obs(happens(increment),   20).
+obs(happens(reset),       30).
+obs(happens(increment),   40).

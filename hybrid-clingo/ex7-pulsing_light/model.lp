@@ -9,10 +9,10 @@ event(turn_light_off).
 event(fade_in_end).         % stop fading in and start fading out (dimming)
 event(fade_out_end).        % stop fading out (dimming) and starting fading in
 
-dfluent(light_on).
+fluent(light_on).
 ffluent(brightness).        % range 0-10
-dfluent(fading_in).
-dfluent(fading_out).
+fluent(fading_in).
+fluent(fading_out).
 
 terminates(fade_in_end, fading_in, T) :- step(T).
 initiates(fade_in_end, fading_out, T) :- step(T).
@@ -29,39 +29,39 @@ terminates(turn_light_off, light_on, T) :- step(T).
 terminates(turn_light_off, fading_in, T) :- holdsAt(fading_in, T).
 terminates(turn_light_off, fading_out, T) :- holdsAt(fading_out, T).
 
-initiates(turn_light_off, brightness, (0, 0, 0, brightness), T) :- step(T).
+%initiates(turn_light_off, brightness, ( (0,0) ), T) :- step(T).
+&sum{zero} = 0. % TODO workaround for lpx
+initiates(turn_light_off, brightness, ( (0,zero) ), T) :- step(T).
 
-trajectory(fading_in, T1, brightness, (0, 0, 1, brightness, 1), T2) :- step(T1), step(T2).
+trajectory(fading_in, T1, brightness, ( (1, (brightness, T1)), (1, (timeDiff, T1, T3)) ), T2) :- T3 = T1+T2, step(T3), step(T1), step(T2).
 
-trajectory(fading_out, T1, brightness, (0, 0, 1, brightness, -1), T2) :- step(T1), step(T2).
+trajectory(fading_out, T1, brightness, ( (1, (brightness, T1)), (-1, (timeDiff, T1, T3)) ), T2) :- T3 = T1+T2, step(T3), step(T1), step(T2).
 
 
 happens(fade_in_end, T) :-
     holdsAt(fading_in, T),
-    normal_atom((brightness, T), eq, 10),
+    sum(( (1, (brightness, T)) ), eq, 10), 
     step(T).
     
-% TODO both trigger_value/2 and /3 works fine for this example
-trigger_value(brightness, 10).
-    %trigger_value(brightness, fading_in, 10).
+no_jump(brightness, S, 10) :- step(S).
+
     
 happens(fade_out_end, T) :-
     holdsAt(fading_out, T),
-    normal_atom((brightness, T), eq, 0),
+    sum(( (1, (brightness, T)) ), eq, 0), 
     step(T).
 
-% TODO both trigger_value/2 and /3 works fine for this example
-trigger_value(brightness, 0).
-    %trigger_value(brightness, fading_out, 0).
+no_jump(brightness, S, 0) :- step(S).
     
 % ----- narrative & queries  -----
 
 initiallyP(brightness, 0).
-initiallyN(F) :- not initiallyP(F), dfluent(F).
+initiallyN(F) :- not initiallyP(F), fluent(F).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
-in_happens(turn_light_on,      10).
-in_happens(turn_light_off,     45).
+obs(happens(turn_light_on),      10).
+obs(happens(turn_light_off),     45).
 
 % ?- holdsAt(brightness(X),   10).    % 0
 % 

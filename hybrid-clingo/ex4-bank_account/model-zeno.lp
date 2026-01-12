@@ -24,7 +24,7 @@ account(account2).
 ffluent(          balance(A)) :- account(A).
 ffluent(   minimumBalance(A)) :- account(A).
 ffluent(       serviceFee(A)) :- account(A).
-dfluent(serviceFeeCharged(A)) :- account(A).
+fluent(serviceFeeCharged(A)) :- account(A).
 
 % event(transfer(A1, A2, M)) :- account(A1), account(A2), money(M).
 event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), account(A2).
@@ -50,17 +50,17 @@ event(monthlyReset(A)) :- account(A).
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A2), (TransM12, 1, 1, balance(A2)), T) :-
+%initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
+&sum{one} = 1.  % TODO workaround for lpx
+initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom((balance(A1),T), geq, TransM12),
-    account(A1), account(A2), step(T).
+    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
-% needed for normal_atom
-comparison((balance(A1),T), TransM12) :- 
-    TransM12 > 0,
-    happens(transfer(A1, A2, TransM12), T),
-    account(A1), account(A2), step(T).
+% needed for sum
+comparison( ( (1, (balance(A1), T)) ), TransM12) :-
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 %*
 %% terminate old balance of A2
@@ -82,11 +82,13 @@ comparison((balance(A1),T), TransM12) :-
 %    SrcM1 >= TransM12,
 %    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-initiates(transfer(A1, A2, TransM12), balance(A1), (-TransM12, 1, 1, balance(A1)), T) :-
+%initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
+% TODO workaround for lpx
+initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    normal_atom((balance(A1),T), geq, TransM12),
-    account(A1), account(A2), step(T).
+    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % already defined with the initiates above
 %comparison((balance(A1),T), TransM12) :-  ...
@@ -110,17 +112,13 @@ initiates(chargeServiceFee(A), serviceFeeCharged(A), T) :- account(A), step(T).
 
 % this is reset every month
 % happens(monthlyReset(A), T) :- &sum{ step(T) } = T, endOfMonth(T), account(A), step(T).
-happens(monthlyReset(A), T) :- normal_atom(time(T), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
+happens(monthlyReset(A), T) :- sum(( (1, (time, T)) ), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
 
 terminates(monthlyReset(A), serviceFeeCharged(A), T):- account(A), step(T).
 
 % restrict that there must exist a state with its ftimeAtStep exactly equal to endOfMonth
 % (by saying that there cannot be two subsequent states in which one is lt/gt and the next gt/lt, i.e. there is no state with exactly eq)
-trigger_time(T) :- endOfMonth(T).
-    % :- normal_atom(time(T), lt, TriggerT), normal_atom(time(T+1), gt, TriggerT), endOfMonth(TriggerT), step(T), step(T+1).
-    % :- normal_atom(time(T), gt, TriggerT), normal_atom(time(T+1), lt, TriggerT), endOfMonth(TriggerT), step(T), step(T+1).
-    %
-    % comparison(time(T), TriggerT) :- endOfMonth(TriggerT), step(T).
+no_jump(time, T, EndT) :- endOfMonth(EndT), step(T).
 
 
 % if a service fee is charged, then the balance of the account is decreased
@@ -132,7 +130,7 @@ trigger_time(T) :- endOfMonth(T).
 %    account(A), step(T), money(OldM), money(FeeM).
 *%
 
-initiates(chargeServiceFee(A), balance(A), ((serviceFee(A),T), -1, 1, balance(A)), T) :-
+initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (balance(A), T)) ), T) :-
     step(T), account(A).
 
 %*
@@ -178,14 +176,21 @@ initiates(chargeServiceFee(A), balance(A), ((serviceFee(A),T), -1, 1, balance(A)
 %    account(A), step(T), money(AccM), money(MinM).
 *%
 
+% time epsilon to trigger chargeServiceFee(A)
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    normal_atom((balance(A),T), lt, (minimumBalance(A),T)), 
+    sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), T),
     account(A), step(T).
-    
-comparison((balance(A),T), (minimumBalance(A),T)) :- 
-    account(A), step(T).
+
+comparison( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), 0) :- account(A), step(T).
+
+% manual no_jump -- cannot have two subsequent steps of trigger condition holding without triggering the event
+:- sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
+   not holdsAt(serviceFeeCharged(A), T),
+   sum( ( (1, (balance(A), T+1)), (-1, (minimumBalance(A), T+1)) ), lt, 0),
+   not holdsAt(serviceFeeCharged(A), T+1),
+   not happens(chargeServiceFee(A), T+1).
 
 
 %-------------------------------------------------------------------------------
@@ -200,17 +205,18 @@ initiallyP(minimumBalance(account1),  5).
 initiallyP(minimumBalance(account2),  5).
 initiallyP(    serviceFee(account1),  1).    
 initiallyP(    serviceFee(account2),  1).    
-initiallyN(F) :- not initiallyP(F), dfluent(F).
+initiallyN(F) :- not initiallyP(F), fluent(F).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
-     
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
+initiallyN(F) :- not initiallyP(F), fluent(F).
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(transfer(account1, account2, 2), 10).
-in_happens(transfer(account1, account2, 4), 20).
+obs(happens(transfer(account1, account2, 2)), 10).
+obs(happens(transfer(account1, account2, 4)), 20).
 
 % --> conclude that
 %   a service fee is charged to account1 "in response to transfer at time 20" due to the balance being 4

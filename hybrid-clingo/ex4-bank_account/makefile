@@ -3,10 +3,10 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 
 #-----------------------------------------------------------------------------------------------------------------------
 # base
-LPX_CMD_ZENO=clingo-lpx --strict -n10 ./model-zeno.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-LPX_CMD=clingo-lpx --strict -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-CON_CMD=clingcon -n10 ./model-con.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-CON_CMD_ZENO=clingcon -n10 ./model-zeno.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD_ZENO=python -m clingolpx --enable-python --strict -n10 ./model-zeno.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD=python -m clingolpx --enable-python --strict -n10 ./model.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD=python -m clingcon --enable-python -n10 ./model-con.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD_ZENO=python -m clingcon --enable-python -n10 ./model-zeno.lp ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx-zeno:
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD_ZENO}  | ../utils/replace_assignments.sh | ../utils/make-readable.sh
@@ -21,13 +21,16 @@ run-lpx-nosig:	# TODO causes problems here (many models with 'e') -- maybe cling
 run-con:
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${CON_CMD} | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
-run-con-zeno:	# TODO generates all combinations of placement of timepoints
+run-con-nosig:	# works ok for clingcon
+	MAXSTEP=6; MAXTIME=1000; ${TIME} ${CON_CMD} -c disablesignificantconstr=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+run-con-zeno:	# TODO generates all combinations of placement of timepoints (can use --project to only see one)
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${CON_CMD_ZENO}  | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
-LPX_CMD_EFF=clingo-lpx --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+LPX_CMD_EFF=python -m clingolpx --enable-python --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
 
 run-lpx-eff: # TODO something broke here
 	MAXSTEP=2; ${TIME} ${LPX_CMD_EFF} | ../utils/make-readable.sh

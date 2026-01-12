@@ -11,7 +11,7 @@ event(land).
 ffluent(sideUp).    % functional fluent
 
 % the fluent can only have positive fholdsAts
-&sum{ (sideUp, T) } > 0 :- holdsAt(sideUp, T), not releasedAt(sideUp, T), step(T).
+&sum{ (sideUp, T) } > 0 :- step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ ffluent(sideUp).    % functional fluent
 
 releases(roll, sideUp, T) :- step(T).
 
-initiates(land, sideUp, (0, 1, 1, sideUp), T) :- step(T).
+initiates(land, sideUp, ( (1, (sideUp, T)) ), T) :- step(T).
 
 
 %-------------------------------------------------------------------------------
@@ -35,21 +35,23 @@ initiates(land, sideUp, (0, 1, 1, sideUp), T) :- step(T).
 %-------------------------------------------------------------------------------
 
 initiallyP(sideUp, 1).
-%initiallyN(F) :- not initiallyP(F), dfluent(F).
+%initiallyN(F) :- not initiallyP(F), fluent(F).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(roll,      10).
-in_happens(land,      20). % TODO could be triggered
+obs(happens(roll),      10).
+obs(happens(land),      20). % TODO could be triggered
 
 
 % enforce a result that we are looking for
 % (since its not really useful to list all non-ground fholdsAts...)
 &sum{ (sideUp, 3) } = X :- goal(X).
+
 
 % TODO the goal is grounded but the point of the example is to show a non-ground non-deterministic fholdsAt during the roll
 {goal(1;2;3;4;5;6)} = 1.

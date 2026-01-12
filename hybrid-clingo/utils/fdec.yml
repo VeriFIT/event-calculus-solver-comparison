@@ -1,0 +1,9 @@
+name: fdec
+channels:
+  - defaults
+  - potassco/label/dev
+  - conda-forge
+dependencies:
+  - clingo-lpx
+  - python=3.8
+  - clingcon

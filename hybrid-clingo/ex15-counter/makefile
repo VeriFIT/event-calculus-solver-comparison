@@ -18,20 +18,10 @@ run-con:
 
 
 #-----------------------------------------------------------------------------------------------------------------------
-# other versions
-LPX_CMD_EFF=python -m clingolpx --enable-python --strict -n10 ./model-efficient.lp ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
-
-#TODO#run-lpx-eff:
-#TODO#	MAXSTEP=5; ${TIME} ${LPX_CMD_EFF} | ../utils/make-readable.sh
-
-
-#-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
 log:
 	@mkdir -p ./logs ; rm -f ./logs/*.log
 	NAME=; 		MAXSTEP=5;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} 		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0
-
-#TODO#	NAME=-eff; 	MAXSTEP=5;	../../scripts/maketrace.sh "${LPX_CMD_EFF} 	| ../utils/make-readable.sh" ./logs/lpx$$NAME-s$$MAXSTEP.log ; exit 0
 
 	NAME=; 		MAXSTEP=5;	MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD} 		| ../utils/replace_assignments.sh | ../utils/make-readable.sh" ./logs/con$$NAME-s$$MAXSTEP.log ; exit 0

@@ -3,8 +3,8 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 
 #-----------------------------------------------------------------------------------------------------------------------
 # base
-LPX_CMD=clingo-lpx --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
-CON_CMD=clingcon -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+LPX_CMD=python -m clingolpx --enable-python --strict -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
+CON_CMD=python -m clingcon --enable-python -n0 ../axioms/fdec.lp ../axioms/fdec-show.lp -c maxstep=$$MAXSTEP -c maxtime=$$MAXTIME
 
 run-lpx:
 	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD} ./model.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
@@ -30,14 +30,14 @@ run-lpx-fixed-50:
 
 
 run-con-fixed:
-	MAXSTEP=6; MAXTIME=1000; ${TIME} ${CON_CMD} ./model-con-fixed.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh
+	MAXSTEP=6; MAXTIME=15; ${TIME} ${CON_CMD} ./model-con-fixed.lp | ../utils/replace_assignments.sh | ../utils/make-readable.sh
 
 run-con-fixed-50:
 	MAXSTEP=50; MAXTIME=59; ${TIME} ${CON_CMD} ./model-con-fixed.lp | ../utils/make-readable.sh
 
 #-----------------------------------------------------------------------------------------------------------------------
 # other versions
-LPX_CMD_EFF=clingo-lpx --strict -n0 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
+LPX_CMD_EFF=python -m clingolpx --enable-python --strict -n0 ../axioms/clingo_lpx-efficient.lp -c maxstep=$$MAXSTEP
 
 #TODO#run-lpx-efficient:
 #TODO#	MAXSTEP=6; MAXTIME=1000; ${TIME} ${LPX_CMD_FH} ./model-fixed-efficient.lp -c disablelaststep=1 | ../utils/replace_assignments.sh | ../utils/make-readable.sh

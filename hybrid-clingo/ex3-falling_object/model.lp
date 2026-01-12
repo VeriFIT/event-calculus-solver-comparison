@@ -18,7 +18,7 @@ object(apple).
 
 % fluent(height(O, H)) :- object(O), fHeight(H).
 ffluent(height(O)) :- object(O).
-dfluent(falling(O)) :- object(O).
+fluent(falling(O)) :- object(O).
 
 event(drop(A, O)) :- agent(A), object(O).
 event(hitGround(O)) :- object(O).
@@ -45,17 +45,15 @@ releases(drop(A,O), height(O), T) :- agent(A), object(O), step(T).
 happens(hitGround(O), T) :-
     holdsAt(falling(O), T),
     % &sum{ (height(O), T) } = 0,
-    normal_atom((height(O), T), eq, 0), 
+    sum(( (1, (height(O), T)) ), eq, 0), 
     step(T).
 
 
 % capture when height(O) = 0
 % restrict that there must exist a state where height is exactly equal to zero
 % (by saying that there cannot be two subsequent states in which one is lt/gt and the next gt/lt, i.e. there is no state with exactly eq)
-% TODO both trigger_value/2 and /3 works fine for this example
-trigger_value(height(O), 0) :- object(O).
-    % trigger_value(height(O), falling(O), 0) :- object(O).
-
+no_jump(height(O), S, 0) :- holdsAt(falling(O), S).
+    %%no_jump(height(O), S, 0) :- step(S), object(O).
 
 % [effect]
 % if an object hits the ground, then it will stop falling
@@ -63,7 +61,7 @@ terminates(hitGround(O), falling(O), T) :- object(O), step(T).
 
 % [effect + CLoI]
 % if an object hits the ground then its height will no longer be released from CLoI
-initiates(hitGround(O), height(O), (0, 1, 1, height(O)), T) :- step(T), object(O).
+initiates(hitGround(O), height(O), ( (1, (height(O), T)) ), T) :- step(T), object(O).
 
 
 % TODO % terminates(catch(A, O), falling(O), T) :- agent(A), object(O), step(T).
@@ -90,7 +88,11 @@ initiates(hitGround(O), height(O), (0, 1, 1, height(O)), T) :- step(T), object(O
 %    holdsAt(height(O,H), T1),
 %    fGravity(G), object(O), fHeight(H), step(T1), step(T2).
 *%
-trajectory(falling(O), T1, height(O), (0, 1, 1, height(O), -2), T2) :- object(O), step(T1), step(T2).
+trajectory(falling(O), T1, height(O), (
+    %(1, (height(O), T1)), (-2, (timeDiff, T1, T3))
+    (1, (height(O), T1)), (2, (time, T1)), (-2, (time, T3))
+    ), T2) :-
+    T3 = T1+T2, step(T3), object(O), step(T1), step(T2).
 
 
 %-------------------------------------------------------------------------------
@@ -100,10 +102,11 @@ trajectory(falling(O), T1, height(O), (0, 1, 1, height(O), -2), T2) :- object(O)
 % initiallyP(height(apple, H)) :- initHeight(H).  % apples height initially is something
 initiallyP(height(apple), H) :- initHeight(H).  % apples height initially is something
 initiallyN(falling(apple)).
-%initiallyN(F) :- not initiallyP(F), dfluent(F).  % apple is initially not falling
+%initiallyN(F) :- not initiallyP(F), fluent(F).  % apple is initially not falling
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
-in_happens(drop(nathan,apple), 10).        % nathan drop the apple at time 10
-% in_happens(catch(nathan,apple), 15).     % TODO could add this to prevent hitting the ground 
+obs(happens(drop(nathan,apple)), 10).        % nathan drop the apple at time 10
+% obs(happens(catch(nathan,apple)), 15).     % TODO could add this to prevent hitting the ground 
 
 % --> conclude that the apple will hit the ground at time (initHeight/2) + 10

@@ -18,8 +18,8 @@ object(ball).
 
 % fluent(height(O, H)) :- object(O), fHeight(H).
 ffluent(height(O)) :- object(O).
-dfluent(falling(O)) :- object(O).
-dfluent(rising(O)) :- object(O).
+fluent(falling(O)) :- object(O).
+fluent(rising(O)) :- object(O).
 
 event(drop(A, O)) :- agent(A), object(O).
 event(throw(A, O)) :- agent(A), object(O).
@@ -53,16 +53,17 @@ releases(throw(A,O), height(O), T) :- agent(A), object(O), step(T).
 happens(collide(O1, O2), T) :-
     holdsAt(falling(O1), T),
     holdsAt(rising(O2), T),
-    % &sum{ (height(O), T) } = 0,
-    normal_atom((height(O1), T), eq, (height(O2), T)), 
+    sum( ( (1,(height(O1), T)), (-1,(height(O2), T)) ), eq, 0), 
     step(T).
 
 
 % restrict that there must exist a state where the heights are exactly equal
-% TODO manual trigger_value
-comparison((height(O1),S), (height(O2),S)) :- object(O1), object(O2), step(S).
+% TODO manual no_jump
+comparison(( (1,(height(O1), S)), (-1,(height(O2), S)) ), 0) :- object(O1), object(O2), step(S).
 :- holdsAt(falling(O1), S+1), holdsAt(rising(O2), S+1),
-   normal_atom((height(O1),S), gt, (height(O2),S)), normal_atom((height(O1),S+1), lt, (height(O2),S+1)), step(S), step(S+1).
+    sum(( (1,(height(O1), S)), (-1,(height(O2), S)) ), gt, 0), sum(( (1,(height(O1), S+1)), (-1,(height(O2), S+1)) ), lt, 0), step(S), step(S+1).
+:- holdsAt(falling(O1), S+1), holdsAt(rising(O2), S+1),
+    sum(( (1,(height(O1), S)), (-1,(height(O2), S)) ), lt, 0), sum(( (1,(height(O1), S+1)), (-1,(height(O2), S+1)) ), gt, 0), step(S), step(S+1).
 
 
 % [effect]
@@ -70,8 +71,8 @@ terminates(collide(O1, O2), falling(O1), T) :- object(O1), object(O2), step(T).
 terminates(collide(O1, O2), rising(O2), T) :- object(O1), object(O2), step(T).
 
 % [effect + CLoI]
-initiates(collide(O1,O2), height(O1), (0, 1, 1, height(O1)), T) :- step(T), object(O1), object(O2).
-initiates(collide(O1,O2), height(O2), (0, 1, 1, height(O2)), T) :- step(T), object(O1), object(O2).
+initiates(collide(O1,O2), height(O1), ((1, (height(O1),T))), T) :- step(T), object(O1), object(O2).
+initiates(collide(O1,O2), height(O2), ((1, (height(O2),T))), T) :- step(T), object(O1), object(O2).
 
 % [state constraint]
 % an object only has one unique height at a time
@@ -86,8 +87,10 @@ initiates(collide(O1,O2), height(O2), (0, 1, 1, height(O2)), T) :- step(T), obje
 %    holdsAt(height(O,H), T1),
 %    fGravity(G), object(O), fHeight(H), step(T1), step(T2).
 *%
-trajectory(falling(O), T1, height(O), (0, 1, 1, height(O), -2), T2) :- object(O), step(T1), step(T2).
-trajectory(rising(O), T1, height(O), (0, 1, 1, height(O), 2), T2) :- object(O), step(T1), step(T2).
+trajectory(falling(O), T1, height(O), ( (1, (height(O), T1)), (2, (time, T1)), (-2, (time, T3)) ), T2) :-
+    T3 = T1+T2, step(T3), object(O), step(T1), step(T2).
+trajectory(rising(O), T1, height(O), ( (1, (height(O), T1)), (-2, (time, T1)), (2, (time, T3)) ), T2) :-
+    T3 = T1+T2, step(T3), object(O), step(T1), step(T2).
 
 
 %-------------------------------------------------------------------------------
@@ -99,8 +102,9 @@ initiallyP(height(ball), 0).                    % ball's height initially is som
 initiallyN(falling(O)) :- object(O).
 initiallyN(rising(O)) :- object(O).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
-in_happens(drop(nathan1,apple), 10).        % nathan1 drop the apple at time 10
-in_happens(throw(nathan2,ball), 10).        % nathan2 throws the ball at time 10
+obs(happens(drop(nathan1,apple)), 10).        % nathan1 drop the apple at time 10
+obs(happens(throw(nathan2,ball)), 10).        % nathan2 throws the ball at time 10
 
 % --> conclude ...

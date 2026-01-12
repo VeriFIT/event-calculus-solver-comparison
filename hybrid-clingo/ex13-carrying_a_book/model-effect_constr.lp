@@ -15,11 +15,11 @@ object(book).
 %! could also use (below) to treat agents as objects
 % object(A) :- agent(A).
 
-in_locations(L) :- in_happens(walk(_, L), _).  % grounding L only to actual occurrences
+in_locations(L) :- obs(happens(walk(_, L)), _).  % grounding L only to actual occurrences
 
 ffluent(location(A)) :- agent(A).
 ffluent(location(O)) :- object(O).
-dfluent(holding(A, O)) :- agent(A), object(O).
+fluent(holding(A, O)) :- agent(A), object(O).
 
 event(walk(A, L)) :- agent(A), in_locations(L).
 event(pickUp(A, O)) :- agent(A), object(O).
@@ -32,13 +32,15 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent walks from Location1 to Location2, then they will no longer be in Location1
 % and will be in Location2
-initiates(walk(A, L), location(A), (L, 1, 0, location(A)), T) :- step(T), agent(A), in_locations(L).
+%initiates(walk(A, L), location(A), ( (1, L) ), T) :- step(T), agent(A), in_locations(L).
+&sum{one} = 1. % TODO workaround for lpx
+initiates(walk(A, L), location(A), ( (L, one) ), T) :- step(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
-    normal_atom((location(A), T), eq, (location(O), T)),
+    sum( ( (1, (location(A), T)), (1, (location(O), T)) ), eq, 0),
     agent(A), object(O), step(T).
-comparison((location(A), T), (location(O), T)) :- happens(pickUp(A, O), T).
+comparison(( (1, (location(A), T)), (1, (location(O), T)) ), 0) :- happens(pickUp(A, O), T).
 
 %% % if an agent is holding an object and lets go of it, then they will no longer be holding it
 terminates(letGoOf(A, O), holding(A, O), T) :-
@@ -64,9 +66,9 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 %! indirect effect
 % TODO maybe the (A,B,C,F) should be (A,B,C,F1,F2)
 % TODO axioms would then have &sum{ A; B*((F1,T) + C) } = (F2,T+1)
-initiates(E, location(O), (FA1, FA2, FB, location(O)), T) :-
+initiates(E, location(O), EQ, T) :-
     holdsAt(holding(A, O), T),
-    initiates(E, location(A), (FA1, FA2, FB, location(A)), T),
+    initiates(E, location(A), EQ, T),
     step(T), object(O).
 
 
@@ -84,22 +86,23 @@ initiates(E, location(O), (FA1, FA2, FB, location(O)), T) :-
 
 initiallyP(location(nathan), 0).
 initiallyP(location(book), 0).
-initiallyN(F) :- not initiallyP(F), dfluent(F).  % % nathan is initially not holding the book
+initiallyN(F) :- not initiallyP(F), fluent(F).  % % nathan is initially not holding the book
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-in_happens(pickUp(nathan, book), 10).
+obs(happens(pickUp(nathan, book)), 10).
 
 % nathan walks to position 100 with the book
-in_happens(walk(nathan, 100), 20).
+obs(happens(walk(nathan, 100)), 20).
 
-in_happens(letGoOf(nathan, book), 30).
+obs(happens(letGoOf(nathan, book)), 30).
 
 % nathan walks to position 200 without the book
-in_happens(walk(nathan, 200), 40).
+obs(happens(walk(nathan, 200)), 40).
 
 % --> conclude that the book is at position 100 after time 20 and stays there 
