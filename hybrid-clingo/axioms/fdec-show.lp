@@ -39,7 +39,7 @@ anyTrajectory(F2, S2) :- not debug_prints,
 %%%  not holdsAt(F, S+1), step(S), step(S+1), ffluent(F), not debug_prints, negated_prints.
 
 %% functional fluents can be continuous with their value defined by a trajectory (continuous value between steps)
-#show fholdsAtC(F2, ((F2, SStart+Dur-1), "->", (F2, SStart+Dur)), EQ) :
+#show fholdsAtC(F2, ((F2, SStart+Dur-1), "->", (F2, SStart+Dur)), ((time, SStart+Dur-1), "< S =<", (time, SStart+Dur)), EQ) :
   happens(E, SStart),
   initiates(E, F1, SStart),
   trajectory(F1, SStart, F2, EQ, Dur),
@@ -47,7 +47,7 @@ anyTrajectory(F2, S2) :- not debug_prints,
   Dur > 0,
   step(SStart+Dur-1), step(SStart+Dur), step(SStart),
   not debug_prints.
-#show fholdsAtC(F2, ((F2, SStart+Dur-1), "->", (F2, SStart+Dur)), EQ) :
+#show fholdsAtC(F2, ((F2, SStart+Dur-1), "->", (F2, SStart+Dur)), ((time, SStart+Dur-1), "< S =<", (time, SStart+Dur)), EQ) :
   happens(E, SStart),
   terminates(E, F1, SStart),
   antiTrajectory(F1, SStart, F2, EQ, Dur),

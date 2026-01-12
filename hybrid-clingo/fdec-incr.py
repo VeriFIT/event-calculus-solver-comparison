@@ -131,9 +131,8 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description='Execute FDEC incrementally until the right number of steps is found.')
     
-    parser.add_argument('source_file', help='upper limit for the timescale')
-    parser.add_argument('maxtime', type=int, help='upper limit for the timescale')
-    parser.add_argument('minsteps', type=int, nargs='?', default=1, help='number of steps to start at')
+    parser.add_argument('--maxtime', type=int, nargs='?', help='upper limit for the timescale')
+    parser.add_argument('--minstep', type=int, nargs='?', default=1, help='number of steps to start at')
     parser.add_argument('--replace_assign', type=int, default=2, help='set the level of replacement of theory atom assignments in the model (zero is off)')
     parser.add_argument('--no_newlines', action='store_true', help='disable adding new lines into models')
     parser.add_argument('--project', action='store_true', help='--project for the solver')
@@ -143,6 +142,7 @@ if __name__ == "__main__":
     #parser.add_argument('--no_laststep', action='store_true', help='disable the builtin laststep')
     #parser.add_argument('--no_signifstep', action='store_true', help='disable the significant step constraint')
     #parser.add_argument('--debug', action='store_true', help='enable debug prints')
+    parser.add_argument('source_files', nargs='*', help='any number of source files')
     conf_args = parser.parse_args()
     
     
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     axioms_show = os.path.join(scriptdir, 'axioms/fdec-show.lp'),
     
     
-    steps=conf_args.minsteps
+    steps=conf_args.minstep
     result_found = False
 
     print("Looking for the right number of steps: ", end='', flush=True)
@@ -170,18 +170,22 @@ if __name__ == "__main__":
             
         if(conf_args.project == True):
             cmd.append("--project")
+            
+        if(conf_args.maxtime != None):
+            cmd.extend([
+                "-c",
+                "maxtime=" + str(conf_args.maxtime)
+            ])
         
         cmd.extend([
             "-n",
             str(conf_args.n),
-            conf_args.source_file,
-            os.path.join(scriptdir, 'axioms/fdec.lp'),
-            os.path.join(scriptdir, 'axioms/fdec-show.lp'),
             "-c",
             "maxstep=" + str(steps),
-            "-c",
-            "maxtime=" + str(conf_args.maxtime)
+            os.path.join(scriptdir, 'axioms/fdec.lp'),
+            os.path.join(scriptdir, 'axioms/fdec-show.lp')
         ])
+        cmd.extend(conf_args.source_files,)
         
         result = subprocess.run(
             cmd,
