@@ -1,6 +1,9 @@
 % toss a coin that will non-deterministically land as heads or tails
 % testing release from inertia for discrete fluents
 
+#const maxstep=2.
+#const maxtime=1000.
+
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
@@ -42,7 +45,7 @@ initiallyN(F) :- not initiallyP(F), fluent(F).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(toss),      10).
-obs(happens(land),      20). % TODO could be triggered
+obs(happens, toss,      10).
+obs(happens, land,      20). % TODO could be triggered
 
 % --> two models heads or tails

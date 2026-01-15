@@ -5,7 +5,7 @@
 
 % There are multiple bank accounts and money can be transferred between them.
 
-#const maxstep=6.
+#const maxstep=5.
 #const maxtime=1000.
 
 %-------------------------------------------------------------------------------
@@ -41,15 +41,6 @@ event(monthlyReset(A)) :- account(A).
 %% and the amount is transfered from A1 to account A2,
 %% then the balance of A1 decreses and of A2 increases
 
-%*
-%% new balance of A2 (receives payment)
-%initiates(transfer(A1, A2, TransM12), balance(A2, DstM2 + TransM12), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
-*%
 initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
@@ -62,23 +53,11 @@ comparison( ( (1, (balance(A1), T)) ), TransM12) :-
 
 %*
 %% terminate old balance of A2
-%terminates(transfer(A1, A2, TransM12), balance(A2, DstM2), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
+% not needed -- meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 %*
 %% new balance of A1 (sends payment)
-%initiates(transfer(A1, A2, TransM12), balance(A1, SrcM1 - TransM12), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
@@ -92,15 +71,8 @@ initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balanc
 
 %*
 %% terminate old balance of A1
-%terminates(transfer(A1, A2, TransM12), balance(A1, SrcM1), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
-
+% not needed -- is meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 
 % when a service fee is charged, then a note is made to avoid repeated charging
@@ -131,11 +103,8 @@ initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (bala
 
 %*
 %% terminate old balance
-%terminates(chargeServiceFee(A), balance(A, OldM), T) :-
-%    holdsAt(balance(A, OldM), T),
-%    account(A), step(T), money(OldM).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiates/4
+% not needed -- is meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 
 %-------------------------------------------------------------------------------
@@ -144,18 +113,10 @@ initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (bala
 
 %*
 %% an account has a single unique balance at a time
-%M1=M2 :- holdsAt(balance(A, M1), T), holdsAt(balance(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
-%
-%% an account can only have a single unique minimumBalance at a time % modif -- added
-%M1=M2 :- holdsAt(minimumBalance(A, M1), T), holdsAt(minimumBalance(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
-%
-%% an account can only have a single unique serviceFee at a time % modif -- added
-%M1=M2 :- holdsAt(serviceFee(A, M1), T), holdsAt(serviceFee(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
+%% an account can only have a single unique minimumBalance at a time
+%% an account can only have a single unique serviceFee at a time
 *%
-% TODO these state constraints are not needed since lpx only allows one value at a time for functional fluents
+% not needed -- functional fluents cannot have multiple values
 
 
 %-------------------------------------------------------------------------------
@@ -165,18 +126,14 @@ initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (bala
 % if the balance of an account falls below the minimum
 % and a service fee has not yet been charged
 % then a service fee will be charged
-%*
-%happens(chargeServiceFee(A), T) :-
-%    holdsAt(balance(A,AccM), T), holdsAt(minimumBalance(A, MinM), T), AccM < MinM,
-%    not holdsAt(serviceFeeCharged(A), T),
-%    account(A), step(T), money(AccM), money(MinM).
-*%
 
 % time epsilon to trigger chargeServiceFee(A)
-epsilon(1). % clingcon can only do integers
+epsilon(1). % integer for clingcon
+&sum{ (time,S2); -(time,S1); -(timeDiff,S1,S2) } = 0 :- step(S1), step(S2), S1 <= S2.
+
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    sum( ( (1, (balance(A), T)) ), lt, (minimumBalance(A),T)),
+    sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), T),
     account(A), step(T),
     % fixing zeno timepoint via an epsilon -- balance holds for EPS
@@ -190,7 +147,7 @@ happens(chargeServiceFee(A), T) :-
     %sum(time(T), -time(T1), eq, EPS).
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
-    sum( ( (1, (balance(A), T)) ), lt, (minimumBalance(A),T)),
+    sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), T),
     account(A), step(T),
     % fixing zeno timepoint via an epsilon -- serviceFeeCharged not holds for EPS
@@ -203,93 +160,41 @@ happens(chargeServiceFee(A), T) :-
     sum( ( (1, (timeDiff, T1, T)) ), eq, EPS).
     %sum(time(T), -time(T1), eq, EPS).
 
-comparison( ( (1, (balance(A), T)) ), (minimumBalance(A),T)) :- account(A), step(T).
+comparison( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), 0) :- account(A), step(T).
 comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 
 
-:-  % establish T1 (cause 1)
-    happens(E, T1),
-    initiates(E, balance(A), _, T1),
-    not startedIn(T1, balance(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
-    % cannot step over it
-    T >= T1,
+% TODO different no_jump -- not dont step over a particular value of continuous change, but force an event at some T1 + epsilon
+:-  % establish SStart (cause 1)
+    happens(E, SStart),
+    initiates(E, balance(A), _, SStart),
+    not startedIn(SStart, balance(A), S),   % startedIn instead of stoppedIn because balance is a ffluent
+    SStart < S,
     epsilon(EPS),
-    sum(( (1, (timeDiff, T1, T)) ), lt, EPS),
-    sum(( (1, (timeDiff, T1, T+1)) ), gt, EPS),
-    % if the trigger condition holds
-    sum( ( (1, (balance(A), T+1)) ), lt, (minimumBalance(A),T+1)),
-    not holdsAt(serviceFeeCharged(A), T+1).
-:-  % establish T1 (cause 2)
-    happens(E, T1),
-    terminates(E, serviceFeeCharged(A), T1),
-    not startedIn(T1, serviceFeeCharged(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
-    % cannot step over it
-    T >= T1,
+    % trigger condition holds at S
+    sum( ( (1, (balance(A), S)), (-1, (minimumBalance(A), S)) ), lt, 0),
+    not holdsAt(serviceFeeCharged(A), S),
+    % no_jump constraint for S
+    sum(( (1, (timeDiff, SStart, S-1)) ), lt, EPS),
+    sum(( (1, (timeDiff, SStart, S)) ), gt, EPS).
+:-  % establish SStart (cause 2)
+    happens(E, SStart),
+    terminates(E, serviceFeeCharged(A), SStart),
+    not startedIn(SStart, serviceFeeCharged(A), S),
+    SStart < S,
     epsilon(EPS),
-    sum(( (1, (timeDiff, T1, T)) ), lt, EPS),
-    sum(( (1, (timeDiff, T1, T+1)) ), gt, EPS),
-    % if the trigger condition holds
-    sum( ( (1, (balance(A), T+1)) ), lt, (minimumBalance(A),T+1)),
-    not holdsAt(serviceFeeCharged(A), T+1).
-
-
-%% % TODO complicated trigger_value
-%%comparison(time(T), -time(T1), EPS) :- epsilon(EPS), T1 < T, step(T1), step(T).
-%% % cannot step over T1 + epsilon
-%% :-  % establish T1 (cause 1)
-%%     happens(E, T1),
-%%     initiates(E, balance(A), T1),
-%%     not startedIn(T1, balance(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
-%%     % cannot step over it
-%%     T > T1,
-%%     epsilon(EPS),
-%%     sum(time(T), -time(T1), lt, EPS),
-%%     sum(time(T+1), -time(T1), gt, EPS),
-%%     % if the trigger condition holds
-%%     sum((balance(A),T), lt, (minimumBalance(A),T)),
-%%     not holdsAt(serviceFeeCharged(A), T).
-%% :-  % establish T1 (cause 2)
-%%     happens(E, T1),
-%%     terminates(E, serviceFeeCharged(A), T1),
-%%     not startedIn(T1, serviceFeeCharged(A), T+1),   % startedIn instead of stoppedIn because balance is a ffluent
-%%     % cannot step over it
-%%     T > T1,
-%%     epsilon(EPS),
-%%     sum(time(T), -time(T1), lt, EPS),
-%%     sum(time(T+1), -time(T1), gt, EPS),
-%%     % if the trigger condition holds
-%%     sum((balance(A),T), lt, (minimumBalance(A),T)),
-%%     not holdsAt(serviceFeeCharged(A), T).
-%% 
-%% % TODO need a special case for T = T1 + 1 because &sum{step(T) - step(T)} < EPS is unsat
-%% :-  % establish T1 (cause 1)
-%%     happens(E, T1),
-%%     initiates(E, balance(A), T1),
-%%     % cannot step over it -- next step must not be later than after EPS
-%%     T = T1,
-%%     epsilon(EPS),
-%%     sum(time(T+1), -time(T1), gt, EPS),
-%%     % if the trigger condition holds
-%%     sum((balance(A),T+1), lt, (minimumBalance(A),T+1)),
-%%     not holdsAt(serviceFeeCharged(A), T+1).
-%% :-  % establish T1 (cause 2)
-%%     happens(E, T1),
-%%     terminates(E, serviceFeeCharged(A), T1),
-%%     % cannot step over it -- next step must not be later than after EPS
-%%     T = T1,
-%%     epsilon(EPS),
-%%     sum(time(T+1), -time(T1), gt, EPS),
-%%     % if the trigger condition holds
-%%     sum((balance(A),T+1), lt, (minimumBalance(A),T+1)),
-%%     not holdsAt(serviceFeeCharged(A), T+1).
+    % trigger condition holds at S
+    sum( ( (1, (balance(A), S)), (-1, (minimumBalance(A), S)) ), lt, 0),
+    not holdsAt(serviceFeeCharged(A), S),
+    % no_jump constraint for S
+    sum(( (1, (timeDiff, SStart, S-1)) ), lt, EPS),
+    sum(( (1, (timeDiff, SStart, S)) ), gt, EPS).
 
 
 %-------------------------------------------------------------------------------
 % observations
 %-------------------------------------------------------------------------------
 
-initiallyN(serviceFeeCharged(account1)).
-initiallyN(serviceFeeCharged(account2)).
 initiallyP(balance(account1), 10).      
 initiallyP(balance(account2), 10).      
 initiallyP(minimumBalance(account1),  5).
@@ -306,8 +211,8 @@ initiallyN(F) :- not initiallyP(F), fluent(F).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(transfer(account1, account2, 2)), 10).
-obs(happens(transfer(account1, account2, 4)), 20).
+obs(happens, transfer(account1, account2, 2), 10).
+obs(happens, transfer(account1, account2, 4), 20).
 
 % --> conclude that
 %   a service fee is charged to account1 "in response to transfer at time 20" due to the balance being 4

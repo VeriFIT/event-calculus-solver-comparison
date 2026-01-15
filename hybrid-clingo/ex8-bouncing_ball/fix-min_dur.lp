@@ -5,11 +5,11 @@
 ffluent(height).
 ffluent(velocity).
 
-dfluent(falling).
-dfluent(rising).
+fluent(falling).
+fluent(rising).
 
-dfluent(constant_fall_rate(X)) :- initiallyP(constant_fall_rate(X)).         % simplified to a constant fall rate instead of accelerating over time
-dfluent(velocity_loss_portion(X)) :- initiallyP(velocity_loss_portion(X)).   % ball looses a portion of velocity on each bounce
+fluent(constant_fall_rate(X)) :- initiallyP(constant_fall_rate(X)).         % simplified to a constant fall rate instead of accelerating over time
+fluent(velocity_loss_portion(X)) :- initiallyP(velocity_loss_portion(X)).   % ball looses a portion of velocity on each bounce
 
 % input events
 event(drop).
@@ -43,26 +43,26 @@ terminates(reach_apex, rising, T) :- step(T).
 % stop everything by catching the ball
 terminates(catch, falling, T) :- step(T).
 terminates(catch, rising, T) :- step(T).
-initiates(catch, height, (0, 0, 1, height), T) :- step(T).
-initiates(catch, velocity, (0, 0, 0, velocity), T) :- step(T).
+initiates(catch, height, ( (1, (height, T)) ), T) :- step(T).
+initiates(catch, velocity, ( (0, (velocity, T)) ), T) :- step(T).
 
 % stop everything if the ball stops bouncing
-initiates(stop_bouncing, height, (0, 0, 0, height), T) :- step(T).
-initiates(stop_bouncing, velocity, (0, 0, 0, velocity), T) :- step(T).
+initiates(stop_bouncing, height, ( (0, (height, T)) ), T) :- step(T).
+initiates(stop_bouncing, velocity, ( (0, (velocity, T)) ), T) :- step(T).
 
 % falling 
-trajectory(falling, T1, height, (0, 0, 1, height, -Rate), T2) :-
+trajectory(falling, T1, height, (( (1, (height, T1)) ), -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
-trajectory(falling, T1, velocity, (0, 0, 1, velocity, Rate), T2) :-
+trajectory(falling, T1, velocity, (( (1, (velocity, T1)) ), Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
 
 % rising
-trajectory(rising, T1, height, (0, 0, 1, height, Rate), T2) :-
+trajectory(rising, T1, height, (( (1, (height, T1)) ), Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
-trajectory(rising, T1, velocity, (0, 0, "0.25", velocity, -Rate), T2) :-
+trajectory(rising, T1, velocity, (( ("0.25", (velocity, T1)) ), -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     %initiallyP(velocity_loss_portion(LossPortion)), % ... 1 - LossPortion
     step(T1), step(T2).
@@ -73,7 +73,7 @@ happens(fall_down, T) :- happens(drop, T).
 
 happens(hit_ground, T) :- 
     holdsAt(falling, T),
-    normal_atom((height, T), eq, 0).
+    sum(( (1, (height, T)) ), eq, 0).
 
 happens(bounce_up, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
@@ -90,25 +90,16 @@ happens(stop_bouncing, T) :- happens(hit_ground, T),
     initiates(E, falling, T1),
     not stoppedIn(T1, falling, T),
     minDuration(MinDur),
-    normal_atom(timeDiff(T1, T), leq, MinDur),
-        %normal_atom(time(T), -time(T1), leq, MinDur),
+    sum(( (1, (timeDiff, T1, T)) ), leq, MinDur),
     step(T1), step(T).
-comparison(timeDiff(T1, T), MinDur) :- minDuration(MinDur), T1 < T, step(T1), step(T).
-    %comparison(time(T), -time(T1), MinDur) :- minDuration(MinDur), T1 < T, step(T1), step(T).
+&sum{ (time,S2); -(time,S1); -(timeDiff,S1,S2) } = 0 :- step(S1), step(S2), S1 <= S2.
+comparison( ( (1, (timeDiff, T1, T)) ), MinDur) :- minDuration(MinDur), T1 <= T, step(T1), step(T).
 
 happens(reach_apex, T) :-
     holdsAt(rising, T),
-    normal_atom((velocity, T), eq, 0).
+    sum(( (1, (velocity, T)) ), eq, 0).
 
 happens(fall_down, T) :- happens(reach_apex, T).
 
-% TODO both trigger_value/2 and /3 works fine for this example
-trigger_value(height, 0).
-trigger_value(velocity, 0).
-    %% trigger_value(height, falling, 0).
-    %% trigger_value(velocity, rising, 0).
-
-
-% NOTE
-% do not need trigger_value for the aux__fallDurAtStep because it does not trigger any events on its own
-% first hitGround is triggered based on height and then we check the duration to see if we should trigger a bounce at the same step
+no_jump(height, S, 0) :- holdsAt(falling, S), step(S).
+no_jump(velocity, S, 0) :- holdsAt(rising, S), step(S).

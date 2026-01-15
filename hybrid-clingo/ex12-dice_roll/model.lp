@@ -1,6 +1,9 @@
 % roll a dice with non-ground number of sides
 % testing release from inertia for functional fluents
 
+#const maxstep=2.
+#const maxtime=100.
+
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
@@ -10,7 +13,7 @@ event(land).
 
 ffluent(sideUp).    % functional fluent
 
-% the fluent can only have positive fholdsAts
+% the fluent can only have positive values
 &sum{ (sideUp, T) } > 0 :- step(T).
 
 
@@ -44,13 +47,13 @@ initiallyP(sideUp, 1).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(roll),      10).
-obs(happens(land),      20). % TODO could be triggered
+obs(happens, roll,      10).
+obs(happens, land,      20). % TODO could be triggered
 
 
 % enforce a result that we are looking for
 % (since its not really useful to list all non-ground fholdsAts...)
-&sum{ (sideUp, 3) } = X :- goal(X).
+&sum{ (sideUp, maxstep) } = X :- goal(X).
 
 
 % TODO the goal is grounded but the point of the example is to show a non-ground non-deterministic fholdsAt during the roll

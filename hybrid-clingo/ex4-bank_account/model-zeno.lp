@@ -5,7 +5,7 @@
 
 % There are multiple bank accounts and money can be transferred between them.
 
-#const maxstep=6.
+#const maxstep=5.
 #const maxtime=1000.
 
 %-------------------------------------------------------------------------------
@@ -41,15 +41,6 @@ event(monthlyReset(A)) :- account(A).
 %% and the amount is transfered from A1 to account A2,
 %% then the balance of A1 decreses and of A2 increases
 
-%*
-%% new balance of A2 (receives payment)
-%initiates(transfer(A1, A2, TransM12), balance(A2, DstM2 + TransM12), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
-*%
 %initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
 &sum{one} = 1.  % TODO workaround for lpx
 initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
@@ -64,23 +55,11 @@ comparison( ( (1, (balance(A1), T)) ), TransM12) :-
 
 %*
 %% terminate old balance of A2
-%terminates(transfer(A1, A2, TransM12), balance(A2, DstM2), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
+% not needed -- meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 %*
 %% new balance of A1 (sends payment)
-%initiates(transfer(A1, A2, TransM12), balance(A1, SrcM1 - TransM12), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 %initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
 % TODO workaround for lpx
@@ -96,15 +75,8 @@ initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (bala
 
 %*
 %% terminate old balance of A1
-%terminates(transfer(A1, A2, TransM12), balance(A1, SrcM1), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
-
+% not needed -- is meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 
 % when a service fee is charged, then a note is made to avoid repeated charging
@@ -135,11 +107,8 @@ initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (bala
 
 %*
 %% terminate old balance
-%terminates(chargeServiceFee(A), balance(A, OldM), T) :-
-%    holdsAt(balance(A, OldM), T),
-%    account(A), step(T), money(OldM).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiates/4
+% not needed -- is meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 
 %-------------------------------------------------------------------------------
@@ -148,18 +117,10 @@ initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (bala
 
 %*
 %% an account has a single unique balance at a time
-%M1=M2 :- holdsAt(balance(A, M1), T), holdsAt(balance(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
-%
-%% an account can only have a single unique minimumBalance at a time % modif -- added
-%M1=M2 :- holdsAt(minimumBalance(A, M1), T), holdsAt(minimumBalance(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
-%
-%% an account can only have a single unique serviceFee at a time % modif -- added
-%M1=M2 :- holdsAt(serviceFee(A, M1), T), holdsAt(serviceFee(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
+%% an account can only have a single unique minimumBalance at a time
+%% an account can only have a single unique serviceFee at a time
 *%
-% TODO these state constraints are not needed since lpx only allows one value at a time for functional fluents
+% not needed -- functional fluents cannot have multiple values
 
 
 %-------------------------------------------------------------------------------
@@ -169,12 +130,7 @@ initiates(chargeServiceFee(A), balance(A), ( (-1, (serviceFee(A), T)), (1, (bala
 % if the balance of an account falls below the minimum
 % and a service fee has not yet been charged
 % then a service fee will be charged
-%*
-%happens(chargeServiceFee(A), T) :-
-%    holdsAt(balance(A,AccM), T), holdsAt(minimumBalance(A, MinM), T), AccM < MinM,
-%    not holdsAt(serviceFeeCharged(A), T),
-%    account(A), step(T), money(AccM), money(MinM).
-*%
+
 
 % time epsilon to trigger chargeServiceFee(A)
 happens(chargeServiceFee(A), T) :-
@@ -185,7 +141,7 @@ happens(chargeServiceFee(A), T) :-
 
 comparison( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), 0) :- account(A), step(T).
 
-% manual no_jump -- cannot have two subsequent steps of trigger condition holding without triggering the event
+% TODO manual no_jump -- cannot have two subsequent steps of trigger condition holding without triggering the event
 :- sum( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), lt, 0),
    not holdsAt(serviceFeeCharged(A), T),
    sum( ( (1, (balance(A), T+1)), (-1, (minimumBalance(A), T+1)) ), lt, 0),
@@ -197,8 +153,6 @@ comparison( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), 0) :- accoun
 % observations
 %-------------------------------------------------------------------------------
 
-initiallyN(serviceFeeCharged(account1)).
-initiallyN(serviceFeeCharged(account2)).
 initiallyP(balance(account1), 10).      
 initiallyP(balance(account2), 10).      
 initiallyP(minimumBalance(account1),  5).
@@ -215,8 +169,8 @@ initiallyN(F) :- not initiallyP(F), fluent(F).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(transfer(account1, account2, 2)), 10).
-obs(happens(transfer(account1, account2, 4)), 20).
+obs(happens, transfer(account1, account2, 2), 10).
+obs(happens, transfer(account1, account2, 4), 20).
 
 % --> conclude that
 %   a service fee is charged to account1 "in response to transfer at time 20" due to the balance being 4

@@ -8,6 +8,9 @@
 % and walking is now a continuous process via a trajectory
 % TODO currently can only walk in one direction (only up/forward)
 
+#const maxstep=9.
+#const maxtime=1000.
+
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
@@ -17,7 +20,7 @@ object(book).
 %! could also use (below) to treat agents as objects
 % object(A) :- agent(A).
 
-in_locations(L) :- obs(happens(walk(_, L)), _).  % grounding L only to actual occurrences
+in_locations(L) :- obs(happens, walk(_, L), _).  % grounding L only to actual occurrences
 
 ffluent(location(A)) :- agent(A).
 ffluent(location(O)) :- object(O).
@@ -53,28 +56,22 @@ initiates(arrive(A), walkingTo(A), ( (0, zero) ), T) :- agent(A), step(T).
 
 initiates(arrive(A), location(A), ( (1, (location(A), T)) ), T) :- step(T), agent(A).
 
-trajectory(walking(A), T1, location(A), ( (1, (location(A), T1)), (10, (timeDiff, T1, T3)) ), T2) :- T3 = T1+T2, step(T3), agent(A), step(T1), step(T2).
+trajectory(walking(A), T1, location(A), (( (1, (location(A), T1)) ), 10), T2) :- step(T1+T2), agent(A), step(T1), step(T2).
 % trajectory(walkingTo(A), T1, location(A), (0, 0, 1, location(A), 10), T2) :- agent(A), step(T1), step(T2).
 
 happens(arrive(A), T) :-
     holdsAt(walking(A), T), % holdsAt(walkingTo(A), T),
     sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), eq, 0), 
     step(T).
-% TODO trigger_value for two func fluents
+% TODO manual no_jump because the target value is initiated (not a constant that is always the same)
 comparison(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), 0) :- agent(A), step(T).
-comparison(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), L) :- agent(A), step(T), happens(walk(A, L), T).
-% TODO this constraint doesnt really work
-% TODO at T location might be 100 and walkingTo is 0 (not holds), and then at T+1 location might be 150 and walkingTo 200 -- killing the model (at T 100 > 0 and at T+1 150 < 200)
-% TODO the problem is that walkingTo is initiated at T to value 200 buts its value is still 0 at T
-    %:- holdsAt(walking(A), T+1), sum((location(A), T), gt, (walkingTo(A), T)), sum((location(A), T+1), lt, (walkingTo(A), T+1)), step(T), step(T+1).
-    %:- holdsAt(walking(A), T+1), sum((location(A), T), lt, (walkingTo(A), T)), sum((location(A), T+1), gt, (walkingTo(A), T+1)), step(T), step(T+1).
-%% either the agent is already walking at T
-% TODO this constr does not quite work in lpx right now (causes no models always)
+comparison(( (1, (location(A), T)) ), L) :- agent(A), step(T), happens(walk(A, L), T).
+% either the agent was already walking
 :- holdsAt(walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), gt, 0), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), lt, 0), step(T), step(T+1).
 :- holdsAt(walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), lt, 0), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), gt, 0), step(T), step(T+1).
-%%% %% or the agent just started walking at T
-:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), gt, L), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), lt, 0), step(T), step(T+1).
-:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), lt, L), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), gt, 0), step(T), step(T+1).
+% or the agent just started walking at T
+:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)) ), gt, L), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), lt, 0), step(T), step(T+1).
+:- happens(walk(A, L), T), initiates(walk(A, L), walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)) ), lt, L), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), gt, 0), step(T), step(T+1).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
@@ -82,7 +79,7 @@ initiates(pickUp(A, O), holding(A, O), T) :-
     agent(A), object(O), step(T).
 comparison(( (1, (location(A), T)), (1, (location(O), T)) ), 0) :- happens(pickUp(A, O), T).
 
-%% % if an agent is holding an object and lets go of it, then they will no longer be holding it
+% if an agent is holding an object and lets go of it, then they will no longer be holding it
 terminates(letGoOf(A, O), holding(A, O), T) :-
     holdsAt(holding(A, O), T),
     agent(A), object(O), step(T).
@@ -98,10 +95,7 @@ initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)) ), T) :- step(T), a
 %-------------------------------------------------------------------------------
 
 % % an object can only be in one room at a time (same for agents...)
-% R1=R2 :- holdsAt(location(O,R1), T), holdsAt(location(O,R2), T),
-%     object(A), room(R1), room(R2), step(T).
-% R1=R2 :- holdsAt(location(A,R1), T), holdsAt(location(A,R2), T),
-%     agent(A), room(R1), room(R2), step(T).
+% not needed -- only one value at a time
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
@@ -141,22 +135,22 @@ initiallyN(F) :- not initiallyP(F), fluent(F).  % nathan is initially not holdin
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(pickUp(nathan, book)), 10).
+obs(happens, pickUp(nathan, book), 10).
 
 % nathan walks to position 100 with the book
-obs(happens(walk(nathan, 100)), 20).
+obs(happens, walk(nathan, 100), 20).
 
 % check state of fluents at time 25
-obs(happens(check), 25).
+obs(happens, check, 25).
 
 % --> conclude arrive at 30
 
-obs(happens(letGoOf(nathan, book)), 40).
+obs(happens, letGoOf(nathan, book), 40).
  
 % nathan walks to position 200 without the book
-obs(happens(walk(nathan, 200)), 50).
+obs(happens, walk(nathan, 200), 50).
 
 % check state of fluents at time 55
-obs(happens(check), 55).
+obs(happens, check, 55).
 
 % --> conclude arrive at 60

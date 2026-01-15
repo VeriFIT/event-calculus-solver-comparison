@@ -6,7 +6,7 @@
 %
 % --> example meant to test the encoding of functional fluents in clingo-lpx
 
-#const maxstep=5.
+#const maxstep=4.
 #const maxtime=1000.
 
 %-------------------------------------------------------------------------------
@@ -80,10 +80,10 @@ initiallyP(result, 0).  % TODO default FDEC needs a value for ffluents at all ti
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(turn_on),        5).
-obs(happens(add(5)),         10).
-obs(happens(add(1000000)),   20).
-obs(happens(turn_off),       25).
+obs(happens, turn_on,        5).
+obs(happens, add(5),         10).
+obs(happens, add(1000000),   20).
+obs(happens, turn_off,       25).
 
 % conclude that result will be 1000005 after time 20
 

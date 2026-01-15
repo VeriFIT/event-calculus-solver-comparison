@@ -1,6 +1,6 @@
 % light can be turned on and off
 
-#const maxstep=3.
+#const maxstep=2.
 #const maxtime=1000.
 
 
@@ -34,8 +34,8 @@ initiallyN(light_on).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(toggle_light),   10).
-obs(happens(toggle_light),   20).
+obs(happens, toggle_light,   10).
+obs(happens, toggle_light,   20).
 
 % conclude that the light is on between 10 and 20
 

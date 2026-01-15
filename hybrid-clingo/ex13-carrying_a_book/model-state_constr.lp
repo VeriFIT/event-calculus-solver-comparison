@@ -6,6 +6,9 @@
 %
 % Modified for clingo-lpx --> location is a continuous location instead of a room (non-ground value)
 
+#const maxstep=5.
+#const maxtime=1000.
+
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
@@ -15,7 +18,7 @@ object(book).
 %! could also use (below) to treat agents as objects
 % object(A) :- agent(A).
 
-in_locations(L) :- obs(happens(walk(_, L)), _).  % grounding L only to actual occurrences
+in_locations(L) :- obs(happens, walk(_, L), _).  % grounding L only to actual occurrences
 
 ffluent(location(A)) :- agent(A).
 ffluent(location(O)) :- object(O).
@@ -58,10 +61,7 @@ initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)) ), T) :- step(T), a
 %-------------------------------------------------------------------------------
 
 % % an object can only be in one room at a time (same for agents...)
-% R1=R2 :- holdsAt(location(O,R1), T), holdsAt(location(O,R2), T),
-%     object(A), room(R1), room(R2), step(T).
-% R1=R2 :- holdsAt(location(A,R1), T), holdsAt(location(A,R2), T),
-%     agent(A), room(R1), room(R2), step(T).
+% not needed -- only one value at a time
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
@@ -101,14 +101,14 @@ initiallyN(F) :- not initiallyP(F), fluent(F).  % nathan is initially not holdin
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(pickUp(nathan, book)), 10).
+obs(happens, pickUp(nathan, book),  10).
 
 % nathan walks to position 100 with the book
-obs(happens(walk(nathan, 100)), 20).
+obs(happens, walk(nathan, 100),     20).
 
-obs(happens(letGoOf(nathan, book)), 30).
+obs(happens, letGoOf(nathan, book), 30).
 
 % nathan walks to position 200 without the book
-obs(happens(walk(nathan, 200)), 40).
+obs(happens, walk(nathan, 200),     40).
 
 % --> conclude that the book is at position 100 after time 20 and stays there 

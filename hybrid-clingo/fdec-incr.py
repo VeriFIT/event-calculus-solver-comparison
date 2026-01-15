@@ -131,16 +131,19 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description='Execute FDEC incrementally until the right number of steps is found.')
     
-    parser.add_argument('--maxtime', type=int, nargs='?', help='upper limit for the timescale')
-    parser.add_argument('--minstep', type=int, nargs='?', default=1, help='number of steps to start at')
+    parser.add_argument('-c', action='append', help='specify a constant for the solver in the form of "-c name=vale"')
+    parser.add_argument('--maxtime', type=int, help='upper limit for the timescale')
+    parser.add_argument('--minstep', type=int, default=1, help='number of steps to start at')
+    parser.add_argument('--maxstep', type=int, default=100, help='number of steps to end')
     parser.add_argument('--replace_assign', type=int, default=2, help='set the level of replacement of theory atom assignments in the model (zero is off)')
     parser.add_argument('--no_newlines', action='store_true', help='disable adding new lines into models')
     parser.add_argument('--project', action='store_true', help='--project for the solver')
     parser.add_argument('--con', action='store_true', help='execute clingcon instad of clingolpx')
     parser.add_argument('-r', action='store_true', help='output rational numbers as real numbers in the model (only if --replace_assign is not zero)')
     parser.add_argument('-n', type=int, default=10, help='-n parameter to be passed to the solver')
-    #parser.add_argument('--no_laststep', action='store_true', help='disable the builtin laststep')
-    #parser.add_argument('--no_signifstep', action='store_true', help='disable the significant step constraint')
+    parser.add_argument('--keep_going', action='store_true', help='keep looking for more solutions with more steps even after a solution was found')
+    parser.add_argument('--no_last_step', action='store_true', help='disables the implicit last step, allowing easier reasoning about circular or zeno behavior')
+    parser.add_argument('--no_signifstep', action='store_true', help='disable the significant step constraint')
     #parser.add_argument('--debug', action='store_true', help='enable debug prints')
     parser.add_argument('source_files', nargs='*', help='any number of source files')
     conf_args = parser.parse_args()
@@ -153,10 +156,10 @@ if __name__ == "__main__":
     
     
     steps=conf_args.minstep
-    result_found = False
+    
 
     print("Looking for the right number of steps: ", end='', flush=True)
-    while (not result_found):
+    while (steps <= conf_args.maxstep):
         print(str(steps) + " ", end='', flush=True)
         
         cmd = []   
@@ -177,6 +180,23 @@ if __name__ == "__main__":
                 "maxtime=" + str(conf_args.maxtime)
             ])
         
+        if(conf_args.no_last_step == True):
+            cmd.extend([
+                "-c",
+                "disablelaststep=" + str(1)
+            ])
+        if(conf_args.no_signifstep == True):
+            cmd.extend([
+                "-c",
+                "disablesignificantconstr=" + str(1)
+            ])
+        if(conf_args.c != None):
+            for c in conf_args.c:    
+                cmd.extend([
+                    "-c",
+                    str(c)
+                ])
+            
         cmd.extend([
             "-n",
             str(conf_args.n),
@@ -186,6 +206,7 @@ if __name__ == "__main__":
             os.path.join(scriptdir, 'axioms/fdec-show.lp')
         ])
         cmd.extend(conf_args.source_files,)
+        
         
         result = subprocess.run(
             cmd,
@@ -198,11 +219,14 @@ if __name__ == "__main__":
         
         decoded_exit = decode_exit_code(returncode)
         if (ExitCode.E_SAT in decoded_exit):
-            result_found = True
-            
             print("FOUND")
             print(process_clingcon_output(result.stdout))        
             print(result.stderr)
+            if (conf_args.keep_going == False):
+                exit(result.returncode)
+            else:
+                print("Looking for more solutions with more steps: ", end='', flush=True)
+                steps = steps + 1
             
         elif (ExitCode.E_EXHAUST not in decoded_exit):
             print("ERROR")
@@ -214,4 +238,6 @@ if __name__ == "__main__":
             steps = steps + 1
             #print(result.stdout)
             
+    print("MAXSTEP_REACHED")
+    
 

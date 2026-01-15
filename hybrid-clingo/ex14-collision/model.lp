@@ -2,7 +2,7 @@
 % The reasoning should find that the two object collide.
 % After collision, both objects stop moving and remain stationary (for simplicity)
 
-#const maxstep=3.
+#const maxstep=2.
 #const maxtime=1000.
 
 
@@ -76,21 +76,13 @@ initiates(collide(O1,O2), height(O2), ((1, (height(O2),T))), T) :- step(T), obje
 
 % [state constraint]
 % an object only has one unique height at a time
-% H1 = H2 :- holdsAt(height(O,H1), T), holdsAt(height(O,H2), T),
-%     agent(A), object(O), fHeight(H1), fHeight(H2), step(T).
 % TODO not needed since clingo lpx only allows one functional value at a time
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
-%*
-%trajectory(falling(O), T1, height(O,H - (G)*(T2-T1)), T2) :-
-%    T1 < T2,
-%    holdsAt(height(O,H), T1),
-%    fGravity(G), object(O), fHeight(H), step(T1), step(T2).
-*%
-trajectory(falling(O), T1, height(O), ( (1, (height(O), T1)), (2, (time, T1)), (-2, (time, T3)) ), T2) :-
-    T3 = T1+T2, step(T3), object(O), step(T1), step(T2).
-trajectory(rising(O), T1, height(O), ( (1, (height(O), T1)), (-2, (time, T1)), (2, (time, T3)) ), T2) :-
-    T3 = T1+T2, step(T3), object(O), step(T1), step(T2).
+trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)) ), -2), T2) :-
+    step(T1+T2), object(O), step(T1), step(T2).
+trajectory(rising(O), T1, height(O), (( (1, (height(O), T1)) ), 2), T2) :-
+    step(T1+T2), object(O), step(T1), step(T2).
 
 
 %-------------------------------------------------------------------------------
@@ -104,7 +96,7 @@ initiallyN(rising(O)) :- object(O).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 :- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
-obs(happens(drop(nathan1,apple)), 10).        % nathan1 drop the apple at time 10
-obs(happens(throw(nathan2,ball)), 10).        % nathan2 throws the ball at time 10
+obs(happens, drop(nathan1,apple), 10).        % nathan1 drop the apple at time 10
+obs(happens, throw(nathan2,ball), 10).        % nathan2 throws the ball at time 10
 
 % --> conclude ...

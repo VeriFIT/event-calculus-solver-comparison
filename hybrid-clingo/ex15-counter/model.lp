@@ -22,7 +22,7 @@ ffluent(value).
 initiates(increment, value, ( (1,one), (1, (value, S)) ), S) :- step(S).
 
 %initiates(reset, value, ( (0,0) ), S) :- step(S).
-&sum{zero} = 0. % TODO workaround for lpx
+% TODO workaround for lpx
 initiates(reset, value, ( (0, (value, S)) ), S) :- step(S).
 
 
@@ -39,7 +39,7 @@ initiallyP(value, 0).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(increment),   10).
-obs(happens(increment),   20).
-obs(happens(reset),       30).
-obs(happens(increment),   40).
+obs(happens, increment,   10).
+obs(happens, increment,   20).
+obs(happens, reset,       30).
+obs(happens, increment,   40).

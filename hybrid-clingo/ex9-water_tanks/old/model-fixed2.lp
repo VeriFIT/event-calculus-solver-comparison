@@ -1,127 +1,145 @@
 
 % ----- domain model -----
 
-fluent_Func(water_left).
-fluent_Func(water_right).
+ffluent(water_left).
+ffluent(water_right).
 fluent(left_filling).
 fluent(right_filling).  % replaced left_draining
 
 event(start(left)).
 event(start(right)).
-% event(switch_left).
-% event(switch_right).
+event(switch_left).
+event(switch_right).
 
-initiatesAtStep(start(left), left_filling, S) :- step(S).
-initiatesAtStep(start(right), right_filling, S) :- step(S).
-releasesAtStep_Func(start(LR), water_left, valueAtStep(water_left, S+1), S) :- step(S), step(S+1), event(start(LR)).
-releasesAtStep_Func(start(LR), water_right, valueAtStep(water_right, S+1), S) :- step(S), step(S+1), event(start(LR)).
+initiates(start(left), left_filling, T) :- step(T).
+initiates(start(right), right_filling, T) :- step(T).
+releases(start(LR), water_left, T) :- step(T), event(start(LR)).
+releases(start(LR), water_right, T) :- step(T), event(start(LR)).
 
-initiatesAtStep(switch_left, left_filling, S) :- step(S).
-terminatesAtStep(switch_left, right_filling, S) :- step(S).
+initiates(switch_left, left_filling, T) :- step(T).
+terminates(switch_left, right_filling, T) :- step(T).
 
-terminatesAtStep(switch_right, left_filling, S) :- step(S).
-initiatesAtStep(switch_right, right_filling, S) :- step(S).
+terminates(switch_right, left_filling, T) :- step(T).
+initiates(switch_right, right_filling, T) :- step(T).
 
-trajectory_Func(left_filling, S1, water_left, valueAtStep(water_left, S2), S2) :- step(S1), step(S2).
-&sum{ valueAtStep(water_left,S); -TotalFlow*timeAtStep(S); TotalFlow*timeAtStep(S+1) } = valueAtStep(water_left,S+1) :-
-    trajectoryAtStep_Func(left_filling, _, water_left, valueAtStep(water_left,S+1), S+1),
+trajectory(left_filling, T1, water_left, (0, 1, 1, water_left, TotalFlow), T2) :-
     TotalFlow = 30 - 20, % in rate 30, out rate 20
-    step(S), step(S+1).
+    step(T1), step(T2).
 
-trajectory_Func(right_filling, S1, water_left, valueAtStep(water_left, S2), S2) :- step(S1), step(S2).
-&sum{ valueAtStep(water_left,S); TotalFlow*timeAtStep(S); -TotalFlow*timeAtStep(S+1) } = valueAtStep(water_left,S+1) :-
-    trajectoryAtStep_Func(right_filling, _, water_left, valueAtStep(water_left,S+1), S+1),
+trajectory(right_filling, T1, water_left, (0, 1, 1, water_left, -TotalFlow), T2) :-
     TotalFlow = 20, % out rate 20
-    step(S), step(S+1).
+    step(T1), step(T2).
 
-trajectory_Func(right_filling, S1, water_right, valueAtStep(water_right, S2), S2) :- step(S1), step(S2).
-&sum{ valueAtStep(water_right,S); -TotalFlow*timeAtStep(S); TotalFlow*timeAtStep(S+1) } = valueAtStep(water_right,S+1) :-
-    trajectoryAtStep_Func(right_filling, _, water_right, valueAtStep(water_right,S+1), S+1),
+trajectory(right_filling, T1, water_right, (0, 1, 1, water_right, TotalFlow), T2) :-
     TotalFlow = 30 - 20, % in rate 30, out rate 20
-    step(S), step(S+1).
+    step(T1), step(T2).
 
-trajectory_Func(left_filling, S1, water_right, valueAtStep(water_right, S2), S2) :- step(S1), step(S2).
-&sum{ valueAtStep(water_right,S); TotalFlow*timeAtStep(S); -TotalFlow*timeAtStep(S+1) } = valueAtStep(water_right,S+1) :-
-    trajectoryAtStep_Func(left_filling, _, water_right, valueAtStep(water_right,S+1), S+1),
+trajectory(left_filling, T1, water_right, (0, 1, 1, water_right, -TotalFlow), T2) :-
     TotalFlow = 20, % out rate 20
-    step(S), step(S+1).
+    step(T1), step(T2).
 
 minDuration(1).
 % trigger exactly at 50 if the trajectory took at least the minimum duration
-happensAtStep(switch_left, S) :-
-    holdsAtStep(right_filling, S),
-    trajectoryAtStep_Func(right_filling, S1, water_left, valueAtStep(water_left, S), S),
-    happensAtStep(aux__endMinDurRightFilling(S1), S2), S1 < S2, S2 <= S,
-    normal_atom(valueAtStep(water_left, S), eq, 50). % target level
+happens(switch_left, T) :-
+    holdsAt(right_filling, T),
+    % TODO need to reference T1 as the time of start of the trajectory
+    %trajectoryAtStep(right_filling, T1, water_left, T), 
+        T1 < T,
+        initiates(E, right_filling, T1),
+        happens(E, T1),
+        trajectory(right_filling, T1, water_left, _, T),
+        not stoppedIn(T1, right_filling, T),
+        step(T),
+    happens(aux__endMinDurRightFilling(T1), T2), T1 < T2, T2 <= T,
+    sum((water_left, T), eq, 50). % target level
+
 % trigger exactly after the minimum duration if the level is below 50
-happensAtStep(switch_left, S) :-
-    holdsAtStep(right_filling, S),
-    trajectoryAtStep_Func(right_filling, S1, water_left, valueAtStep(water_left, S), S),
-    happensAtStep(aux__endMinDurRightFilling(S1), S),
-    normal_atom(valueAtStep(water_left, S), lt, 50). % target level
-%comparison(valueAtStep(water_left, S), 50) :- step(S).
+happens(switch_left, T) :-
+    holdsAt(right_filling, T),
+    % TODO need to reference T1 as the time of start of the trajectory
+    %trajectoryAtStep(right_filling, T1, water_left, T),
+        T1 < T,
+        initiates(E, right_filling, T1),
+        happens(E, T1),
+        trajectory(right_filling, T1, water_left, _, T),
+        not stoppedIn(T1, right_filling, T),
+        step(T),
+    happens(aux__endMinDurRightFilling(T1), T),
+    sum((water_left, T), lt, 50). % target level
+%comparison((water_left, T), 50) :- step(T).
 
 % trigger exactly at 50 if the trajectory took at least the minimum duration
-happensAtStep(switch_right, S) :-
-    holdsAtStep(left_filling, S),
-    trajectoryAtStep_Func(left_filling, S1, water_right, valueAtStep(water_right, S), S),
-    happensAtStep(aux__endMinDurLeftFilling(S1), S2), S1 < S2, S2 <= S,
-    normal_atom(valueAtStep(water_right, S), eq, 50). % target level
+happens(switch_right, T) :-
+    holdsAt(left_filling, T),
+    % TODO need to reference T1 as the time of start of the trajectory
+    %trajectoryAtStep(left_filling, T1, water_right, T),
+        T1 < T,
+        initiates(E, left_filling, T1),
+        happens(E, T1),
+        trajectory(left_filling, T1, water_right, _, T),
+        not stoppedIn(T1, left_filling, T),
+        step(T),
+    happens(aux__endMinDurLeftFilling(T1), T2), T1 < T2, T2 <= T,
+    sum((water_right, T), eq, 50). % target level
 % trigger exactly after the minimum duration if the level is below 50
-happensAtStep(switch_right, S) :-
-    holdsAtStep(left_filling, S),
-    trajectoryAtStep_Func(left_filling, S1, water_right, valueAtStep(water_right, S), S),
-    happensAtStep(aux__endMinDurLeftFilling(S1), S),
-    normal_atom(valueAtStep(water_right, S), lt, 50). % target level
-%comparison(valueAtStep(water_right, S), 50) :- step(S).
+happens(switch_right, T) :-
+    holdsAt(left_filling, T),
+    % TODO need to reference T1 as the time of start of the trajectory
+    %trajectoryAtStep(left_filling, T1, water_right, T),
+        T1 < T,
+        initiates(E, left_filling, T1),
+        happens(E, T1),
+        trajectory(left_filling, T1, water_right, _, T),
+        not stoppedIn(T1, left_filling, T),
+        step(T),
+    happens(aux__endMinDurLeftFilling(T1), T),
+    sum((water_right, T), lt, 50). % target level
+%comparison((water_right, T), 50) :- step(T).
 
+% this is needed bc of the leq above
+trigger_value(water_left, right_filling, 50).
+trigger_value(water_right, left_filling, 50).
 
-% TODO had to break down the below manually because 50 is only significant in one direction (when draining the corresponding tank, not when filling)
-%trigger_value(water_left, 50).
-    comparison(valueAtStep(water_left, S), 50) :- step(S). 
-    :- normal_atom(valueAtStep(water_left, S), gt, 50), normal_atom(valueAtStep(water_left, S+1), lt, 50), step(S), step(S+1).
-    %:- normal_atom(valueAtStep(water_left, S), lt, 50), normal_atom(valueAtStep(water_left, S+1), gt, 50), step(S), step(S+1).
-%trigger_value(water_right, 50).
-    comparison(valueAtStep(water_right, S), 50) :- step(S). 
-    :- normal_atom(valueAtStep(water_right, S), gt, 50), normal_atom(valueAtStep(water_right, S+1), lt, 50), step(S), step(S+1).
-    %:- normal_atom(valueAtStep(water_right, S), lt, 50), normal_atom(valueAtStep(water_right, S+1), gt, 50), step(S), step(S+1).
+% TODO this needs to be discussed -- no all steps with water level 50 will have an event, therefore, make all of them checkSteps
+checkStep(T) :- step(T), holdsAt(right_filling, T), sum((water_left, T), eq, 50).
+checkStep(T) :- step(T), holdsAt(left_filling, T), sum((water_right, T), eq, 50).
 
-% TODO this needs to be discussed -- the constraint below seems to be needed in general, but will be a problem here since we dont allow steps with no events
-%! the above forces a step with exactly 50, which would not work for the zeno-free version since there might be no event at step 50 
-% TODO this does hack around the restriction... 
-happensAtStep(aux__no_switch_right, S) :- step(S), holdsAtStep(left_filling, S), normal_atom(valueAtStep(water_right, S), eq, 50), not happensAtStep(switch_right, S).
-happensAtStep(aux__no_switch_left, S) :- step(S), holdsAtStep(right_filling, S), normal_atom(valueAtStep(water_left, S), eq, 50), not happensAtStep(switch_left, S).
-
-
-% TODO this needs to be discussed
+% TODO this needs to be discussed -- a way to track minimal duration of a trajectory
 % TODO this works but requires steps to be incremented by 2 (model at N, no model at N+1, model at N+2)
 % trying to trigger an event MinDur time after switch_left/right happens
-{happensAtStep(aux__endMinDurRightFilling(S1), S2) : step(S2), S2 > S1} = 1 :- happensAtStep(switch_right, S1), S1 < maxstep.
-{happensAtStep(aux__endMinDurRightFilling(S1), S2) : step(S2), S2 > S1} = 1 :- happensAtStep(start(right), S1), S1 < maxstep.
-&sum{timeAtStep(S1) + MinDur} = timeAtStep(S2) :- minDuration(MinDur), happensAtStep(switch_right, S1), S1 < maxstep, happensAtStep(aux__endMinDurRightFilling(S1), S2).
-&sum{timeAtStep(S1) + MinDur} = timeAtStep(S2) :- minDuration(MinDur), happensAtStep(start(right), S1), S1 < maxstep, happensAtStep(aux__endMinDurRightFilling(S1), S2).
+{happens(aux__endMinDurRightFilling(T1), T2) : step(T2), T2 > T1} = 1 :- happens(switch_right, T1), T1 < maxstep.
+{happens(aux__endMinDurRightFilling(T1), T2) : step(T2), T2 > T1} = 1 :- happens(start(right), T1), T1 < maxstep.
+&sum{time(T1) + MinDur} = time(T2) :- minDuration(MinDur), happens(switch_right, T1), T1 < maxstep, happens(aux__endMinDurRightFilling(T1), T2).
+&sum{time(T1) + MinDur} = time(T2) :- minDuration(MinDur), happens(start(right), T1), T1 < maxstep, happens(aux__endMinDurRightFilling(T1), T2).
 
-{happensAtStep(aux__endMinDurLeftFilling(S1), S2) : step(S2), S2 > S1} = 1 :- happensAtStep(switch_left, S1), S1 < maxstep.
-{happensAtStep(aux__endMinDurLeftFilling(S1), S2) : step(S2), S2 > S1} = 1 :- happensAtStep(start(left), S1), S1 < maxstep.
-&sum{timeAtStep(S1) + MinDur} = timeAtStep(S2) :- minDuration(MinDur), happensAtStep(switch_left, S1), S1 < maxstep, happensAtStep(aux__endMinDurLeftFilling(S1), S2).
-&sum{timeAtStep(S1) + MinDur} = timeAtStep(S2) :- minDuration(MinDur), happensAtStep(start(left), S1), S1 < maxstep, happensAtStep(aux__endMinDurLeftFilling(S1), S2).
+{happens(aux__endMinDurLeftFilling(T1), T2) : step(T2), T2 > T1} = 1 :- happens(switch_left, T1), T1 < maxstep.
+{happens(aux__endMinDurLeftFilling(T1), T2) : step(T2), T2 > T1} = 1 :- happens(start(left), T1), T1 < maxstep.
+&sum{time(T1) + MinDur} = time(T2) :- minDuration(MinDur), happens(switch_left, T1), T1 < maxstep, happens(aux__endMinDurLeftFilling(T1), T2).
+&sum{time(T1) + MinDur} = time(T2) :- minDuration(MinDur), happens(start(left), T1), T1 < maxstep, happens(aux__endMinDurLeftFilling(T1), T2).
 
 
 % ----- narrative & queries  -----
 
-initiallyP_Func(water_left, 100).
-initiallyP_Func(water_right, 100).
+initiallyP(water_left, 100).
+initiallyP(water_right, 100).
 initiallyN(F) :- not initiallyP(F), fluent(F).
+:- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 
-happens(start(right),           10).
+in_happens(start(right),           10).
 
-% ?- happens(switch_left,         25/2).%(12.5)
-% 
-% ?- happens(switch_right,        65/4).%(16.25)
-% 
-% ?- happens(switch_left,         145/8).%(18.125)
-% 
-% ?- happens(switch_right,        153/8).
-% 
-% ?- happens(switch_left,         161/8)).
-% 
+% for maxstep 14 without laststep
+% happens(switch_left,25/2)
+% happens(switch_left,145/8)
+% happens(switch_left,161/8)
+% happens(switch_left,177/8)
+% happens(switch_right,65/4)
+% happens(switch_right,153/8)
+% happens(switch_right,169/8)
+% happens(aux__endMinDurLeftFilling(3),27/2)
+% happens(aux__endMinDurLeftFilling(7),153/8)
+% happens(aux__endMinDurLeftFilling(11),169/8)
+% happens(aux__endMinDurRightFilling(1),11)
+% happens(aux__endMinDurRightFilling(5),69/4)
+% happens(aux__endMinDurRightFilling(9),161/8)
+% happens(aux__endMinDurRightFilling(13),177/8)
+% happens(start(right),10)

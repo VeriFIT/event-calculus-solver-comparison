@@ -5,11 +5,11 @@
 ffluent(height).
 ffluent(velocity).
 
-dfluent(falling).
-dfluent(rising).
+fluent(falling).
+fluent(rising).
 
-dfluent(constant_fall_rate(X)) :- initiallyP(constant_fall_rate(X)).         % simplified to a constant fall rate instead of accelerating over time
-dfluent(velocity_loss_portion(X)) :- initiallyP(velocity_loss_portion(X)).   % ball looses a portion of velocity on each bounce
+fluent(constant_fall_rate(X)) :- initiallyP(constant_fall_rate(X)).         % simplified to a constant fall rate instead of accelerating over time
+fluent(velocity_loss_portion(X)) :- initiallyP(velocity_loss_portion(X)).   % ball looses a portion of velocity on each bounce
 
 % input events
 event(drop).
@@ -43,26 +43,26 @@ terminates(reach_apex, rising, T) :- step(T).
 % stop everything by catching the ball
 terminates(catch, falling, T) :- step(T).
 terminates(catch, rising, T) :- step(T).
-initiates(catch, height, (0, 0, 1, height), T) :- step(T).
-initiates(catch, velocity, (0, 0, 0, velocity), T) :- step(T).
+initiates(catch, height, ( (1, (height, T)) ), T) :- step(T).
+initiates(catch, velocity, ( (0, (velocity, T)) ), T) :- step(T).
 
 % stop everything if the ball stops bouncing
-initiates(stop_bouncing, height, (0, 0, 0, height), T) :- step(T).
-initiates(stop_bouncing, velocity, (0, 0, 0, velocity), T) :- step(T).
+initiates(stop_bouncing, height, ( (0, (height, T)) ), T) :- step(T).
+initiates(stop_bouncing, velocity, ( (0, (velocity, T)) ), T) :- step(T).
 
 % falling 
-trajectory(falling, T1, height, (0, 0, 1, height, -Rate), T2) :-
+trajectory(falling, T1, height, (( (1, (height, T1)) ), -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
-trajectory(falling, T1, velocity, (0, 0, 1, velocity, Rate), T2) :-
+trajectory(falling, T1, velocity, (( (1, (velocity, T1)) ), Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
 
 % rising
-trajectory(rising, T1, height, (0, 0, 1, height, Rate), T2) :-
+trajectory(rising, T1, height, (( (1, (height, T1)) ), Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
-trajectory(rising, T1, velocity, (0, 0, "0.25", velocity, -Rate), T2) :-
+trajectory(rising, T1, velocity, (( ("0.25", (velocity, T1)) ), -Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     %initiallyP(velocity_loss_portion(LossPortion)), % ... 1 - LossPortion
     step(T1), step(T2).
@@ -71,7 +71,7 @@ happens(fall_down, T) :- happens(drop, T).
 
 happens(hit_ground, T) :- 
     holdsAt(falling, T),
-    normal_atom((height, T), eq, 0).
+    sum(( (1, (height, T)) ), eq, 0).
 
 happens(bounce_up, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
@@ -81,16 +81,13 @@ happens(bounce_up, T) :- happens(hit_ground, T),
 
 happens(stop_bouncing, T) :- happens(hit_ground, T),
     holdsAt(falling, T),
-    normal_atom((velocity, T), eq, 0).
+    sum(( (1, (velocity, T)) ), eq, 0).
 
 happens(reach_apex, T) :-
     holdsAt(rising, T),
-    normal_atom((velocity, T), eq, 0).
+    sum(( (1, (velocity, T)) ), eq, 0).
 
 happens(fall_down, T) :- happens(reach_apex, T).
 
-trigger_value(height, 0).
-trigger_value(velocity, 0).
-    %% TODO this did not work when removing the significant_step constraint for fix-flat_loss
-    %% trigger_value(height, falling, 0).
-    %% trigger_value(velocity, rising, 0).
+no_jump(height, S, 0) :- holdsAt(falling, S), step(S).
+no_jump(velocity, S, 0) :- holdsAt(rising, S), step(S).

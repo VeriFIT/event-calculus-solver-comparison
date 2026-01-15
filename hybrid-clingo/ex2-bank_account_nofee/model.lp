@@ -5,7 +5,7 @@
 
 % There are multiple bank accounts and money can be transferred between them.
 
-#const maxstep=3.
+#const maxstep=2.
 #const maxtime=1000.
 
 %-------------------------------------------------------------------------------
@@ -33,15 +33,6 @@ event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), acco
 %% and the amount is transfered from A1 to account A2,
 %% then the balance of A1 decreses and of A2 increases
 
-%*
-%% new balance of A2 (receives payment)
-%initiates(transfer(A1, A2, TransM12), balance(A2, DstM2 + TransM12), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
-*%
 %initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
 &sum{one} = 1.  % TODO workaround for lpx
 initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
@@ -56,23 +47,10 @@ comparison( ( (1, (balance(A1), T)) ), TransM12) :-
 
 %*
 %% terminate old balance of A2
-%terminates(transfer(A1, A2, TransM12), balance(A2, DstM2), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
+% not needed -- meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 %*
-%% new balance of A1 (sends payment)
-%initiates(transfer(A1, A2, TransM12), balance(A1, SrcM1 - TransM12), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
 %initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
 % TODO workaround for lpx
@@ -88,14 +66,8 @@ initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (bala
 
 %*
 %% terminate old balance of A1
-%terminates(transfer(A1, A2, TransM12), balance(A1, SrcM1), T) :-
-%    holdsAt(balance(A2, DstM2), T),
-%    holdsAt(balance(A1, SrcM1), T),
-%    TransM12 > 0,
-%    SrcM1 >= TransM12,
-%    account(A1), account(A2), step(T), money(TransM12), money(DstM2), money(SrcM1).
 *%
-% TODO this is meant to terminate the old functional value (break its inertia), this is already done by initiatesValue
+% not needed -- is meant to terminate the old functional value (break its inertia), this is already done by initiates
 
 
 %-------------------------------------------------------------------------------
@@ -104,14 +76,9 @@ initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (bala
 
 %*
 %% an account has a single unique balance at a time
-%M1=M2 :- holdsAt(balance(A, M1), T), holdsAt(balance(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
-%
-%% an account can only have a single unique minimumBalance at a time % modif -- added
-%M1=M2 :- holdsAt(minimumBalance(A, M1), T), holdsAt(minimumBalance(A, M2), T),
-%    account(A), step(T), money(M1), money(M2).
+%% an account can only have a single unique minimumBalance at a time
 *%
-% TODO state constraint is not needed because functional fluents cannot have multiple values
+% not needed -- functional fluents cannot have multiple values
 
 %-------------------------------------------------------------------------------
 % observations
@@ -128,8 +95,8 @@ initiallyN(F) :- not initiallyP(F), fluent(F).
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens(transfer(account1, account2, 2)), 10).
-obs(happens(transfer(account1, account2, 4)), 20).
+obs(happens, transfer(account1, account2, 2), 10).
+obs(happens, transfer(account1, account2, 4), 20).
 
 % --> conclude that
 %   the balance of account1 will be 4 after time 20

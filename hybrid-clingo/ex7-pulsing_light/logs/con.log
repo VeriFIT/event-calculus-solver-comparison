@@ -1,0 +1,46 @@
+$ python ../fdec-incr.py ./model.lp --maxtime 1000 --con
+
+
+Looking for the right number of steps: 1 2 3 4 5 FOUND
+clingcon version 5.2.1
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
+Solving...
+Answer: 1 (Time: 0.059s)
+maxStep(5)
+happens(fade_in_end,20)
+happens(fade_in_end,40)
+happens(fade_out_end,30)
+happens(turn_light_off,45)
+happens(turn_light_on,10)
+holdsAt(fading_in,(10<S=<20))
+holdsAt(fading_in,(30<S=<40))
+holdsAt(fading_out,(20<S=<30))
+holdsAt(fading_out,(40<S=<45))
+holdsAt(light_on,(10<S=<20))
+holdsAt(light_on,(20<S=<30))
+holdsAt(light_on,(30<S=<40))
+holdsAt(light_on,(40<S=<45))
+fholdsAt(brightness,5,(40<S=<45))
+fholdsAt(brightness,0,(45<S=<1000))
+fholdsAtC(brightness,(0->10),(10<S=<20),((1,0),1))
+fholdsAtC(brightness,(10->0),(20<S=<30),((1,10),-1))
+fholdsAtC(brightness,(0->10),(30<S=<40),((1,0),1))
+fholdsAtC(brightness,(10->5),(40<S=<45),((1,10),-1))
+Assignment:
+zero=0 (brightness,0)=0 (brightness,1)=10 (brightness,2)=0 (brightness,3)=10 (brightness,4)=5 (brightness,5)=0 (obs,10)=10 (obs,45)=45 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40 (time,4)=45 (time,5)=1000
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.061s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.046s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.83
+  real [s]  0.83
+  user [s]  0.49
+  sys  [s]  0.16
+  mem  [KB] 20608
+  avgm [KB] 0

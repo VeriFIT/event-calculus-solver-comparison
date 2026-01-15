@@ -1,0 +1,32 @@
+$ python ../fdec-incr.py --maxtime 1000 --con -c paramHeight=20 ./model.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
+clingcon version 5.2.1
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
+Solving...
+Answer: 1 (Time: 0.044s)
+maxStep(2)
+happens(hitGround(apple),20)
+happens(drop(nathan,apple),10)
+holdsAt(falling(apple),(10<S=<20))
+fholdsAt(height(apple),0,(20<S=<1000))
+fholdsAtC(height(apple),(20->0),(10<S=<20),((1,20),-2))
+Assignment:
+(obs,10)=10 (time,0)=10 (time,1)=20 (time,2)=1000 (height(apple),0)=20 (height(apple),1)=0 (height(apple),2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.045s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.026s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.36
+  real [s]  0.36
+  user [s]  0.18
+  sys  [s]  0.10
+  mem  [KB] 18304
+  avgm [KB] 0

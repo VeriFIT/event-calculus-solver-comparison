@@ -7,6 +7,8 @@
 
 #show.
 
+#show maxStep(MAX) : MAX=maxstep.
+
 #show happens(E,(time, S)) : happens(E,S), not debug_prints.
 
 %% discrete fluents have values between steps

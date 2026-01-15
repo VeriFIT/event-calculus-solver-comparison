@@ -1,0 +1,43 @@
+$ python ../fdec-incr.py ./model.lp --maxtime 1000 --con
+
+
+Looking for the right number of steps: 1 2 3 4 FOUND
+clingcon version 5.2.1
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
+Solving...
+Answer: 1 (Time: 0.053s)
+maxStep(4)
+happens(turn_off,25)
+happens(turn_on,5)
+happens(add(5),10)
+happens(add(1000000),20)
+holdsAt(powered_on,(5<S=<10))
+holdsAt(powered_on,(10<S=<20))
+holdsAt(powered_on,(20<S=<25))
+fholdsAt(result,0,(5<S=<10))
+fholdsAt(result,5,(10<S=<20))
+fholdsAt(result,1000005,(20<S=<25))
+fholdsAt(result,0,(25<S=<1000))
+-holdsAt(powered_on,(25<S=<1000))
+-releasedAt(powered_on,(5<S=<10))
+-releasedAt(powered_on,(10<S=<20))
+-releasedAt(powered_on,(20<S=<25))
+-releasedAt(powered_on,(25<S=<1000))
+Assignment:
+one=1 (obs,5)=5 (obs,10)=10 (obs,20)=20 (obs,25)=25 (result,0)=0 (result,1)=0 (result,2)=5 (result,3)=1000005 (result,4)=0 (time,0)=5 (time,1)=10 (time,2)=20 (time,3)=25 (time,4)=1000
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.054s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.037s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.67
+  real [s]  0.67
+  user [s]  0.39
+  sys  [s]  0.13
+  mem  [KB] 19456
+  avgm [KB] 0

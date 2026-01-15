@@ -1,5 +1,5 @@
 
-#const maxstep=7.
+#const maxstep=6.
 #const maxtime=1000.
 
 % ----- narrative & queries  -----
@@ -10,15 +10,16 @@ initiallyP(constant_fall_rate(1)).
 initiallyP(velocity_loss_portion("0.75")).
 initiallyP(constant_velocity_loss_bounce(1)).   % relevant for the fixzeno version
 
-initiallyN(F) :- not initiallyP(F), dfluent(F).
+initiallyN(F) :- not initiallyP(F), fluent(F).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
+:- releasedAt(F,0), ffluent(F).  % nothing is initially released from inertia
 
-in_happens(drop,                           10).
+obs(happens, drop,                           10).
 
 % with zeno behavior
 %?- happens(hit_ground,                  T).     % 20, 25, 26.25 (105/4), 26,5625 (425/16),...
 
-in_happens(catch,                          26).
+obs(happens, catch,                          26).
 
 % with flat loss of velocity on bounce
 %?- happens(hit_ground,                  T).     % 20, 49/2, 201/8

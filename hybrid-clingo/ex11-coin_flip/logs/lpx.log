@@ -1,0 +1,43 @@
+$ python ../fdec-incr.py ./model.lp --maxtime 1000
+
+
+Looking for the right number of steps: 1 2 FOUND
+clingo-lpx version 1.3.0
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
+Solving...
+Answer: 1 (Time: 0.037s)
+maxStep(2)
+happens(land,20)
+happens(toss,10)
+holdsAt(up(heads),(10<S=<20))
+holdsAt(up(heads),(20<S=<1000))
+releasedAt(up(heads),(10<S=<20))
+releasedAt(up(tails),(10<S=<20))
+Assignment:
+(obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=1000
+Answer: 2 (Time: 0.037s)
+maxStep(2)
+happens(land,20)
+happens(toss,10)
+holdsAt(up(tails),(10<S=<20))
+holdsAt(up(tails),(20<S=<1000))
+releasedAt(up(heads),(10<S=<20))
+releasedAt(up(tails),(10<S=<20))
+Assignment:
+(obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=1000
+SATISFIABLE
+
+Models       : 2
+Calls        : 1
+Time         : 0.037s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.022s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.36
+  real [s]  0.36
+  user [s]  0.17
+  sys  [s]  0.10
+  mem  [KB] 18176
+  avgm [KB] 0

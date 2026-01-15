@@ -4,7 +4,7 @@
 %
 % An object is dropped, falls down via a constant speed, and then stops falling when it hits the floor.
 
-#const maxstep=3.
+#const maxstep=2.
 #const maxtime=1000.
 
 
@@ -23,7 +23,7 @@ fluent(falling(O)) :- object(O).
 event(drop(A, O)) :- agent(A), object(O).
 event(hitGround(O)) :- object(O).
 
-#const paramHeight=100.
+#const paramHeight=20.
 initHeight(paramHeight).
 fGravity(2).
 
@@ -53,7 +53,6 @@ happens(hitGround(O), T) :-
 % restrict that there must exist a state where height is exactly equal to zero
 % (by saying that there cannot be two subsequent states in which one is lt/gt and the next gt/lt, i.e. there is no state with exactly eq)
 no_jump(height(O), S, 0) :- holdsAt(falling(O), S).
-    %%no_jump(height(O), S, 0) :- step(S), object(O).
 
 % [effect]
 % if an object hits the ground, then it will stop falling
@@ -61,38 +60,15 @@ terminates(hitGround(O), falling(O), T) :- object(O), step(T).
 
 % [effect + CLoI]
 % if an object hits the ground then its height will no longer be released from CLoI
-initiates(hitGround(O), height(O), ( (1, (height(O), T)) ), T) :- step(T), object(O).
-
-
-% TODO % terminates(catch(A, O), falling(O), T) :- agent(A), object(O), step(T).
-% TODO % 
-% TODO % &sum{ (height(O),T) } = (height(O),T+1) :- 
-% TODO %     happens(catch(A, O), T),
-% TODO %     agent(A), step(T).
-% TODO % 
-% TODO % defined((height(O),T+1)) :- 
-% TODO %     happens(catch(A, O), T),
-% TODO %     agent(A), step(T).
-
+initiates(hitGround(O), height(O), ( (0, (height(O), T)) ), T) :- step(T), object(O).
 
 % [state constraint]
 % an object only has one unique height at a time
-% H1 = H2 :- holdsAt(height(O,H1), T), holdsAt(height(O,H2), T),
-%     agent(A), object(O), fHeight(H1), fHeight(H2), step(T).
-% TODO not needed since clingo lpx only allows one functional value at a time
+% not needed -- only  one functional value at a time
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
-%*
-%trajectory(falling(O), T1, height(O,H - (G)*(T2-T1)), T2) :-
-%    T1 < T2,
-%    holdsAt(height(O,H), T1),
-%    fGravity(G), object(O), fHeight(H), step(T1), step(T2).
-*%
-trajectory(falling(O), T1, height(O), (
-    %(1, (height(O), T1)), (-2, (timeDiff, T1, T3))
-    (1, (height(O), T1)), (2, (time, T1)), (-2, (time, T3))
-    ), T2) :-
-    T3 = T1+T2, step(T3), object(O), step(T1), step(T2).
+trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)) ), -2), T2) :-
+    object(O), step(T1), step(T2), step(T1+T2).
 
 
 %-------------------------------------------------------------------------------
@@ -102,11 +78,10 @@ trajectory(falling(O), T1, height(O), (
 % initiallyP(height(apple, H)) :- initHeight(H).  % apples height initially is something
 initiallyP(height(apple), H) :- initHeight(H).  % apples height initially is something
 initiallyN(falling(apple)).
-%initiallyN(F) :- not initiallyP(F), fluent(F).  % apple is initially not falling
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
 :- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
-obs(happens(drop(nathan,apple)), 10).        % nathan drop the apple at time 10
-% obs(happens(catch(nathan,apple)), 15).     % TODO could add this to prevent hitting the ground 
+obs(happens, drop(nathan,apple), 10).        % nathan drop the apple at time 10
+
 
 % --> conclude that the apple will hit the ground at time (initHeight/2) + 10

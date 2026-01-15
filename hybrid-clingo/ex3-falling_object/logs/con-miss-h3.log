@@ -1,0 +1,12 @@
+$ python ../fdec-incr.py --maxtime 1000 --con -c paramHeight=3 ./model.lp --maxstep 5
+
+
+Looking for the right number of steps: 1 2 3 4 5 MAXSTEP_REACHED
+
+
+  real      0:00.79
+  real [s]  0.79
+  user [s]  0.44
+  sys  [s]  0.17
+  mem  [KB] 18304
+  avgm [KB] 0

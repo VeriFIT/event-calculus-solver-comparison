@@ -1,0 +1,33 @@
+$ python ../fdec-incr.py ./model.lp --maxtime 1000 --con
+
+
+Looking for the right number of steps: 1 2 FOUND
+clingcon version 5.2.1
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
+Solving...
+Answer: 1 (Time: 0.044s)
+maxStep(2)
+happens(toggle_light,10)
+happens(toggle_light,20)
+holdsAt(light_on,(10<S=<20))
+-holdsAt(light_on,(20<S=<1000))
+-releasedAt(light_on,(10<S=<20))
+-releasedAt(light_on,(20<S=<1000))
+Assignment:
+(obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=1000
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.027s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.35
+  real [s]  0.35
+  user [s]  0.19
+  sys  [s]  0.08
+  mem  [KB] 18432
+  avgm [KB] 0
