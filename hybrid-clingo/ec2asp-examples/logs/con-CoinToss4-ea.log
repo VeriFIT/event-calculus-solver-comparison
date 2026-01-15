@@ -1,0 +1,249 @@
+clingcon version 5.2.1
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 2
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(2,"< S =<",3))
+holdsAt(itsHeads,(1,"< S =<",2))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 3
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(3,"< S =<",4))
+holdsAt(itsHeads,(2,"< S =<",3))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 4
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(2,"< S =<",3))
+holdsAt(heads,(3,"< S =<",4))
+holdsAt(itsHeads,(1,"< S =<",2))
+holdsAt(itsHeads,(2,"< S =<",3))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 5
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(1,"< S =<",2))
+holdsAt(itsHeads,(0,"< S =<",1))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 6
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(1,"< S =<",2))
+holdsAt(heads,(2,"< S =<",3))
+holdsAt(itsHeads,(0,"< S =<",1))
+holdsAt(itsHeads,(1,"< S =<",2))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 7
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(1,"< S =<",2))
+holdsAt(heads,(3,"< S =<",4))
+holdsAt(itsHeads,(0,"< S =<",1))
+holdsAt(itsHeads,(2,"< S =<",3))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+Answer: 8
+(Time: 0.041s)
+happens(toss,1)
+happens(toss,2)
+happens(toss,3)
+holdsAt(heads,(0,"< S =<",1))
+holdsAt(heads,(1,"< S =<",2))
+holdsAt(heads,(2,"< S =<",3))
+holdsAt(heads,(3,"< S =<",4))
+holdsAt(itsHeads,(0,"< S =<",1))
+holdsAt(itsHeads,(1,"< S =<",2))
+holdsAt(itsHeads,(2,"< S =<",3))
+holdsAt(itsHeads,(3,"< S =<",4))
+releasedAt(itsHeads,(0,"< S =<",1))
+releasedAt(itsHeads,(1,"< S =<",2))
+releasedAt(itsHeads,(2,"< S =<",3))
+releasedAt(itsHeads,(3,"< S =<",4))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(0,4)=4
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(1,4)=3
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(2,4)=2
+timeDiff(3,3)=0
+timeDiff(3,4)=1
+timeDiff(4,4)=0
+SATISFIABLE
+
+Models       : 8
+Calls        : 1
+Time         : 0.041s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.021s

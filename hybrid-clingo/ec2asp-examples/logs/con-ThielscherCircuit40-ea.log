@@ -1,0 +1,41 @@
+clingcon version 5.2.1
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.047s)
+happens(close1,25)
+happens(closeRelay,25)
+happens(open2,25)
+holdsAt(relay,(25,"< S =<",40))
+holdsAt(switch1,(25,"< S =<",40))
+holdsAt(switch2,(0,"< S =<",25))
+holdsAt(switch3,(0,"< S =<",25))
+holdsAt(switch3,(25,"< S =<",40))
+-holdsAt(light,(0,"< S =<",25))
+-holdsAt(light,(25,"< S =<",40))
+-holdsAt(relay,(0,"< S =<",25))
+-holdsAt(switch1,(0,"< S =<",25))
+-holdsAt(switch2,(25,"< S =<",40))
+-releasedAt(light,(0,"< S =<",25))
+-releasedAt(light,(25,"< S =<",40))
+-releasedAt(relay,(0,"< S =<",25))
+-releasedAt(relay,(25,"< S =<",40))
+-releasedAt(switch1,(0,"< S =<",25))
+-releasedAt(switch1,(25,"< S =<",40))
+-releasedAt(switch2,(0,"< S =<",25))
+-releasedAt(switch2,(25,"< S =<",40))
+-releasedAt(switch3,(0,"< S =<",25))
+-releasedAt(switch3,(25,"< S =<",40))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=25
+timeDiff(0,2)=40
+timeDiff(1,1)=0
+timeDiff(1,2)=15
+timeDiff(2,2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.047s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.022s

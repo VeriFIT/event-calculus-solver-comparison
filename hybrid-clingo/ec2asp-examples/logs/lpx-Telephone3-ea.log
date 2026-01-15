@@ -1,0 +1,29 @@
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.044s)
+happens(pickUp(agent1,phone1),0)
+happens(pickUp(agent2,phone2),2)
+happens(dial(agent1,phone1,phone2),1)
+holdsAt(dialTone(phone1),(0,"< S =<",1))
+holdsAt(idle(phone2),(0,"< S =<",1))
+holdsAt(connected(phone1,phone2),(2,"< S =<",3))
+holdsAt(ringing(phone1,phone2),(1,"< S =<",2))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(0,3)=3
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(1,3)=2
+timeDiff(2,2)=0
+timeDiff(2,3)=1
+timeDiff(3,3)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.023s

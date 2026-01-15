@@ -1,0 +1,24 @@
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.051s)
+happens(board,1)
+happens(boardRed,1)
+happens(buy,0)
+holdsAt(hasTicket,(0,"< S =<",1))
+holdsAt(hasTicket,(1,"< S =<",2))
+holdsAt(onRed,(1,"< S =<",2))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=2
+timeDiff(1,1)=0
+timeDiff(1,2)=1
+timeDiff(2,2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.051s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.020s

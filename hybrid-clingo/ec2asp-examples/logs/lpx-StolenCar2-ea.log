@@ -1,0 +1,24 @@
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.036s)
+happens(park,0)
+happens(steal,2+-1*e)
+holdsAt(carParked,(0,"< S =<",2+-1*e))
+-holdsAt(carParked,(2+-1*e,"< S =<",2))
+-releasedAt(carParked,(0,"< S =<",2+-1*e))
+-releasedAt(carParked,(2+-1*e,"< S =<",2))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=2+-1*e
+timeDiff(0,2)=2
+timeDiff(1,1)=0
+timeDiff(1,2)=e
+timeDiff(2,2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.036s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.016s

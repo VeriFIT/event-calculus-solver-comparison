@@ -1,0 +1,26 @@
+clingcon version 5.2.1
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.044s)
+happens(close2,1)
+happens(start,0)
+holdsAt(blocked1,(0,"< S =<",1))
+holdsAt(blocked1,(1,"< S =<",40))
+holdsAt(blocked2,(1,"< S =<",40))
+holdsAt(stuffy,(1,"< S =<",40))
+releasedAt(stuffy,(0,"< S =<",1))
+releasedAt(stuffy,(1,"< S =<",40))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=1
+timeDiff(0,2)=40
+timeDiff(1,1)=0
+timeDiff(1,2)=39
+timeDiff(2,2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.020s

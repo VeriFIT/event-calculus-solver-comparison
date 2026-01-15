@@ -1,0 +1,25 @@
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.037s)
+happens(overflow,25)
+happens(tapOn,0)
+holdsAt(filling,(0,"< S =<",25))
+holdsAt(spilling,(25,"< S =<",40))
+releasedAt(height,(0,"< S =<",25))
+fholdsAt(height,25,(25,"< S =<",40))
+fholdsAtC(height,(0,"->",25),(0,"< S =<",25),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(25,"-",0)))
+Assignment: [leftovers]
+timeDiff(0,0)=0
+timeDiff(0,1)=25
+timeDiff(0,2)=40
+timeDiff(1,1)=0
+timeDiff(1,2)=15
+timeDiff(2,2)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.037s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.017s
