@@ -1,0 +1,3 @@
+$ clingo-lpx --strict -n10 ../axioms/fdec.lp -c maxstep=9 -c maxtime=1000 ./model-state_constr-continuous.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+

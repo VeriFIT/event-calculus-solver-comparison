@@ -9,35 +9,37 @@ Answer: 1 (Time: 0.048s)
 maxStep(2)
 happens(land,20)
 happens(toss,10)
-holdsAt(up(heads),(10<S=<20))
-holdsAt(up(heads),(20<S=<1000))
-releasedAt(up(heads),(10<S=<20))
-releasedAt(up(tails),(10<S=<20))
+holdsAt(up(heads),(0<T=<10))
+holdsAt(up(heads),(10<T=<20))
+holdsAt(up(heads),(20<T=<1000))
+releasedAt(up(heads),(10<T=<20))
+releasedAt(up(tails),(10<T=<20))
 Assignment:
 (obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=1000
 Answer: 2 (Time: 0.048s)
 maxStep(2)
 happens(land,20)
 happens(toss,10)
-holdsAt(up(tails),(10<S=<20))
-holdsAt(up(tails),(20<S=<1000))
-releasedAt(up(heads),(10<S=<20))
-releasedAt(up(tails),(10<S=<20))
+holdsAt(up(heads),(0<T=<10))
+holdsAt(up(tails),(10<T=<20))
+holdsAt(up(tails),(20<T=<1000))
+releasedAt(up(heads),(10<T=<20))
+releasedAt(up(tails),(10<T=<20))
 Assignment:
 (obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=1000
 SATISFIABLE
 
 Models       : 2
 Calls        : 1
-Time         : 0.049s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.029s
+Time         : 0.048s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.030s
 
 
 Command exited with non-zero status 30
 
-  real      0:00.37
-  real [s]  0.37
+  real      0:00.39
+  real [s]  0.39
   user [s]  0.23
-  sys  [s]  0.05
-  mem  [KB] 18304
+  sys  [s]  0.07
+  mem  [KB] 18560
   avgm [KB] 0

@@ -1,0 +1,173 @@
+$ clingo-lpx --strict -n10 ../axioms/fdec.lp -c maxstep=5 -c maxtime=1000 ./model-effect_constr.lp		| ../utils/replace_assignments.sh | ../utils/make-readable.sh
+
+
+clingo-lpx version 1.3.0
+Reading from ../axioms/fdec.lp ...
+Solving...
+Answer: 1
+(Time: 0.030s)
+agent(nathan)
+dfluent(holding(nathan,book))
+event(walk(nathan))
+event(letGoOf(nathan,book))
+event(pickUp(nathan,book))
+ffluent(location(book))
+ffluent(location(nathan))
+fluent(location(book))
+fluent(location(nathan))
+fluent(holding(nathan,book))
+initiallyN(holding(nathan,book))
+object(book)
+significant_step(0)
+significant_step(1)
+significant_step(2)
+significant_step(3)
+significant_step(4)
+significant_step(5)
+time(0)
+time(1)
+time(2)
+time(3)
+time(4)
+time(5)
+comparison(0,20)
+comparison(0,40)
+comparison(10,20)
+comparison(10,40)
+comparison(20,20)
+comparison(20,40)
+comparison(30,20)
+comparison(30,40)
+comparison(40,20)
+comparison(40,40)
+comparison(1000,20)
+comparison(1000,40)
+comparison(0,0)
+happens(walk(nathan),2)
+happens(walk(nathan),4)
+happens(letGoOf(nathan,book),3)
+happens(pickUp(nathan,book),1)
+holdsAt(holding(nathan,book),2)
+holdsAt(holding(nathan,book),3)
+in_happens(walk(nathan),20)
+in_happens(walk(nathan),40)
+in_happens(letGoOf(nathan,book),30)
+in_happens(pickUp(nathan,book),10)
+initiallyP(location(book),0)
+initiallyP(location(nathan),0)
+initiated1(location(book),2)
+initiated1(location(nathan),2)
+initiated1(location(nathan),4)
+initiated1(holding(nathan,book),1)
+map(0,0)
+map(10,1)
+map(20,2)
+map(30,3)
+map(40,4)
+map(1000,5)
+terminated1(holding(nathan,book),3)
+initiates(walk(nathan),location(book),2)
+initiates(walk(nathan),location(book),3)
+initiates(walk(nathan),location(nathan),0)
+initiates(walk(nathan),location(nathan),1)
+initiates(walk(nathan),location(nathan),2)
+initiates(walk(nathan),location(nathan),3)
+initiates(walk(nathan),location(nathan),4)
+initiates(walk(nathan),location(nathan),5)
+initiates(pickUp(nathan,book),holding(nathan,book),1)
+normal_atom(0,leq,20)
+normal_atom(0,leq,40)
+normal_atom(0,lt,20)
+normal_atom(0,lt,40)
+normal_atom(10,leq,20)
+normal_atom(10,leq,40)
+normal_atom(10,lt,20)
+normal_atom(10,lt,40)
+normal_atom(20,eq,20)
+normal_atom(20,geq,20)
+normal_atom(20,leq,20)
+normal_atom(20,leq,40)
+normal_atom(20,lt,40)
+normal_atom(30,geq,20)
+normal_atom(30,gt,20)
+normal_atom(30,leq,40)
+normal_atom(30,lt,40)
+normal_atom(40,eq,40)
+normal_atom(40,geq,20)
+normal_atom(40,geq,40)
+normal_atom(40,gt,20)
+normal_atom(40,leq,40)
+normal_atom(1000,geq,20)
+normal_atom(1000,geq,40)
+normal_atom(1000,gt,20)
+normal_atom(1000,gt,40)
+normal_atom(0,eq,0)
+normal_atom(0,geq,0)
+normal_atom(0,leq,0)
+startedIn(0,holding(nathan,book),2)
+startedIn(0,holding(nathan,book),3)
+startedIn(0,holding(nathan,book),4)
+startedIn(0,holding(nathan,book),5)
+stoppedIn(0,holding(nathan,book),4)
+stoppedIn(0,holding(nathan,book),5)
+stoppedIn(1,holding(nathan,book),4)
+stoppedIn(1,holding(nathan,book),5)
+stoppedIn(2,holding(nathan,book),4)
+stoppedIn(2,holding(nathan,book),5)
+terminates(letGoOf(nathan,book),holding(nathan,book),2)
+terminates(letGoOf(nathan,book),holding(nathan,book),3)
+initiates(walk(nathan),location(book),(100,1,0,location(book)),2)
+initiates(walk(nathan),location(book),(0,1,0,location(book)),3)
+initiates(walk(nathan),location(nathan),(0,1,0,location(nathan)),0)
+initiates(walk(nathan),location(nathan),(0,1,0,location(nathan)),1)
+initiates(walk(nathan),location(nathan),(100,1,0,location(nathan)),2)
+initiates(walk(nathan),location(nathan),(0,1,0,location(nathan)),3)
+initiates(walk(nathan),location(nathan),(200,1,0,location(nathan)),4)
+initiates(walk(nathan),location(nathan),(0,1,0,location(nathan)),5)
+Assignment: [leftovers]
+fholdsAt(location(book),0)=0
+fholdsAt(location(book),2)=0
+fholdsAt(location(book),3)=100
+fholdsAt(location(book),4)=100
+fholdsAt(location(book),5)=100
+fholdsAt(location(nathan),0)=0
+fholdsAt(location(nathan),2)=0
+fholdsAt(location(nathan),3)=100
+fholdsAt(location(nathan),4)=100
+fholdsAt(location(nathan),5)=200
+timeDiff(0,0)=0
+timeDiff(0,1)=10
+timeDiff(0,2)=20
+timeDiff(0,3)=30
+timeDiff(0,4)=40
+timeDiff(0,5)=1000
+timeDiff(1,1)=0
+timeDiff(1,2)=10
+timeDiff(1,3)=20
+timeDiff(1,4)=30
+timeDiff(1,5)=990
+timeDiff(2,2)=0
+timeDiff(2,3)=10
+timeDiff(2,4)=20
+timeDiff(2,5)=980
+timeDiff(3,3)=0
+timeDiff(3,4)=10
+timeDiff(3,5)=970
+timeDiff(4,4)=0
+timeDiff(4,5)=960
+timeDiff(5,5)=0
+SATISFIABLE
+
+Models       : 1
+Calls        : 1
+Time         : 0.030s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.020s
+
+Command exited with non-zero status 30
+
+  real      0:00.03
+  real [s]  0.03
+  user [s]  0.01
+  sys  [s]  0.01
+  mem  [KB] 9344
+  avgm [KB] 0

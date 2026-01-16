@@ -5,28 +5,30 @@ Looking for the right number of steps: 1 2 FOUND
 clingcon version 5.2.1
 Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1 (Time: 0.043s)
+Answer: 1 (Time: 0.049s)
 maxStep(2)
 happens(hitGround(apple),90)
 happens(drop(nathan,apple),10)
-holdsAt(falling(apple),(10<S=<90))
-fholdsAt(height(apple),0,(90<S=<1000))
-fholdsAtC(height(apple),(160->0),(10<S=<90),((1,160),-2))
+holdsAt(falling(apple),(10<T=<90))
+releasedAt(height(apple),(10<T=<90))
+fholdsAt(height(apple)=160,(0<T=<10))
+fholdsAt(height(apple)=0,(90<T=<1000))
+fholdsAtC(height(apple)=(160->0),(10<T=<90),eq(((1,160),-2)))
 Assignment:
 (obs,10)=10 (time,0)=10 (time,1)=90 (time,2)=1000 (height(apple),0)=160 (height(apple),1)=0 (height(apple),2)=0
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.027s
+Time         : 0.049s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.030s
 
 
 Command exited with non-zero status 30
 
-  real      0:00.37
-  real [s]  0.37
+  real      0:00.38
+  real [s]  0.38
   user [s]  0.21
   sys  [s]  0.08
-  mem  [KB] 18304
+  mem  [KB] 18432
   avgm [KB] 0

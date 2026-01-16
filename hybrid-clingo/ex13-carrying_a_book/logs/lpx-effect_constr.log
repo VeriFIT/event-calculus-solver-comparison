@@ -5,37 +5,39 @@ Looking for the right number of steps: 1 2 3 4 FOUND
 clingo-lpx version 1.3.0
 Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1 (Time: 0.049s)
+Answer: 1 (Time: 0.043s)
 maxStep(4)
 happens(letGoOf(nathan,book),30)
 happens(pickUp(nathan,book),10)
 happens(walk(nathan,100),20)
 happens(walk(nathan,200),40)
-holdsAt(holding(nathan,book),(10<S=<20))
-holdsAt(holding(nathan,book),(20<S=<30))
-fholdsAt(location(book),0,(10<S=<20))
-fholdsAt(location(book),100,(20<S=<30))
-fholdsAt(location(book),100,(30<S=<40))
-fholdsAt(location(book),100,(40<S=<1000))
-fholdsAt(location(nathan),0,(10<S=<20))
-fholdsAt(location(nathan),100,(20<S=<30))
-fholdsAt(location(nathan),100,(30<S=<40))
-fholdsAt(location(nathan),200,(40<S=<1000))
+holdsAt(holding(nathan,book),(10<T=<20))
+holdsAt(holding(nathan,book),(20<T=<30))
+fholdsAt(location(book)=0,(0<T=<10))
+fholdsAt(location(book)=0,(10<T=<20))
+fholdsAt(location(book)=100,(20<T=<30))
+fholdsAt(location(book)=100,(30<T=<40))
+fholdsAt(location(book)=100,(40<T=<1000))
+fholdsAt(location(nathan)=0,(0<T=<10))
+fholdsAt(location(nathan)=0,(10<T=<20))
+fholdsAt(location(nathan)=100,(20<T=<30))
+fholdsAt(location(nathan)=100,(30<T=<40))
+fholdsAt(location(nathan)=200,(40<T=<1000))
 Assignment:
 one=1 (obs,10)=10 (obs,20)=20 (obs,30)=30 (obs,40)=40 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40 (time,4)=1000 (location(book),0)=0 (location(book),1)=0 (location(book),2)=100 (location(book),3)=100 (location(book),4)=100 (location(nathan),0)=0 (location(nathan),1)=0 (location(nathan),2)=100 (location(nathan),3)=100 (location(nathan),4)=200
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.050s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.031s
+Time         : 0.045s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.030s
 
 
 Command exited with non-zero status 30
 
-  real      0:00.77
-  real [s]  0.77
-  user [s]  0.35
-  sys  [s]  0.18
-  mem  [KB] 18176
+  real      0:00.67
+  real [s]  0.67
+  user [s]  0.38
+  sys  [s]  0.12
+  mem  [KB] 18304
   avgm [KB] 0

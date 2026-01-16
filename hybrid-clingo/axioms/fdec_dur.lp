@@ -1,36 +1,4 @@
-% log of changes to get FDEC from DEC:
-%   renamed maxtime to maxstep
-%   renamed time to step
-%   introduced ffluent
-%?  DEC 7,8,12 refer to fluent, initiated1/released1 refer to fluent
-%   add FDEC 13-16
-%   add normal_atom for comparing func. values -- TODO workaround due to lpx not allowing func. atoms in the body
-%   add mapping of time to steps
-%   use obs/2 for observations
-% 
-% overview of: ffluent vs dfluent vs fluent
-%   DEC  1-4   -- dfluent   (trajectories)
-%   DEC  5,6   -- dfluent   (inertia holdsAt)
-%   DEC  7,8   -- fluent    (inertia releasedAt)
-%   DEC  9,10  -- dfluent   (init/term holdsAt)
-%   DEC  11    -- fluent    (init releasedAt)
-%   DEC  12    -- dfluent   (term releasedAt)
-%   FDEC 1-6   -- ffluent
-%
-%
-% needed improvements:
-%   removing normal_atom (by &sum{} in the body)
-%
-% possible extensions:
-%   holdsAt for ffluents
-%   trajectory controlled by a ffluent
-%   functional events
-%
-
-
-% TODO which script?
-% TODO moving things back to the right in equations
-% TODO step zero time nonzero?
+% version of FDEC for happens3 -- events with duration
 
 % OV: the if tries to handle the special case of ( (X) ) being converted to (X), e.g. ( (time, 0) )
 #script (python)
@@ -58,40 +26,40 @@ step(0..maxstep).
 { releasedAt(F,S) } :- fluent(F), step(S).
 
 % DEC1
-stoppedIn(S1,F,S2) :-
-  S1<S, S<S2,
-  happens(E,S),
-  terminates(E,F,S),
-  step(S1), step(S2).
+stoppedIn(S1,F,S4) :-
+  S1<S3, S2<S4,
+  happens3(E,S2,S3),
+  terminates(E,F,S2),
+  step(S1), step(S4).
 
 % DEC2
-startedIn(S1,F,S2) :-
-  S1<S, S<S2,
-  happens(E,S),
-  initiates(E,F,S),
-  step(S1), step(S2).
+startedIn(S1,F,S4) :-
+  S1<S3, S2<S4,
+  happens3(E,S2,S3),
+  initiates(E,F,S2),
+  step(S1), step(S4).
 
 % DEC3
-holdsAt(F2,S1+S2) :-
-  happens(E,S1),
+holdsAt(F2,S2+S3) :-
+  happens3(E,S1,S2),
   initiates(E,F1,S1),
-  0<S2,
-  trajectory(F1,S1,F2,S2),
-  not stoppedIn(S1,F1,S1+S2),
-  step(S1+S2).
+  0<S3,
+  trajectory(F1,S1,F2,S3),
+  not stoppedIn(S1,F1,S2+S3),
+  step(S2+S3).
 
 % DEC4
-holdsAt(F2,S1+S2) :-
-  happens(E,S1),
-  terminates(E,F1,S1),
-  0<S2,
-  antiTrajectory(F1,S1,F2,S2),
-  not startedIn(S1,F1,S1+S2),
-  step(S1+S2).
+holdsAt(F2,S2+S3) :-
+  happens3(E,S1,S2),
+  initiates(E,F1,S1),
+  0<S3,
+  antiTrajectory(F1,S1,F2,S3),
+  not startedIn(S1,F1,S2+S3),
+  step(S2+S3).
 
-initiated1(F,S) :- happens(E,S), initiates(E,F,S).
-terminated1(F,S) :- happens(E,S), terminates(E,F,S).
-released1(F,S) :- happens(E,S), releases(E,F,S).
+initiated1(F,S2) :- happens3(E,S1,S2), initiates(E,F,S1).
+terminated1(F,S2) :- happens3(E,S1,S2), terminates(E,F,S1).
+released1(F,S2) :- happens3(E,S1,S2), releases(E,F,S1).
 
 % DEC5
 holdsAt(F,S+1) :-
@@ -121,33 +89,39 @@ releasedAt(F,S+1) :-
   step(S), step(S+1).
 
 % DEC9
-holdsAt(F,S+1) :-
-  happens(E,S),
-  initiates(E,F,S),
-  step(S+1).
+holdsAt(F,S2+1) :-
+  happens3(E,S1,S2),
+  initiates(E,F,S1),
+  step(S2+1).
 
 % DEC10
-:- holdsAt(F,S+1),
-  happens(E,S),
-  terminates(E,F,S),
-  step(S+1).
+:- holdsAt(F,S2+1),
+  happens3(E,S1,S2),
+  terminates(E,F,S1),
+  step(S2+1).
 
 % DEC11
-releasedAt(F,S+1) :-
-  happens(E,S),
-  releases(E,F,S),
-  step(S+1).
+releasedAt(F,S2+1) :-
+  happens3(E,S1,S2),
+  releases(E,F,S1),
+  step(S2+1).
 
 % DEC12
-:- releasedAt(F,S+1),
-  happens(E,S),
-  initiates(E,F,S),
-  step(S+1).
-:- releasedAt(F,S+1),
-  happens(E,S),
-  terminates(E,F,S),
-  step(S+1).
+:- releasedAt(F,S2+1),
+  happens3(E,S1,S2),
+  initiates(E,F,S1),
+  step(S2+1).
+:- releasedAt(F,S2+1),
+  happens3(E,S1,S2),
+  terminates(E,F,S1),
+  step(S2+1).
 
+% DEC 13
+:- obs(happens3, E, T1, T2), T1 > T2.
+:- happens3(E,S1,S2), S1 > S2.
+
+% DEC 14
+happens(E,S) :- happens3(E,S,S).
 
 %-------------------------------------------------------------------------------
 % FDEC
@@ -161,11 +135,11 @@ releasedAt(F,S+1) :-
 
 % FDEC1 (corresponds to DEC2)
 % TODO OV: useful as utility
-startedIn(S1,F,S2) :-
-  S1<S, S<S2,
-  happens(E,S),
-  initiates(E,F, _, S),
-  step(S1), step(S2).
+startedIn(S1,F,S4) :-
+  S1<S3, S2<S4,
+  happens3(E,S2,S3),
+  initiates(E,F,_,S2),
+  step(S1), step(S4).
 
 % In the following rules:
 %   LE stands for Linear Expression
@@ -173,26 +147,26 @@ startedIn(S1,F,S2) :-
 %   V for (rational) Variable
 
 % FDEC2 (corresponds to DEC3)
-&sum{ C*V : @member(LE) = (C,V); CC*(time,S3); -CC*(time,S1); -(F2,S3) } = 0 :-
-  S3=S1+S2,
-  happens(E,S1),
+&sum{ C*V : @member(LE) = (C,V); CC*(time,S4); -CC*(time,S2); -(F2,S4) } = 0 :-
+  S4=S2+S3,
+  happens3(E,S1,S2),
   initiates(E,F1,S1),
-  0<S2,
-  trajectory(F1,S1,F2,(LE,CC),S2),
-  not stoppedIn(S1,F1,S3),
-  step(S3).
+  0<S3,
+  trajectory(F1,S1,F2,(LE,CC),S3),
+  not stoppedIn(S1,F1,S4),
+  step(S4).
 
 % FDEC3 (corresponds to DEC4)
-&sum{ C*V : @member(LE) = (C,V); CC*(time,S3); -CC*(time,S1); -(F2,S3) } = 0 :-
-  S3=S1+S2,
-  happens(E,S1),
+&sum{ C*V : @member(LE) = (C,V); CC*(time,S4); -CC*(time,S2); -(F2,S4) } = 0 :-
+  S4=S2+S3,
+  happens3(E,S1,S2),
   terminates(E,F1,S1),
-  0<S2,
-  antiTrajectory(F1,S1,F2,(LE,CC),S2),
-  not startedIn(S1,F1,S3),
-  step(S3).
+  0<S3,
+  antiTrajectory(F1,S1,F2,(LE,CC),S3),
+  not startedIn(S1,F1,S4),
+  step(S4).
 
-initiated1(F,S) :- happens(E,S), initiates(E,F,LE,S).
+initiated1(F,S2) :- happens3(E,S1,S2), initiates(E,F,LE,S1).
 % no terminated1(F,S) for ffluent(F)
 %      released1(F,S) is defined above given releases(E,F,S) for ffluent(F)
 
@@ -207,19 +181,19 @@ initiated1(F,S) :- happens(E,S), initiates(E,F,LE,S).
 % DEC7 and DEC8 apply also to ffluent(F)
 
 % FDEC5 (corresponds to DEC9 and DEC10)
-&sum{ C*V : @member(LE) = (C,V); -(F,S2) } = 0 :-
-  S2=S1+1,
-  happens(E,S1),
+&sum{ C*V : @member(LE) = (C,V); -(F,S3) } = 0 :-
+  S3=S2+1,
+  happens3(E,S1,S2),
   initiates(E,F,LE,S1),
   step(S2).
 
 % DEC11 applies also to ffluent(F)
 
 % FDEC6 (corresponds to DEC12)
-:- releasedAt(F,S+1),
-  happens(E,S),
-  initiates(E,F,_,S),
-  step(S+1).
+:- releasedAt(F,S2+1),
+  happens3(E,S1,S2),
+  initiates(E,F,_,S1),
+  step(S2+1).
 
 
 %-------------------------------------------------------------------------------
@@ -257,20 +231,26 @@ sum(LE,geq,B) :- sum(LE,gt,B).
 :- obs(_,_,T), T < 0.
 :- obs(_,_,T), T > maxtime, not disable_laststep. % last step can be disabled
 
+% happens3
+:- obs(_,_,T1,T2), T1 < 0.
+:- obs(_,_,T1,T2), T2 > maxtime, not disable_laststep. % last step can be disabled
+
 % map(T,S): time T is mapped to state S
-%   map(T,S) :- obs(happens,E,T), step(S), &sum{ (time,S) } = T.       % clingcon
-    map(T,S) :- obs(happens,E,T), step(S), sum(( (1,(time,S)) ),eq,T). % clingo-lpx
-             :- obs(happens,E,T), not map(T,_). 
-happens(E,S) :- obs(happens,E,T),     map(T,S).
+%   map(T,S) :- obs(happens3,E,T), step(S), &sum{ (time,S) } = T.       % clingcon
+    map(T,S) :- obs(happens3,E,T,_), step(S), sum(( (1,(time,S)) ),eq,T). % clingo-lpx
+    map(T,S) :- obs(happens3,E,_,T), step(S), sum(( (1,(time,S)) ),eq,T). % clingo-lpx
+             :- obs(happens3,E,_,T), not map(T,_). 
+             :- obs(happens3,E,T,_), not map(T,_). 
+happens3(E,S1,S2) :- obs(happens3,E,T1,T2), map(T1,S1), map(T2,S2).
 
 % time_step(T,S): time point T corresponds to step S 
 %% clingcon
 %time_step(T,S) :- obs(O,_,T), O != happens, step(S), S > 0, &sum{ (time,S-1) } < T, &sum{ (time,S) } >= T. % (time,S-1) < T <= (time,S)
 %time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                         &sum{ (time,S) } >= T. %              T <= (time,S)
 % clingo-lpx
-time_step(T,S) :- obs(O,_,T), O != happens, step(S), S > 0, sum(( (1,(time,S1)) ),lt,T), sum(( (1,(time,S)) ),geq,T), S1 = S-1. % (time,S-1) < T <= (time,S)
-time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                              sum(( (1,(time,S)) ),geq,T).           %              T <= (time,S)
-:- obs(O,_,T), O != happens, not time_step(T, _). % TODO added this
+time_step(T,S) :- obs(O,_,T), O != happens3, step(S), S > 0, sum(( (1,(time,S1)) ),lt,T), sum(( (1,(time,S)) ),geq,T), S1 = S-1. % (time,S-1) < T <= (time,S)
+time_step(T,S) :- obs(O,_,T), O != happens3,          S = 0,                              sum(( (1,(time,S)) ),geq,T).           %              T <= (time,S)
+:- obs(O,_,T), O != happens3, not time_step(T, _). % TODO added this
 %time_step_obs((holdsAt;notHoldsAt;releasedAt;notReleasedAt)). % filter out happens and functional values
 
 % check Boolean fluents' observations
@@ -283,13 +263,13 @@ time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                     
 
 % check functional fluents' observations
 % in_trajectory(F,S,C): F is at step S in a trajectory with time coefficient C
-in_trajectory(F2,S3,C) :- 
-  S3=S1+S2, happens(E,S1), initiates(E,F1,S1), 0<S2,
-  trajectory(F1,S1,F2,(LE,C),S2), not stoppedIn(S1,F1,S3), step(S3).
+in_trajectory(F2,S4,C) :- 
+  S4=S2+S3, happens3(E,S1,S2), initiates(E,F1,S1), 0<S3,
+  trajectory(F1,S1,F2,(LE,C),S3), not stoppedIn(S1,F1,S4), step(S4).
 %
-in_trajectory(F2,S1+S2,C) :- 
-  S3=S1+S2, happens(E,S1), terminates(E,F1,S1), 0<S2,
-  antiTrajectory(F1,S1,F2,(LE,C),S2), not startedIn(S1,F1,S3), step(S3).
+in_trajectory(F2,S4,C) :- 
+  S4=S2+S3, happens3(E,S1,S2), terminates(E,F1,S1), 0<S3,
+  antiTrajectory(F1,S1,F2,(LE,C),S3), not startedIn(S1,F1,S4), step(S4).
 
 % TODO what about observation that value is greater than something
 &sum{ (F,S) }                         = V :- obs(F,V,T), ffluent(F), time_step(T,S), not in_trajectory(F,S,_).
@@ -318,6 +298,8 @@ in_trajectory(F2,S1+S2,C) :-
 
 % for clingo-lpx
 comparison(( (1,(time,S)) ),T) :- obs(_,_,T), step(S).
+comparison(( (1,(time,S)) ),T) :- obs(_,_,T,_), step(S).
+comparison(( (1,(time,S)) ),T) :- obs(_,_,_,T), step(S).
 
 % maxstep maps to maxtime (unless disabled)
 &sum{ (time,maxstep) } = maxtime :- not disable_laststep.
@@ -331,7 +313,8 @@ comparison(( (1,(time,S)) ),T) :- obs(_,_,T), step(S).
 :- step(S), not significant_step(S),                    % all steps must be significant
    not disable_significant_constr.                      % unless this constraint is disabled
 significant_step(S) :- S=maxstep, not disable_laststep. % last step is significant (unless last step is disabled)
-significant_step(S) :- happens(E,S).                    % step is significant if an event happens
+significant_step(S) :- happens3(E,S,_).                 % step is significant if an event happens
+significant_step(S) :- happens3(E,_,S).                 % step is significant if an event happens
 
 
 %-------------------------------------------------------------------------------
@@ -355,6 +338,7 @@ comparison(( (1,(F,S  )) ),V) :- no_jump(F,S,V), step(S), step(S-1).
 
 #defined no_jump/3.
 #defined obs/3.
+#defined obs/4.
 
 #defined initiallyP/1.
 #defined initiallyN/1.

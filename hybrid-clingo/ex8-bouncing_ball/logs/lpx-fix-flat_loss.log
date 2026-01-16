@@ -5,7 +5,7 @@ Looking for the right number of steps: 1 2 3 4 5 6 FOUND
 clingo-lpx version 1.3.0
 Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1 (Time: 0.076s)
+Answer: 1 (Time: 0.077s)
 maxStep(6)
 happens(bounce_up,20)
 happens(bounce_up,49/2)
@@ -19,56 +19,71 @@ happens(hit_ground,201/8)
 happens(reach_apex,89/4)
 happens(reach_apex,397/16)
 happens(stop_bouncing,201/8)
-holdsAt(falling,(10<S=<20))
-holdsAt(falling,(89/4<S=<49/2))
-holdsAt(falling,(397/16<S=<201/8))
-holdsAt(rising,(20<S=<89/4))
-holdsAt(rising,(49/2<S=<397/16))
-holdsAt(constant_fall_rate(1),(10<S=<20))
-holdsAt(constant_fall_rate(1),(20<S=<89/4))
-holdsAt(constant_fall_rate(1),(89/4<S=<49/2))
-holdsAt(constant_fall_rate(1),(49/2<S=<397/16))
-holdsAt(constant_fall_rate(1),(397/16<S=<201/8))
-holdsAt(constant_fall_rate(1),(201/8<S=<1000))
-holdsAt(constant_velocity_loss_bounce(1),(10<S=<20))
-holdsAt(constant_velocity_loss_bounce(1),(20<S=<89/4))
-holdsAt(constant_velocity_loss_bounce(1),(89/4<S=<49/2))
-holdsAt(constant_velocity_loss_bounce(1),(49/2<S=<397/16))
-holdsAt(constant_velocity_loss_bounce(1),(397/16<S=<201/8))
-holdsAt(constant_velocity_loss_bounce(1),(201/8<S=<1000))
-holdsAt(velocity_loss_portion("0.75"),(10<S=<20))
-holdsAt(velocity_loss_portion("0.75"),(20<S=<89/4))
-holdsAt(velocity_loss_portion("0.75"),(89/4<S=<49/2))
-holdsAt(velocity_loss_portion("0.75"),(49/2<S=<397/16))
-holdsAt(velocity_loss_portion("0.75"),(397/16<S=<201/8))
-holdsAt(velocity_loss_portion("0.75"),(201/8<S=<1000))
-fholdsAt(height,0,(201/8<S=<1000))
-fholdsAt(velocity,0,(201/8<S=<1000))
-fholdsAtC(height,(10->0),(10<S=<20),((1,10),-1))
-fholdsAtC(height,(0->9/4),(20<S=<89/4),((1,0),1))
-fholdsAtC(height,(9/4->0),(89/4<S=<49/2),((1,9/4),-1))
-fholdsAtC(height,(0->5/16),(49/2<S=<397/16),((1,0),1))
-fholdsAtC(height,(5/16->0),(397/16<S=<201/8),((1,5/16),-1))
-fholdsAtC(velocity,(0->10),(10<S=<20),((1,0),1))
-fholdsAtC(velocity,(10->0),(20<S=<89/4),((("-0.25",flatloss),("0.25",10)),-1))
-fholdsAtC(velocity,(0->9/4),(89/4<S=<49/2),((1,0),1))
-fholdsAtC(velocity,(9/4->0),(49/2<S=<397/16),((("-0.25",flatloss),("0.25",9/4)),-1))
-fholdsAtC(velocity,(0->5/16),(397/16<S=<201/8),((1,0),1))
+holdsAt(falling,(10<T=<20))
+holdsAt(falling,(89/4<T=<49/2))
+holdsAt(falling,(397/16<T=<201/8))
+holdsAt(rising,(20<T=<89/4))
+holdsAt(rising,(49/2<T=<397/16))
+holdsAt(constant_fall_rate(1),(0<T=<10))
+holdsAt(constant_fall_rate(1),(10<T=<20))
+holdsAt(constant_fall_rate(1),(20<T=<89/4))
+holdsAt(constant_fall_rate(1),(89/4<T=<49/2))
+holdsAt(constant_fall_rate(1),(49/2<T=<397/16))
+holdsAt(constant_fall_rate(1),(397/16<T=<201/8))
+holdsAt(constant_fall_rate(1),(201/8<T=<1000))
+holdsAt(constant_velocity_loss_bounce(1),(0<T=<10))
+holdsAt(constant_velocity_loss_bounce(1),(10<T=<20))
+holdsAt(constant_velocity_loss_bounce(1),(20<T=<89/4))
+holdsAt(constant_velocity_loss_bounce(1),(89/4<T=<49/2))
+holdsAt(constant_velocity_loss_bounce(1),(49/2<T=<397/16))
+holdsAt(constant_velocity_loss_bounce(1),(397/16<T=<201/8))
+holdsAt(constant_velocity_loss_bounce(1),(201/8<T=<1000))
+holdsAt(velocity_loss_portion("0.75"),(0<T=<10))
+holdsAt(velocity_loss_portion("0.75"),(10<T=<20))
+holdsAt(velocity_loss_portion("0.75"),(20<T=<89/4))
+holdsAt(velocity_loss_portion("0.75"),(89/4<T=<49/2))
+holdsAt(velocity_loss_portion("0.75"),(49/2<T=<397/16))
+holdsAt(velocity_loss_portion("0.75"),(397/16<T=<201/8))
+holdsAt(velocity_loss_portion("0.75"),(201/8<T=<1000))
+releasedAt(height,(10<T=<20))
+releasedAt(height,(20<T=<89/4))
+releasedAt(height,(89/4<T=<49/2))
+releasedAt(height,(49/2<T=<397/16))
+releasedAt(height,(397/16<T=<201/8))
+releasedAt(velocity,(10<T=<20))
+releasedAt(velocity,(20<T=<89/4))
+releasedAt(velocity,(89/4<T=<49/2))
+releasedAt(velocity,(49/2<T=<397/16))
+releasedAt(velocity,(397/16<T=<201/8))
+fholdsAt(height=10,(0<T=<10))
+fholdsAt(height=0,(201/8<T=<1000))
+fholdsAt(velocity=0,(0<T=<10))
+fholdsAt(velocity=0,(201/8<T=<1000))
+fholdsAtC(height=(10->0),(10<T=<20),eq(((1,10),-1)))
+fholdsAtC(height=(0->9/4),(20<T=<89/4),eq(((1,0),1)))
+fholdsAtC(height=(9/4->0),(89/4<T=<49/2),eq(((1,9/4),-1)))
+fholdsAtC(height=(0->5/16),(49/2<T=<397/16),eq(((1,0),1)))
+fholdsAtC(height=(5/16->0),(397/16<T=<201/8),eq(((1,5/16),-1)))
+fholdsAtC(velocity=(0->10),(10<T=<20),eq(((1,0),1)))
+fholdsAtC(velocity=(10->0),(20<T=<89/4),eq(((("-0.25",flatloss),("0.25",10)),-1)))
+fholdsAtC(velocity=(0->9/4),(89/4<T=<49/2),eq(((1,0),1)))
+fholdsAtC(velocity=(9/4->0),(49/2<T=<397/16),eq(((("-0.25",flatloss),("0.25",9/4)),-1)))
+fholdsAtC(velocity=(0->5/16),(397/16<T=<201/8),eq(((1,0),1)))
 Assignment:
 flatloss=1 (height,0)=10 (height,1)=0 (height,2)=9/4 (height,3)=0 (height,4)=5/16 (height,5)=0 (height,6)=0 (obs,10)=10 (time,0)=10 (time,1)=20 (time,2)=89/4 (time,3)=49/2 (time,4)=397/16 (time,5)=201/8 (time,6)=1000 (velocity,0)=0 (velocity,1)=10 (velocity,2)=0 (velocity,3)=9/4 (velocity,4)=0 (velocity,5)=5/16 (velocity,6)=0
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.077s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
-CPU Time     : 0.058s
+Time         : 0.079s (Solving: 0.01s 1st Model: 0.01s Unsat: 0.00s)
+CPU Time     : 0.060s
 
 
 Command exited with non-zero status 30
 
-  real      0:01.03
-  real [s]  1.03
-  user [s]  0.57
-  sys  [s]  0.23
+  real      0:01.05
+  real [s]  1.05
+  user [s]  0.61
+  sys  [s]  0.19
   mem  [KB] 18944
   avgm [KB] 0

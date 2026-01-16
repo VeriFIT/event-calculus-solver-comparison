@@ -9,7 +9,7 @@ Answer: 1 (Time: 0.042s)
 maxStep(1)
 happens(turn_light_off,11)
 happens(turn_light_on,10)
-holdsAt(light_on,(10<S=<11))
+holdsAt(light_on,(10<T=<11))
 Assignment:
 (obs,10)=10 (time,0)=10 (time,1)=11
 SATISFIABLE
@@ -17,14 +17,14 @@ SATISFIABLE
 Models       : 1
 Calls        : 1
 Time         : 0.042s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.023s
+CPU Time     : 0.026s
 
 
 Command exited with non-zero status 30
 
   real      0:00.22
   real [s]  0.22
-  user [s]  0.10
-  sys  [s]  0.06
-  mem  [KB] 18172
+  user [s]  0.12
+  sys  [s]  0.05
+  mem  [KB] 18176
   avgm [KB] 0

@@ -5,29 +5,31 @@ Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
 Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1 (Time: 0.037s)
+Answer: 1 (Time: 0.043s)
 maxStep(2)
 happens(transfer(account1,account2,2),10)
 happens(transfer(account1,account2,4),20)
-fholdsAt(balance(account1),8,(10<S=<20))
-fholdsAt(balance(account1),4,(20<S=<1000))
-fholdsAt(balance(account2),12,(10<S=<20))
-fholdsAt(balance(account2),16,(20<S=<1000))
+fholdsAt(balance(account1)=10,(0<T=<10))
+fholdsAt(balance(account1)=8,(10<T=<20))
+fholdsAt(balance(account1)=4,(20<T=<1000))
+fholdsAt(balance(account2)=10,(0<T=<10))
+fholdsAt(balance(account2)=12,(10<T=<20))
+fholdsAt(balance(account2)=16,(20<T=<1000))
 Assignment:
 one=1 (obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=1000 (balance(account1),0)=10 (balance(account1),1)=8 (balance(account1),2)=4 (balance(account2),0)=10 (balance(account2),1)=12 (balance(account2),2)=16
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.038s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.023s
+Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.024s
 
 
 Command exited with non-zero status 30
 
-  real      0:00.36
-  real [s]  0.36
-  user [s]  0.17
-  sys  [s]  0.10
-  mem  [KB] 18176
+  real      0:00.37
+  real [s]  0.37
+  user [s]  0.19
+  sys  [s]  0.08
+  mem  [KB] 18304
   avgm [KB] 0

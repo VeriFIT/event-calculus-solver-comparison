@@ -11,18 +11,28 @@ happens(switch_left,25/2)
 happens(switch_left,145/8)
 happens(switch_right,65/4)
 happens(start(right),10)
-holdsAt(left_filling,(25/2<S=<65/4))
-holdsAt(left_filling,(145/8<S=<19))
-holdsAt(right_filling,(10<S=<25/2))
-holdsAt(right_filling,(65/4<S=<145/8))
-fholdsAtC(water_left,(100->50),(10<S=<25/2),((1,100),-20))
-fholdsAtC(water_left,(50->175/2),(25/2<S=<65/4),((1,50),10))
-fholdsAtC(water_left,(175/2->50),(65/4<S=<145/8),((1,175/2),-20))
-fholdsAtC(water_left,(50->235/4),(145/8<S=<19),((1,50),10))
-fholdsAtC(water_right,(100->125),(10<S=<25/2),((1,100),10))
-fholdsAtC(water_right,(125->50),(25/2<S=<65/4),((1,125),-20))
-fholdsAtC(water_right,(50->275/4),(65/4<S=<145/8),((1,50),10))
-fholdsAtC(water_right,(275/4->205/4),(145/8<S=<19),((1,275/4),-20))
+holdsAt(left_filling,(25/2<T=<65/4))
+holdsAt(left_filling,(145/8<T=<19))
+holdsAt(right_filling,(10<T=<25/2))
+holdsAt(right_filling,(65/4<T=<145/8))
+releasedAt(water_left,(10<T=<25/2))
+releasedAt(water_left,(25/2<T=<65/4))
+releasedAt(water_left,(65/4<T=<145/8))
+releasedAt(water_left,(145/8<T=<19))
+releasedAt(water_right,(10<T=<25/2))
+releasedAt(water_right,(25/2<T=<65/4))
+releasedAt(water_right,(65/4<T=<145/8))
+releasedAt(water_right,(145/8<T=<19))
+fholdsAt(water_left=100,(0<T=<10))
+fholdsAt(water_right=100,(0<T=<10))
+fholdsAtC(water_left=(100->50),(10<T=<25/2),eq(((1,100),-20)))
+fholdsAtC(water_left=(50->175/2),(25/2<T=<65/4),eq(((1,50),10)))
+fholdsAtC(water_left=(175/2->50),(65/4<T=<145/8),eq(((1,175/2),-20)))
+fholdsAtC(water_left=(50->235/4),(145/8<T=<19),eq(((1,50),10)))
+fholdsAtC(water_right=(100->125),(10<T=<25/2),eq(((1,100),10)))
+fholdsAtC(water_right=(125->50),(25/2<T=<65/4),eq(((1,125),-20)))
+fholdsAtC(water_right=(50->275/4),(65/4<T=<145/8),eq(((1,50),10)))
+fholdsAtC(water_right=(275/4->205/4),(145/8<T=<19),eq(((1,275/4),-20)))
 Assignment:
 (obs,10)=10 (time,0)=10 (time,1)=25/2 (time,2)=65/4 (time,3)=145/8 (time,4)=19 (water_left,0)=100 (water_left,1)=50 (water_left,2)=175/2 (water_left,3)=50 (water_left,4)=235/4 (water_right,0)=100 (water_right,1)=125 (water_right,2)=50 (water_right,3)=275/4 (water_right,4)=205/4
 SATISFIABLE
@@ -35,9 +45,9 @@ CPU Time     : 0.037s
 
 Command exited with non-zero status 30
 
-  real      0:00.67
-  real [s]  0.67
-  user [s]  0.38
+  real      0:00.69
+  real [s]  0.69
+  user [s]  0.39
   sys  [s]  0.13
-  mem  [KB] 18432
+  mem  [KB] 18176
   avgm [KB] 0
