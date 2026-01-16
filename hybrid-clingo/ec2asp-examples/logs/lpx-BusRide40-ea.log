@@ -1,36 +1,33 @@
+$ python ../fdec-incr.py ./BusRide40-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.040s)
+Answer: 1 (Time: 0.037s)
+maxStep(2)
 happens(board,35)
 happens(boardRed,35)
 happens(buy,24)
-holdsAt(hasTicket,(24,"< S =<",35))
-holdsAt(hasTicket,(35,"< S =<",38))
-holdsAt(hasTicket,(38,"< S =<",40))
-holdsAt(onRed,(35,"< S =<",38))
-holdsAt(onRed,(38,"< S =<",40))
-Assignment: [leftovers]
-time(0)=0
-timeDiff(0,0)=0
-timeDiff(0,1)=24
-timeDiff(0,2)=35
-timeDiff(0,3)=38
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=11
-timeDiff(1,3)=14
-timeDiff(1,4)=16
-timeDiff(2,2)=0
-timeDiff(2,3)=3
-timeDiff(2,4)=5
-timeDiff(3,3)=0
-timeDiff(3,4)=2
-timeDiff(4,4)=0
+holdsAt(hasTicket,(24<T=<35))
+holdsAt(hasTicket,(35<T=<40))
+holdsAt(onRed,(35<T=<40))
+Assignment:
+(obs,0)=0 (obs,24)=24 (obs,35)=35 (obs,38)=38 (time,0)=24 (time,1)=35 (time,2)=40
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.040s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.018s
+Time         : 0.037s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.022s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.34
+  real [s]  0.34
+  user [s]  0.19
+  sys  [s]  0.08
+  mem  [KB] 18172
+  avgm [KB] 0

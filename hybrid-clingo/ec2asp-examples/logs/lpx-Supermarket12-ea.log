@@ -1,29 +1,33 @@
+$ python ../fdec-incr.py ./Supermarket12-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.044s)
+Answer: 1 (Time: 0.043s)
+maxStep(2)
 happens(pull,5)
 happens(pull,10)
 happens(push,5)
 happens(push,10)
-holdsAt(spinning,(5,"< S =<",10))
-holdsAt(spinning,(10,"< S =<",12))
-Assignment: [leftovers]
-time(0)=0
-timeDiff(0,0)=0
-timeDiff(0,1)=5
-timeDiff(0,2)=10
-timeDiff(0,3)=12
-timeDiff(1,1)=0
-timeDiff(1,2)=5
-timeDiff(1,3)=7
-timeDiff(2,2)=0
-timeDiff(2,3)=2
-timeDiff(3,3)=0
+holdsAt(spinning,(5<T=<10))
+holdsAt(spinning,(10<T=<12))
+Assignment:
+(obs,0)=0 (obs,5)=5 (obs,10)=10 (time,0)=5 (time,1)=10 (time,2)=12
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.018s
+Time         : 0.043s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.025s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.35
+  real [s]  0.35
+  user [s]  0.19
+  sys  [s]  0.08
+  mem  [KB] 18176
+  avgm [KB] 0

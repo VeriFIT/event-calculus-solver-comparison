@@ -1,25 +1,34 @@
+$ python ../fdec-incr.py --con ./HotAirBalloon20-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingcon version 5.2.1
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.044s)
+Answer: 1 (Time: 0.043s)
+maxStep(2)
 happens(turnOffHeater(nathan,balloon),8)
 happens(turnOnHeater(nathan,balloon),0)
-holdsAt(heaterOn(balloon),(0,"< S =<",8))
-releasedAt(height(balloon),(0,"< S =<",8))
-releasedAt(height(balloon),(8,"< S =<",20))
-fholdsAtC(height(balloon),(0,"->",8),(0,"< S =<",8),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(8,"-",0)))
-fholdsAtC(height(balloon),(8,"->",-4),(8,"< S =<",20),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(8),"+",inc(-1),"*",dur(20,"-",8)))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=8
-timeDiff(0,2)=20
-timeDiff(1,1)=0
-timeDiff(1,2)=12
-timeDiff(2,2)=0
+holdsAt(heaterOn(balloon),(0<T=<8))
+releasedAt(height(balloon),(0<T=<8))
+releasedAt(height(balloon),(8<T=<20))
+fholdsAtC(height(balloon)=(0->8),(0<T=<8),eq(((1,0),1)))
+fholdsAtC(height(balloon)=(8->-4),(8<T=<20),eq(((1,8),-1)))
+Assignment:
+(obs,0)=0 (obs,8)=8 (time,0)=0 (time,1)=8 (time,2)=20 (height(balloon),0)=0 (height(balloon),1)=8 (height(balloon),2)=-4
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
 Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.021s
+CPU Time     : 0.027s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.39
+  real [s]  0.39
+  user [s]  0.22
+  sys  [s]  0.07
+  mem  [KB] 18304
+  avgm [KB] 0

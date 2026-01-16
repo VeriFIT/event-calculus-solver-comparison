@@ -1,11 +1,11 @@
-#const maxstep=4.
+#const maxstep=3.
 #const maxtime=40.
 
 
 
-dfluent(loaded).
-dfluent(alive).
-dfluent(dead).
+fluent(loaded).
+fluent(alive).
+fluent(dead).
 
 event(load).
 event(shoot).
@@ -25,19 +25,19 @@ holdsAt(dead,S) :- not holdsAt(alive,S), step(S).
 
 releasedAt(dead,S) :- step(S).
 
-:- releasedAt(loaded,0).
+obs(notReleasedAt,loaded,0).
 
-:- releasedAt(alive,0).
+obs(notReleasedAt,alive,0).
 
-holdsAt(alive,0).
+obs(holdsAt,alive,0).
 
-:- holdsAt(loaded,0).
+obs(notHoldsAt,loaded,0).
 
-in_happens(load,10).
+obs(happens,load,10).
 
-in_happens(sneeze,20).
+obs(happens,sneeze,20).
 
-in_happens(shoot,35).
+obs(happens,shoot,35).
 
 negated_prints.
 

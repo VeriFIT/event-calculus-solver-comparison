@@ -1,11 +1,11 @@
-#const maxstep=2.   % TODO less because one event at zero, and in_holdsAt at maxtime
+#const maxstep=2.
 #const maxtime=2.
 
 
 
-dfluent(hasTicket).
-dfluent(onRed).
-dfluent(onYellow).
+fluent(hasTicket).
+fluent(onRed).
+fluent(onYellow).
 
 event(buy).
 event(board).
@@ -30,18 +30,18 @@ holdsAt(hasTicket,S) :- holdsAt(onRed,S).
 
 holdsAt(hasTicket,S) :- holdsAt(onYellow,S).
 
-:- releasedAt(hasTicket,0).
+obs(notReleasedAt,hasTicket,0).
 
-:- releasedAt(onRed,0).
+obs(notReleasedAt,onRed,0).
 
-:- releasedAt(onYellow,0).
+obs(notReleasedAt,onYellow,0).
 
-in_holdsAt(onRed,2). % TODO can remove this to show both models
+obs(holdsAt,onRed,2). % TODO can remove this to show both models
 
-:- holdsAt(hasTicket,0).
+obs(notHoldsAt,hasTicket,0).
 
-in_happens(buy,0).
+obs(happens,buy,0).
 
-in_happens(board,1).
+obs(happens,board,1).
 
 % --> abduce that board must have been boardRed

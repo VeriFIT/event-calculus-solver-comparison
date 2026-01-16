@@ -1,11 +1,11 @@
-#const maxstep=3.   % TODO 2 sets of events that happen at the same time 
+#const maxstep=2.
 #const maxtime=12.
 
 
 
-dfluent(forwards).
-dfluent(backwards).
-dfluent(spinning).
+fluent(forwards).
+fluent(backwards).
+fluent(spinning).
 
 event(push).
 event(pull).
@@ -30,24 +30,24 @@ terminates(push,spinning,S) :- not happens(pull,S), step(S).
 
 terminates(pull,spinning,S) :- not happens(push,S), step(S).
 
-:- releasedAt(forwards,0).
+obs(notReleasedAt,forwards,0).
 
-:- releasedAt(backwards,0).
+obs(notReleasedAt,backwards,0).
 
-:- releasedAt(spinning,0).
+obs(notReleasedAt,spinning,0).
 
-:- holdsAt(forwards,0).
+obs(notHoldsAt,forwards,0).
 
-:- holdsAt(backwards,0).
+obs(notHoldsAt,backwards,0).
 
-:- holdsAt(spinning,0).
+obs(notHoldsAt,spinning,0).
 
-in_happens(push,5).
+obs(happens,push,5).
 
-in_happens(pull,5).
+obs(happens,pull,5).
 
-in_happens(pull,10).
+obs(happens,pull,10).
 
-in_happens(push,10).
+obs(happens,push,10).
 
 % --> conclude spinning after 5 and still spinning after 10

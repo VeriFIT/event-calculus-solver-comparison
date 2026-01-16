@@ -3,7 +3,7 @@
 
 
 
-dfluent(carParked).
+fluent(carParked).
 
 event(park).
 event(steal).
@@ -16,21 +16,22 @@ terminates(steal,carParked,S) :- step(S).
 
 
 
-:- releasedAt(carParked,0).
+obs(notReleasedAt,carParked,0).
 
-:- holdsAt(carParked,0).
+obs(notHoldsAt,carParked,0).
 
-in_happens(park,20).
+obs(happens,park,20).
 
-in_not_holdsAt(carParked, 40).
+obs(notHoldsAt,carParked, 40).
 
 :- happens(steal, T), not holdsAt(carParked, T).
 :- happens(park, T), holdsAt(carParked, T). % TODO added to avoid abducing park at step 0
 :- happens(steal,S1), S1<S2, happens(park,S2).
 
-0 {happens(E, T)} 1 :- event(E), step(T), T<maxstep.
+0 {happens(E, T)} 1 :- event(E), step(T).
 
 negated_prints.
 
 % --> abduce happens steal after park (time between 20 and 40), i.e., in step 2 (initial is step 0, end is step 2)
-% TODO the example gives no time information for step 1 --> solution says time(2)=40-e (happened "some" short time before time 40)
+% NOTE: the example gives no time information for step 1 --> clingo-lpx says time(2)=40-e (happened "some" short time before time 40)
+% NOTE: clingcon needs --project for the same reason, otherwise would give many models of all possible placements

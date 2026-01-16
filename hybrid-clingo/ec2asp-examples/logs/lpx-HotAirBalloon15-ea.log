@@ -1,25 +1,34 @@
+$ python ../fdec-incr.py ./HotAirBalloon15-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.037s)
+Answer: 1 (Time: 0.044s)
+maxStep(2)
 happens(turnOffHeater(nathan,balloon),6)
 happens(turnOnHeater(nathan,balloon),0)
-holdsAt(heaterOn(balloon),(0,"< S =<",6))
-releasedAt(height(balloon),(0,"< S =<",6))
-releasedAt(height(balloon),(6,"< S =<",15))
-fholdsAtC(height(balloon),(0,"->",6),(0,"< S =<",6),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(6,"-",0)))
-fholdsAtC(height(balloon),(6,"->",-3),(6,"< S =<",15),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(6),"+",inc(-1),"*",dur(15,"-",6)))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=6
-timeDiff(0,2)=15
-timeDiff(1,1)=0
-timeDiff(1,2)=9
-timeDiff(2,2)=0
+holdsAt(heaterOn(balloon),(0<T=<6))
+releasedAt(height(balloon),(0<T=<6))
+releasedAt(height(balloon),(6<T=<15))
+fholdsAtC(height(balloon)=(0->6),(0<T=<6),eq(((1,0),1)))
+fholdsAtC(height(balloon)=(6->-3),(6<T=<15),eq(((1,6),-1)))
+Assignment:
+(obs,0)=0 (obs,6)=6 (time,0)=0 (time,1)=6 (time,2)=15 (height(balloon),0)=0 (height(balloon),1)=6 (height(balloon),2)=-3
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.038s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.017s
+Time         : 0.045s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.026s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.36
+  real [s]  0.36
+  user [s]  0.19
+  sys  [s]  0.09
+  mem  [KB] 18176
+  avgm [KB] 0

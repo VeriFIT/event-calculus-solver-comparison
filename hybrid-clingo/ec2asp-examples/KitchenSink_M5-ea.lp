@@ -1,14 +1,14 @@
-#const maxstep=2. % TODO one event happens at time zero
+#const maxstep=2.
 #const maxtime=5.
 
 #const spillheight=4.
-% offset(1..4). % TODO this was the duration of the trajectory
+% offset(1..4).
 
 
 
-dfluent(filling).
+fluent(filling).
 ffluent(height).
-dfluent(spilling).
+fluent(spilling).
 
 event(tapOn).
 event(tapOff).
@@ -22,33 +22,33 @@ terminates(tapOff,filling,S) :- step(S).
 
 releases(tapOn,height,S) :- step(S).
 
-initiates(tapOff,height,(0,0,1,height),S) :- step(S).
+initiates(tapOff,height,((1,(height,S))),S) :- step(S).
 
 terminates(overflow,filling,S) :- step(S).
 
-initiates(overflow,height,(0,0,1,height),S) :- step(S).
+initiates(overflow,height,((1,(height,S))),S) :- step(S).
 
 initiates(overflow,spilling,S) :- step(S).
 
-trajectory(filling,S,height,(0,0,1,height,1), S2) :- step(S), step(S2).
+trajectory(filling,S,height,(((1,(height,S))),1), S2) :- step(S), step(S2), step(S+S2).
 
-% :- holdsAt(height(Height1),S), holdsAt(height(Height2),S), Height1!=Height2. % TODO not needed
+% :- holdsAt(height(Height1),S), holdsAt(height(Height2),S), Height1!=Height2. % implicit
 
-happens(overflow,S) :- normal_atom((height,S), eq, spillheight), holdsAt(filling,S), step(S).
-trigger_value(height, filling, spillheight).
+happens(overflow,S) :- sum(((1,(height,S))), eq, spillheight), holdsAt(filling,S), step(S).
+no_jump(height, S, spillheight) :- holdsAt(filling, S).
 
-in_fvalue(height, 0, 0).    % TODO fluent value time 
+obs(height, 0, 0).
 
-:- holdsAt(filling,0).
+obs(notHoldsAt,filling,0).
 
-:- holdsAt(spilling,0).
+obs(notHoldsAt,spilling,0).
 
-in_happens(tapOn,0).
+obs(happens,tapOn,0).
 
-:- releasedAt(filling,0).
+obs(notReleasedAt,filling,0).
 
-:- releasedAt(height,0).
+obs(notReleasedAt,height,0).
 
-:- releasedAt(spilling,0).
+obs(notReleasedAt,spilling,0).
 
 % --> conclude happens overflow at time "spillheight"

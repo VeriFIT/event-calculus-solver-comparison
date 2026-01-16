@@ -3,7 +3,7 @@
 
 
 
-dfluent(carParked).
+fluent(carParked).
 
 event(park).
 event(steal).
@@ -16,15 +16,19 @@ terminates(steal,carParked,S) :- step(S).
 
 
 
-:- releasedAt(carParked,0).
+obs(notReleasedAt,carParked,0).
 
-:- holdsAt(carParked,0).
+obs(notHoldsAt,carParked,0).
 
-in_happens(park,0).
+obs(happens,park,0).
 
-in_not_holdsAt(carParked, 2).
+obs(notHoldsAt,carParked, 2).
 
-0 {happens(E, T)} 1 :- event(E), step(T), T<maxstep.
+:- happens(steal, T), not holdsAt(carParked, T).
+:- happens(park, T), holdsAt(carParked, T). % TODO added to avoid abducing park at step 0
+:- happens(steal,S1), S1<S2, happens(park,S2).
+
+0 {happens(E, T)} 1 :- event(E), step(T).
 
 negated_prints.
 

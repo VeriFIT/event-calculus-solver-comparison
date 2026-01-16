@@ -1,25 +1,34 @@
+$ python ../fdec-incr.py ./KitchenSink_M5-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.040s)
+Answer: 1 (Time: 0.042s)
+maxStep(2)
 happens(overflow,4)
 happens(tapOn,0)
-holdsAt(filling,(0,"< S =<",4))
-holdsAt(spilling,(4,"< S =<",5))
-releasedAt(height,(0,"< S =<",4))
-fholdsAt(height,4,(4,"< S =<",5))
-fholdsAtC(height,(0,"->",4),(0,"< S =<",4),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(0),"+",inc(1),"*",dur(4,"-",0)))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=4
-timeDiff(0,2)=5
-timeDiff(1,1)=0
-timeDiff(1,2)=1
-timeDiff(2,2)=0
+holdsAt(filling,(0<T=<4))
+holdsAt(spilling,(4<T=<5))
+releasedAt(height,(0<T=<4))
+fholdsAt(height=4,(4<T=<5))
+fholdsAtC(height=(0->4),(0<T=<4),eq(((1,0),1)))
+Assignment:
+(height,0)=0 (height,1)=4 (height,2)=4 (obs,0)=0 (time,0)=0 (time,1)=4 (time,2)=5
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.040s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.019s
+Time         : 0.043s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.025s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.36
+  real [s]  0.36
+  user [s]  0.20
+  sys  [s]  0.07
+  mem  [KB] 18304
+  avgm [KB] 0

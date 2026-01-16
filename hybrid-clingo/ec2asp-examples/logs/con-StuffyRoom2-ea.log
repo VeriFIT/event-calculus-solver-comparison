@@ -1,26 +1,35 @@
+$ python ../fdec-incr.py --con ./StuffyRoom2-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingcon version 5.2.1
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.044s)
+Answer: 1 (Time: 0.041s)
+maxStep(2)
 happens(close2,1)
 happens(start,0)
-holdsAt(blocked1,(0,"< S =<",1))
-holdsAt(blocked1,(1,"< S =<",40))
-holdsAt(blocked2,(1,"< S =<",40))
-holdsAt(stuffy,(1,"< S =<",40))
-releasedAt(stuffy,(0,"< S =<",1))
-releasedAt(stuffy,(1,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=1
-timeDiff(0,2)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=39
-timeDiff(2,2)=0
+holdsAt(blocked1,(0<T=<1))
+holdsAt(blocked1,(1<T=<40))
+holdsAt(blocked2,(1<T=<40))
+holdsAt(stuffy,(1<T=<40))
+releasedAt(stuffy,(0<T=<1))
+releasedAt(stuffy,(1<T=<40))
+Assignment:
+(obs,0)=0 (obs,1)=1 (time,0)=0 (time,1)=1 (time,2)=40
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.020s
+Time         : 0.042s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.026s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.35
+  real [s]  0.35
+  user [s]  0.17
+  sys  [s]  0.10
+  mem  [KB] 18304
+  avgm [KB] 0

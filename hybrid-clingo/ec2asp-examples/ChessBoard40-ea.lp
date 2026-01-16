@@ -3,10 +3,10 @@
 
 
 
-dfluent(itsBlack).
-dfluent(itsWhite).
-dfluent(onBlack).
-dfluent(onWhite).
+fluent(itsBlack).
+fluent(itsWhite).
+fluent(onBlack).
+fluent(onWhite).
 
 event(throw).
 
@@ -22,22 +22,22 @@ releasedAt(itsBlack,S) :- step(S).
 
 releasedAt(itsWhite,S) :- step(S).
 
-:- releasedAt(onBlack,0).
+obs(notReleasedAt,onBlack,0).
 
-:- releasedAt(onWhite,0).
+obs(notReleasedAt,onWhite,0).
 
-:- holdsAt(onWhite,0).
+obs(notHoldsAt,onWhite,0).
 
-:- holdsAt(onBlack,0).
+obs(notHoldsAt,onBlack,0).
 
-in_happens(throw,35).
+obs(happens,throw,35).
 
-holdsAt(itsWhite,0).
+%obs(holdsAt,itsWhite,0).   % not needed: value at time zero is the same as at time 1
+%
+%obs(holdsAt,itsBlack,0).
 
-holdsAt(itsBlack,0).
+obs(holdsAt,itsWhite,40).
 
-in_holdsAt(itsWhite,40).
-
-in_holdsAt(itsBlack,40).
+obs(holdsAt,itsBlack,40).
 
 % --> find 3 models, differ in state after time 1: onWhite or onBlack or both

@@ -1,10 +1,10 @@
-#const maxstep=4.
+#const maxstep=3.
 #const maxtime=4.
 
 
 
-dfluent(loaded).
-dfluent(alive).
+fluent(loaded).
+fluent(alive).
 
 event(load).
 event(shoot).
@@ -20,19 +20,19 @@ releases(spin,loaded,S) :- step(S).
 
 terminates(shoot,loaded,S) :- step(S).
 
-:- releasedAt(loaded,0).
+obs(notReleasedAt,loaded,0).
 
-:- releasedAt(alive,0).
+obs(notReleasedAt,alive,0).
 
-holdsAt(alive,0).
+obs(holdsAt,alive,0).
 
-:- holdsAt(loaded,0).
+obs(notHoldsAt,loaded,0).
 
-in_happens(load,1).
+obs(happens,load,1).
 
-in_happens(spin,2).
+obs(happens,spin,2).
 
-in_happens(shoot,3).
+obs(happens,shoot,3).
 
 negated_prints.
 

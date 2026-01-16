@@ -1,11 +1,11 @@
-#const maxstep=3.
+#const maxstep=2.
 #const maxtime=40.
 
 
 
-dfluent(blocked1).
-dfluent(blocked2).
-dfluent(stuffy).
+fluent(blocked1).
+fluent(blocked2).
+fluent(stuffy).
 
 event(close1).
 event(close2).
@@ -31,16 +31,16 @@ terminates(start,blocked2,S) :- step(S).
 
 releasedAt(stuffy,S) :- step(S).
 
-:- releasedAt(blocked1,0).
+obs(notReleasedAt,blocked1,0).
 
-:- releasedAt(blocked2,0).
+obs(notReleasedAt,blocked2,0).
 
-:- holdsAt(blocked1,0).
+obs(notHoldsAt,blocked1,0).
 
-:- holdsAt(blocked2,0).
+obs(notHoldsAt,blocked2,0).
 
-in_happens(start,10).
+obs(happens,start,10).
 
-in_happens(close2,20).
+obs(happens,close2,20).
 
 % --> conclude stuffy after time 20

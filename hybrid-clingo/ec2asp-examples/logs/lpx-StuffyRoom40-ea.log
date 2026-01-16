@@ -1,31 +1,36 @@
+$ python ../fdec-incr.py ./StuffyRoom40-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.037s)
+Answer: 1 (Time: 0.045s)
+maxStep(2)
 happens(close2,20)
 happens(start,10)
-holdsAt(blocked1,(10,"< S =<",20))
-holdsAt(blocked1,(20,"< S =<",40))
-holdsAt(blocked2,(20,"< S =<",40))
-holdsAt(stuffy,(20,"< S =<",40))
-releasedAt(stuffy,(0,"< S =<",10))
-releasedAt(stuffy,(10,"< S =<",20))
-releasedAt(stuffy,(20,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=20
-timeDiff(3,3)=0
+holdsAt(blocked1,(10<T=<20))
+holdsAt(blocked1,(20<T=<40))
+holdsAt(blocked2,(20<T=<40))
+holdsAt(stuffy,(20<T=<40))
+releasedAt(stuffy,(0<T=<10))
+releasedAt(stuffy,(10<T=<20))
+releasedAt(stuffy,(20<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (time,0)=10 (time,1)=20 (time,2)=40
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.037s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.017s
+Time         : 0.045s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.025s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.36
+  real [s]  0.36
+  user [s]  0.20
+  sys  [s]  0.08
+  mem  [KB] 18176
+  avgm [KB] 0

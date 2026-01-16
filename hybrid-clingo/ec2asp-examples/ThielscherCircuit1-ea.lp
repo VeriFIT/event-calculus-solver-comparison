@@ -3,11 +3,11 @@
 
 
 
-dfluent(light).
-dfluent(switch1).
-dfluent(switch2).
-dfluent(switch3).
-dfluent(relay).
+fluent(light).
+fluent(switch1).
+fluent(switch2).
+fluent(switch3).
+fluent(relay).
 
 event(lightOn).
 event(close1).
@@ -30,27 +30,27 @@ initiates(closeRelay,relay,S) :- step(S).
 
 initiates(close1,switch1,S) :- step(S).
 
-:- releasedAt(light,0).
+obs(notReleasedAt,light,0).
 
-:- releasedAt(switch1,0).
+obs(notReleasedAt,switch1,0).
 
-:- releasedAt(switch2,0).
+obs(notReleasedAt,switch2,0).
 
-:- releasedAt(switch3,0).
+obs(notReleasedAt,switch3,0).
 
-:- releasedAt(relay,0).
+obs(notReleasedAt,relay,0).
 
-:- holdsAt(switch1,0).
+obs(notHoldsAt,switch1,0).
 
-holdsAt(switch2,0).
+obs(holdsAt,switch2,0).
 
-holdsAt(switch3,0).
+obs(holdsAt,switch3,0).
 
-:- holdsAt(relay,0).
+obs(notHoldsAt,relay,0).
 
-:- holdsAt(light,0).
+obs(notHoldsAt,light,0).
 
-in_happens(close1,0).
+obs(happens,close1,0).
 
 negated_prints.
 

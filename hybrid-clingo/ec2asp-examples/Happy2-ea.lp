@@ -1,13 +1,13 @@
-#const maxstep=2.
+#const maxstep=1.
 #const maxtime=2.
 
 
 
 person(fred).
 
-dfluent(happy(Person)) :- person(Person).
-dfluent(hungry(Person)) :- person(Person).
-dfluent(cold(Person)) :- person(Person).
+fluent(happy(Person)) :- person(Person).
+fluent(hungry(Person)) :- person(Person).
+fluent(cold(Person)) :- person(Person).
 
 event(feed(Person)) :- person(Person).
 event(clothe(Person)) :- person(Person).
@@ -26,14 +26,14 @@ terminates(clothe(Person),cold(Person),S) :- step(S), person(Person).
 
 releasedAt(happy(Person),S) :- step(S), person(Person).
 
-:- releasedAt(hungry(Person),0).
+obs(notReleasedAt,hungry(Person),0) :- person(Person).
 
-:- releasedAt(cold(Person),0).
+obs(notReleasedAt,cold(Person),0) :- person(Person).
 
-holdsAt(hungry(fred),0).
+obs(holdsAt,hungry(fred),0).
 
-:- holdsAt(cold(fred),0).
+obs(notHoldsAt,cold(fred),0).
 
-in_happens(feed(fred),1).
+obs(happens,feed(fred),1).
 
 % --> conclude happy(fred) after 1

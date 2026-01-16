@@ -1,24 +1,33 @@
+$ python ../fdec-incr.py ./FallingObjectWithEvents5-ea.lp
+
+
+Looking for the right number of steps: 1 2 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.038s)
+Answer: 1 (Time: 0.043s)
+maxStep(2)
 happens(hitGround(apple),3)
 happens(drop(nathan,apple),0)
-holdsAt(falling(apple),(0,"< S =<",3))
-releasedAt(height(apple),(0,"< S =<",3))
-fholdsAt(height(apple),0,(3,"< S =<",5))
-fholdsAtC(height(apple),(3,"->",0),(0,"< S =<",3),eq(off1(0),"*",koef1(0),"+",koef2(1),"*",base(3),"+",inc(-1),"*",dur(3,"-",0)))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=3
-timeDiff(0,2)=5
-timeDiff(1,1)=0
-timeDiff(1,2)=2
-timeDiff(2,2)=0
+holdsAt(falling(apple),(0<T=<3))
+releasedAt(height(apple),(0<T=<3))
+fholdsAt(height(apple)=0,(3<T=<5))
+fholdsAtC(height(apple)=(3->0),(0<T=<3),eq(((1,3),-1)))
+Assignment:
+(obs,0)=0 (time,0)=0 (time,1)=3 (time,2)=5 (height(apple),0)=3 (height(apple),1)=0 (height(apple),2)=0
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.038s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.018s
+Time         : 0.043s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.024s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.37
+  real [s]  0.37
+  user [s]  0.23
+  sys  [s]  0.05
+  mem  [KB] 18304
+  avgm [KB] 0

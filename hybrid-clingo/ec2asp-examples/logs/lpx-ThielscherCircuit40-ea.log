@@ -1,41 +1,50 @@
+$ python ../fdec-incr.py ../axioms/causal.lp ./ThielscherCircuit40-ea.lp
+
+
+Looking for the right number of steps: 1 FOUND
 clingo-lpx version 1.3.0
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.048s)
+Answer: 1 (Time: 0.044s)
+maxStep(1)
 happens(close1,25)
 happens(closeRelay,25)
 happens(open2,25)
-holdsAt(relay,(25,"< S =<",40))
-holdsAt(switch1,(25,"< S =<",40))
-holdsAt(switch2,(0,"< S =<",25))
-holdsAt(switch3,(0,"< S =<",25))
-holdsAt(switch3,(25,"< S =<",40))
--holdsAt(light,(0,"< S =<",25))
--holdsAt(light,(25,"< S =<",40))
--holdsAt(relay,(0,"< S =<",25))
--holdsAt(switch1,(0,"< S =<",25))
--holdsAt(switch2,(25,"< S =<",40))
--releasedAt(light,(0,"< S =<",25))
--releasedAt(light,(25,"< S =<",40))
--releasedAt(relay,(0,"< S =<",25))
--releasedAt(relay,(25,"< S =<",40))
--releasedAt(switch1,(0,"< S =<",25))
--releasedAt(switch1,(25,"< S =<",40))
--releasedAt(switch2,(0,"< S =<",25))
--releasedAt(switch2,(25,"< S =<",40))
--releasedAt(switch3,(0,"< S =<",25))
--releasedAt(switch3,(25,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=25
-timeDiff(0,2)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=15
-timeDiff(2,2)=0
+holdsAt(relay,(25<T=<40))
+holdsAt(switch1,(25<T=<40))
+holdsAt(switch2,(0<T=<25))
+holdsAt(switch3,(0<T=<25))
+holdsAt(switch3,(25<T=<40))
+-holdsAt(light,(0<T=<25))
+-holdsAt(light,(25<T=<40))
+-holdsAt(relay,(0<T=<25))
+-holdsAt(switch1,(0<T=<25))
+-holdsAt(switch2,(25<T=<40))
+-releasedAt(light,(0<T=<25))
+-releasedAt(light,(25<T=<40))
+-releasedAt(relay,(0<T=<25))
+-releasedAt(relay,(25<T=<40))
+-releasedAt(switch1,(0<T=<25))
+-releasedAt(switch1,(25<T=<40))
+-releasedAt(switch2,(0<T=<25))
+-releasedAt(switch2,(25<T=<40))
+-releasedAt(switch3,(0<T=<25))
+-releasedAt(switch3,(25<T=<40))
+Assignment:
+(obs,0)=0 (obs,25)=25 (time,0)=25 (time,1)=40
 SATISFIABLE
 
 Models       : 1
 Calls        : 1
-Time         : 0.048s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.019s
+Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.024s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.23
+  real [s]  0.23
+  user [s]  0.13
+  sys  [s]  0.03
+  mem  [KB] 18048
+  avgm [KB] 0

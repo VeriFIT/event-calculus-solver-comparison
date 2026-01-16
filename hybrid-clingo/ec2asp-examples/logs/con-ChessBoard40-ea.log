@@ -1,65 +1,64 @@
+$ python ../fdec-incr.py --con ./ChessBoard40-ea.lp
+
+
+Looking for the right number of steps: 1 FOUND
 clingcon version 5.2.1
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.040s)
+Answer: 1 (Time: 0.042s)
+maxStep(1)
 happens(throw,35)
-holdsAt(itsBlack,(0,"< S =<",35))
-holdsAt(itsBlack,(35,"< S =<",40))
-holdsAt(itsWhite,(35,"< S =<",40))
-holdsAt(onBlack,(35,"< S =<",40))
-releasedAt(itsBlack,(0,"< S =<",35))
-releasedAt(itsBlack,(35,"< S =<",40))
-releasedAt(itsWhite,(0,"< S =<",35))
-releasedAt(itsWhite,(35,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=35
-timeDiff(0,2)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=5
-timeDiff(2,2)=0
-Answer: 2
-(Time: 0.040s)
+holdsAt(itsBlack,(35<T=<40))
+holdsAt(itsWhite,(0<T=<35))
+holdsAt(itsWhite,(35<T=<40))
+holdsAt(onWhite,(35<T=<40))
+releasedAt(itsBlack,(0<T=<35))
+releasedAt(itsBlack,(35<T=<40))
+releasedAt(itsWhite,(0<T=<35))
+releasedAt(itsWhite,(35<T=<40))
+Assignment:
+(obs,0)=0 (obs,35)=35 (obs,40)=40 (time,0)=35 (time,1)=40
+Answer: 2 (Time: 0.043s)
+maxStep(1)
 happens(throw,35)
-holdsAt(itsBlack,(35,"< S =<",40))
-holdsAt(itsWhite,(0,"< S =<",35))
-holdsAt(itsWhite,(35,"< S =<",40))
-holdsAt(onWhite,(35,"< S =<",40))
-releasedAt(itsBlack,(0,"< S =<",35))
-releasedAt(itsBlack,(35,"< S =<",40))
-releasedAt(itsWhite,(0,"< S =<",35))
-releasedAt(itsWhite,(35,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=35
-timeDiff(0,2)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=5
-timeDiff(2,2)=0
-Answer: 3
-(Time: 0.040s)
+holdsAt(itsBlack,(0<T=<35))
+holdsAt(itsBlack,(35<T=<40))
+holdsAt(itsWhite,(35<T=<40))
+holdsAt(onBlack,(35<T=<40))
+releasedAt(itsBlack,(0<T=<35))
+releasedAt(itsBlack,(35<T=<40))
+releasedAt(itsWhite,(0<T=<35))
+releasedAt(itsWhite,(35<T=<40))
+Assignment:
+(obs,0)=0 (obs,35)=35 (obs,40)=40 (time,0)=35 (time,1)=40
+Answer: 3 (Time: 0.043s)
+maxStep(1)
 happens(throw,35)
-holdsAt(itsBlack,(0,"< S =<",35))
-holdsAt(itsBlack,(35,"< S =<",40))
-holdsAt(itsWhite,(0,"< S =<",35))
-holdsAt(itsWhite,(35,"< S =<",40))
-holdsAt(onBlack,(35,"< S =<",40))
-holdsAt(onWhite,(35,"< S =<",40))
-releasedAt(itsBlack,(0,"< S =<",35))
-releasedAt(itsBlack,(35,"< S =<",40))
-releasedAt(itsWhite,(0,"< S =<",35))
-releasedAt(itsWhite,(35,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=35
-timeDiff(0,2)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=5
-timeDiff(2,2)=0
+holdsAt(itsBlack,(0<T=<35))
+holdsAt(itsBlack,(35<T=<40))
+holdsAt(itsWhite,(0<T=<35))
+holdsAt(itsWhite,(35<T=<40))
+holdsAt(onBlack,(35<T=<40))
+holdsAt(onWhite,(35<T=<40))
+releasedAt(itsBlack,(0<T=<35))
+releasedAt(itsBlack,(35<T=<40))
+releasedAt(itsWhite,(0<T=<35))
+releasedAt(itsWhite,(35<T=<40))
+Assignment:
+(obs,0)=0 (obs,35)=35 (obs,40)=40 (time,0)=35 (time,1)=40
 SATISFIABLE
 
 Models       : 3
 Calls        : 1
-Time         : 0.040s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.020s
+Time         : 0.044s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.026s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.23
+  real [s]  0.23
+  user [s]  0.12
+  sys  [s]  0.05
+  mem  [KB] 18292
+  avgm [KB] 0

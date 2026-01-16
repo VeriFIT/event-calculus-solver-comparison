@@ -1,249 +1,151 @@
+$ python ../fdec-incr.py --con ./CoinToss40-ea.lp
+
+
+Looking for the right number of steps: 1 2 3 FOUND
 clingcon version 5.2.1
-Reading from ../axioms/fdec.lp ...
+Reading from ...omparison/hybrid-clingo/axioms/fdec.lp ...
 Solving...
-Answer: 1
-(Time: 0.045s)
+Answer: 1 (Time: 0.041s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 2
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 2 (Time: 0.042s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(30,"< S =<",40))
-holdsAt(itsHeads,(20,"< S =<",30))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 3
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(30<T=<40))
+holdsAt(itsHeads,(20<T=<30))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 3 (Time: 0.042s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(10,"< S =<",20))
-holdsAt(itsHeads,(0,"< S =<",10))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 4
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(20<T=<30))
+holdsAt(itsHeads,(10<T=<20))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 4 (Time: 0.043s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(10,"< S =<",20))
-holdsAt(heads,(30,"< S =<",40))
-holdsAt(itsHeads,(0,"< S =<",10))
-holdsAt(itsHeads,(20,"< S =<",30))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 5
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(20<T=<30))
+holdsAt(heads,(30<T=<40))
+holdsAt(itsHeads,(10<T=<20))
+holdsAt(itsHeads,(20<T=<30))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 5 (Time: 0.043s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(20,"< S =<",30))
-holdsAt(itsHeads,(10,"< S =<",20))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 6
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(10<T=<20))
+holdsAt(itsHeads,(0<T=<10))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 6 (Time: 0.044s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(10,"< S =<",20))
-holdsAt(heads,(20,"< S =<",30))
-holdsAt(itsHeads,(0,"< S =<",10))
-holdsAt(itsHeads,(10,"< S =<",20))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 7
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(10<T=<20))
+holdsAt(heads,(20<T=<30))
+holdsAt(itsHeads,(0<T=<10))
+holdsAt(itsHeads,(10<T=<20))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 7 (Time: 0.044s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(20,"< S =<",30))
-holdsAt(heads,(30,"< S =<",40))
-holdsAt(itsHeads,(10,"< S =<",20))
-holdsAt(itsHeads,(20,"< S =<",30))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
-Answer: 8
-(Time: 0.045s)
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(10<T=<20))
+holdsAt(heads,(30<T=<40))
+holdsAt(itsHeads,(0<T=<10))
+holdsAt(itsHeads,(20<T=<30))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
+Answer: 8 (Time: 0.045s)
+maxStep(3)
 happens(toss,10)
 happens(toss,20)
 happens(toss,30)
-holdsAt(heads,(0,"< S =<",10))
-holdsAt(heads,(10,"< S =<",20))
-holdsAt(heads,(20,"< S =<",30))
-holdsAt(heads,(30,"< S =<",40))
-holdsAt(itsHeads,(0,"< S =<",10))
-holdsAt(itsHeads,(10,"< S =<",20))
-holdsAt(itsHeads,(20,"< S =<",30))
-holdsAt(itsHeads,(30,"< S =<",40))
-releasedAt(itsHeads,(0,"< S =<",10))
-releasedAt(itsHeads,(10,"< S =<",20))
-releasedAt(itsHeads,(20,"< S =<",30))
-releasedAt(itsHeads,(30,"< S =<",40))
-Assignment: [leftovers]
-timeDiff(0,0)=0
-timeDiff(0,1)=10
-timeDiff(0,2)=20
-timeDiff(0,3)=30
-timeDiff(0,4)=40
-timeDiff(1,1)=0
-timeDiff(1,2)=10
-timeDiff(1,3)=20
-timeDiff(1,4)=30
-timeDiff(2,2)=0
-timeDiff(2,3)=10
-timeDiff(2,4)=20
-timeDiff(3,3)=0
-timeDiff(3,4)=10
-timeDiff(4,4)=0
+holdsAt(heads,(0<T=<10))
+holdsAt(heads,(10<T=<20))
+holdsAt(heads,(20<T=<30))
+holdsAt(heads,(30<T=<40))
+holdsAt(itsHeads,(0<T=<10))
+holdsAt(itsHeads,(10<T=<20))
+holdsAt(itsHeads,(20<T=<30))
+holdsAt(itsHeads,(30<T=<40))
+releasedAt(itsHeads,(0<T=<10))
+releasedAt(itsHeads,(10<T=<20))
+releasedAt(itsHeads,(20<T=<30))
+releasedAt(itsHeads,(30<T=<40))
+Assignment:
+(obs,0)=0 (obs,10)=10 (obs,20)=20 (obs,30)=30 (time,0)=10 (time,1)=20 (time,2)=30 (time,3)=40
 SATISFIABLE
 
 Models       : 8
 Calls        : 1
 Time         : 0.046s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.022s
+CPU Time     : 0.029s
+
+
+Command exited with non-zero status 30
+
+  real      0:00.50
+  real [s]  0.50
+  user [s]  0.28
+  sys  [s]  0.10
+  mem  [KB] 18304
+  avgm [KB] 0

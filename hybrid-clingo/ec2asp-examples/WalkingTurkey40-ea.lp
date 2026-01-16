@@ -1,11 +1,11 @@
-#const maxstep=3.
+#const maxstep=1.
 #const maxtime=40.
 
 
 
-dfluent(loaded).
-dfluent(alive).
-dfluent(walking).
+fluent(loaded).
+fluent(alive).
+fluent(walking).
 
 event(load).
 event(shoot).
@@ -17,23 +17,23 @@ initiates(load,loaded,S) :- step(S).
 terminates(shoot,alive,S) :- holdsAt(loaded,S).
 
 %terminates(shoot,walking,S) :- terminates(shoot,alive,S).
-terminates(E,walking,S) :- terminates(E,alive,S).   % TODO this is even better
+terminates(E,walking,S) :- terminates(E,alive,S).   % this is even better
 
-:- releasedAt(loaded,0).
+obs(notReleasedAt,loaded,0).
 
-:- releasedAt(alive,0).
+obs(notReleasedAt,alive,0).
 
-:- releasedAt(walking,0).
+obs(notReleasedAt,walking,0).
 
-holdsAt(alive,0).
+obs(holdsAt,alive,0).
 
-holdsAt(loaded,0).
+obs(holdsAt,loaded,0).
 
-holdsAt(walking,0).
+obs(holdsAt,walking,0).
 
-in_happens(shoot,25).
+obs(happens,shoot,25).
 
-in_not_holdsAt(walking,37).
+obs(notHoldsAt,walking,37).
 
 negated_prints.
 

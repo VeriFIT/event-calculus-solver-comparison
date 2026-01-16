@@ -65,14 +65,15 @@ def replace_theory_atoms(model_line, assignments):
 def replace_basic_intervals(model_line):
     """
     Replaces occurrences of
-        ,"< S =<",
+        ,"< T =<",
         with
-        < S =<
+        < T =<
         and more
     """
     model_line = model_line.replace(',"< ', '<')
     model_line = model_line.replace(' =<",', '=<')
     model_line = model_line.replace(',"->",', '->')
+    model_line = model_line.replace('," = ",', '=')
     return model_line
 
 def add_newlines(model_line):
@@ -108,7 +109,7 @@ def process_clingcon_output(text):
 
             assignments = parse_assignment(assignment_line)
             model_line = replace_basic_intervals(model_line)
-            if (conf_args.replace_assign > 0):
+            if (conf_args.replace_assign > 0 and conf_args.debug == False):
                 model_line = replace_theory_atoms(model_line, assignments)
             if (conf_args.no_newlines == False):
                 model_line = add_newlines(model_line)
@@ -144,7 +145,8 @@ if __name__ == "__main__":
     parser.add_argument('--keep_going', action='store_true', help='keep looking for more solutions with more steps even after a solution was found')
     parser.add_argument('--no_last_step', action='store_true', help='disables the implicit last step, allowing easier reasoning about circular or zeno behavior')
     parser.add_argument('--no_signifstep', action='store_true', help='disable the significant step constraint')
-    #parser.add_argument('--debug', action='store_true', help='enable debug prints')
+    parser.add_argument('--no_axioms', action='store_true', help='disable automatic inclusion of fdec.pl and fdec-show.pl')
+    parser.add_argument('--debug', action='store_true', help='enable debug prints instead of fancy show')
     parser.add_argument('source_files', nargs='*', help='any number of source files')
     conf_args = parser.parse_args()
     
@@ -190,6 +192,11 @@ if __name__ == "__main__":
                 "-c",
                 "disablesignificantconstr=" + str(1)
             ])
+        if(conf_args.debug == True):
+            cmd.extend([
+                "-c",
+                "debugprints=" + str(1)
+            ])
         if(conf_args.c != None):
             for c in conf_args.c:    
                 cmd.extend([
@@ -202,9 +209,14 @@ if __name__ == "__main__":
             str(conf_args.n),
             "-c",
             "maxstep=" + str(steps),
-            os.path.join(scriptdir, 'axioms/fdec.lp'),
-            os.path.join(scriptdir, 'axioms/fdec-show.lp')
         ])
+        
+        if(conf_args.no_axioms == False):
+            cmd.extend([
+                os.path.join(scriptdir, 'axioms/fdec.lp'),
+                os.path.join(scriptdir, 'axioms/fdec-show.lp')
+            ])
+            
         cmd.extend(conf_args.source_files,)
         
         

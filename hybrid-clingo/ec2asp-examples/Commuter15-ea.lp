@@ -1,4 +1,4 @@
-#const maxstep=5.
+#const maxstep=4.
 #const maxtime=15.
 
 
@@ -10,8 +10,8 @@ station(victoria).
 station(southKen).
 
 place(V) :- station(V).
-dfluent(at(Place)) :- place(Place).
-dfluent(train(Station,Station1)) :- station(Station), station(Station1).
+fluent(at(Place)) :- place(Place).
+fluent(train(Station,Station1)) :- station(Station), station(Station1).
 
 event(walkTo(Place)) :- place(Place).
 event(trainTo(Station)) :- station(Station).
@@ -49,9 +49,9 @@ holdsAt(train(herneHill,victoria),S) :- step(S).
 
 holdsAt(train(victoria,southKen),S) :- step(S).
 
-:- releasedAt(at(Place),0).
+obs(notReleasedAt,at(Place),0) :- place(Place).
 
-:- releasedAt(train(Station1,Station2),0).
+obs(notReleasedAt,train(Station1,Station2),0) :- station(Station1), station(Station2).
 
 :- holdsAt(at(Place1),S), holdsAt(at(Place2),S), Place1!=Place2.
 
@@ -63,15 +63,15 @@ holdsAt(train(victoria,southKen),S) :- step(S).
 
 :- holdsAt(train(Station1,Station2),S), Station1==herneHill, Station2==southKen.
 
-holdsAt(at(home),0).
+obs(holdsAt,at(home),0).
 
-in_happens3(walkTo(herneHill),1,1).
+obs(happens3,walkTo(herneHill),1,1).
 
-in_happens3(trainTo(victoria),6,6).
+obs(happens3,trainTo(victoria),6,6).
 
-in_happens3(trainTo(southKen),10,10).
+obs(happens3,trainTo(southKen),10,10).
 
-in_happens3(walkTo(work),12,12).
+obs(happens3,walkTo(work),12,12).
 
 
 % --> conclude ..

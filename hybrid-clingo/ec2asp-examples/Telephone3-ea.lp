@@ -9,12 +9,12 @@ phone(phone1).
 phone(phone2).
 
 
-dfluent(ringing(Phone,Phone1)) :- phone(Phone), phone(Phone1).
-dfluent(dialTone(Phone)) :- phone(Phone).
-dfluent(busySignal(Phone)) :- phone(Phone).
-dfluent(idle(Phone)) :- phone(Phone).
-dfluent(connected(Phone,Phone1)) :- phone(Phone), phone(Phone1).
-dfluent(disconnected(Phone)) :- phone(Phone).
+fluent(ringing(Phone,Phone1)) :- phone(Phone), phone(Phone1).
+fluent(dialTone(Phone)) :- phone(Phone).
+fluent(busySignal(Phone)) :- phone(Phone).
+fluent(idle(Phone)) :- phone(Phone).
+fluent(connected(Phone,Phone1)) :- phone(Phone), phone(Phone1).
+fluent(disconnected(Phone)) :- phone(Phone).
 
 event(pickUp(Agent,Phone)) :- agent(Agent), phone(Phone).
 event(setDown(Agent,Phone)) :- agent(Agent), phone(Phone).
@@ -70,34 +70,34 @@ initiates(setDown(Agent,Phone),idle(Phone),S) :- holdsAt(disconnected(Phone),S),
 
 terminates(setDown(Agent,Phone),disconnected(Phone),S) :- holdsAt(disconnected(Phone),S), agent(Agent).
 
-in_happens(pickUp(agent1,phone1),0).
+obs(happens,pickUp(agent1,phone1),0).
 
-in_happens(dial(agent1,phone1,phone2),1).
+obs(happens,dial(agent1,phone1,phone2),1).
 
-in_happens(pickUp(agent2,phone2),2).
+obs(happens,pickUp(agent2,phone2),2).
 
-holdsAt(idle(Phone),0) :- phone(Phone).
+obs(holdsAt,idle(Phone),0) :- phone(Phone).
 
-:- holdsAt(dialTone(Phone),0).
+obs(notHoldsAt,dialTone(Phone),0) :- phone(Phone).
 
-:- holdsAt(busySignal(Phone),0).
+obs(notHoldsAt,busySignal(Phone),0) :- phone(Phone).
 
-:- holdsAt(ringing(Phone1,Phone2),0).
+obs(notHoldsAt,ringing(Phone1,Phone2),0) :- phone(Phone1), phone(Phone2).
 
-:- holdsAt(connected(Phone1,Phone2),0).
+obs(notHoldsAt,connected(Phone1,Phone2),0) :- phone(Phone1), phone(Phone2).
 
-:- holdsAt(disconnected(Phone),0).
+obs(notHoldsAt,disconnected(Phone),0) :- phone(Phone).
 
-:- releasedAt(ringing(Phone1,Phone2),0).
+obs(notReleasedAt,ringing(Phone1,Phone2),0) :- phone(Phone1), phone(Phone2).
 
-:- releasedAt(dialTone(Phone),0).
+obs(notReleasedAt,dialTone(Phone),0) :- phone(Phone).
 
-:- releasedAt(busySignal(Phone),0).
+obs(notReleasedAt,busySignal(Phone),0) :- phone(Phone).
 
-:- releasedAt(idle(Phone),0).
+obs(notReleasedAt,idle(Phone),0) :- phone(Phone).
 
-:- releasedAt(connected(Phone1,Phone2),0).
+obs(notReleasedAt,connected(Phone1,Phone2),0) :- phone(Phone1), phone(Phone2).
 
-:- releasedAt(disconnected(Phone),0).
+obs(notReleasedAt,disconnected(Phone),0) :- phone(Phone).
 
 % --> conclude dial tone between time 0 and 1, ringing between time 1 and 2, and connected after time 2

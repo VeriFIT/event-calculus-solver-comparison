@@ -1,11 +1,11 @@
-#const maxstep=4.
+#const maxstep=2.
 #const maxtime=40.
 
 
 
-dfluent(hasTicket).
-dfluent(onRed).
-dfluent(onYellow).
+fluent(hasTicket).
+fluent(onRed).
+fluent(onYellow).
 
 event(buy).
 event(board).
@@ -30,18 +30,18 @@ holdsAt(hasTicket,S) :- holdsAt(onRed,S).
 
 holdsAt(hasTicket,S) :- holdsAt(onYellow,S).
 
-:- releasedAt(hasTicket,0).
+obs(notReleasedAt,hasTicket,0).
 
-:- releasedAt(onRed,0).
+obs(notReleasedAt,onRed,0).
 
-:- releasedAt(onYellow,0).
+obs(notReleasedAt,onYellow,0).
 
-in_holdsAt(onRed,38).
+obs(holdsAt,onRed,38).
 
-:- holdsAt(hasTicket,0).
+obs(notHoldsAt,hasTicket,0).
 
-in_happens(buy,24).
+obs(happens,buy,24).
 
-in_happens(board,35).
+obs(happens,board,35).
 
 % --> abduce that board must have been boardRed

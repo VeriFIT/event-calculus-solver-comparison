@@ -1,10 +1,10 @@
-#const maxstep=4.
+#const maxstep=3.
 #const maxtime=40.
 
 
 
-dfluent(itsHeads).
-dfluent(heads).
+fluent(itsHeads).
+fluent(heads).
 
 event(toss).
 
@@ -16,18 +16,20 @@ terminates(toss,heads,S) :- not holdsAt(itsHeads,S), step(S).
 
 releasedAt(itsHeads,S) :- step(S).
 
-:- releasedAt(heads,0). % TODO step 0 is the same as time 0
+obs(notReleasedAt,heads,0).
 
-holdsAt(heads,0).   % TODO step 0 is the same as time 0
+obs(holdsAt,heads,0).
 
-in_happens(toss,10).
+obs(happens,toss,10).
 
-in_happens(toss,20).
+obs(happens,toss,20).
 
-in_happens(toss,30).
+obs(happens,toss,30).
 
-holdsAt(itsHeads,0).    % TODO step 0 is the same as time 0
+%obs(holdsAt,itsHeads, 0).    % not needed: value at time zero is the same as at time 1
 
-in_holdsAt(itsHeads, 40).
+%obs(holdsAt,itsHeads, 40).
+    holdsAt(itsHeads, 3).   % TODO referring to lasts step directly, obs() was causing problems in lpx
+
 
 % --> find 8 models (all combinations of coin toss results for 3 tosses)

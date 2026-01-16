@@ -10,7 +10,7 @@ balloon(balloon).
 agent(nathan).
 
 
-dfluent(heaterOn(Balloon)) :- balloon(Balloon).
+fluent(heaterOn(Balloon)) :- balloon(Balloon).
 ffluent(height(Balloon)) :- balloon(Balloon).
 
 event(turnOnHeater(Agent,Balloon)) :- agent(Agent), balloon(Balloon).
@@ -22,24 +22,23 @@ initiates(turnOnHeater(Agent,Balloon),heaterOn(Balloon),S) :- agent(Agent), ball
 
 terminates(turnOffHeater(Agent,Balloon),heaterOn(Balloon),S):- agent(Agent), balloon(Balloon), step(S).
 
-in_happens(turnOnHeater(nathan,balloon),0).
+obs(happens,turnOnHeater(nathan,balloon),0).
 
-in_happens(turnOffHeater(nathan,balloon),6).
+obs(happens,turnOffHeater(nathan,balloon),6).
 
 % implicit
 %:- holdsAt(height(Balloon,Height1),S), holdsAt(height(Balloon,Height2),S), Height1!=Height2.
 
-trajectory(heaterOn(Balloon),S,height(Balloon), (0,0,1,height(Balloon),1), S2) :- balloon(Balloon), step(S), step(S2).
+trajectory(heaterOn(Balloon),S,height(Balloon), (((1,(height(Balloon),S))),1),S2) :- balloon(Balloon), step(S), step(S2), step(S+S2).
 
-antiTrajectory(heaterOn(Balloon),S,height(Balloon), (0,0,1,height(Balloon),-1), S2) :- balloon(Balloon), step(S), step(S2).
+antiTrajectory(heaterOn(Balloon),S,height(Balloon), (((1,(height(Balloon),S))),-1),S2) :- balloon(Balloon), step(S), step(S2), step(S+S2).
 
-%holdsAt(height(balloon,0),0).
-in_fvalue(height(balloon), 0, 0).    % TODO fluent value time 
+obs(height(balloon), 0, 0).
 
-:- holdsAt(heaterOn(balloon),0).
+obs(notHoldsAt,heaterOn(balloon),0).
 
 releasedAt(height(Balloon),S) :- balloon(Balloon), step(S).
 
-:- releasedAt(heaterOn(Balloon),0).
+obs(notReleasedAt,heaterOn(Balloon),0) :- balloon(Balloon).
 
 % --> conclude height 6 at time 6, and height -3 at time 15
