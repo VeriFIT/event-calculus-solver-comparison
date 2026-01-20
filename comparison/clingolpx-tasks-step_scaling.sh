@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RUN="python ./fdec-incr.py --con"
+RUN="python ./fdec-incr.py"
 
 maxEvents=101
 precision="10" 
