@@ -1,45 +1,41 @@
-% counter example from Mueller, E. T. Chapter 17 event calculus. In Handbook of Knowledge Representation 2008
+% light can be turned on and off
 
-#const maxstep=5.
+#const maxstep=2.
 #const maxtime=1000.
+
 
 %-------------------------------------------------------------------------------
 % sorts
 %-------------------------------------------------------------------------------
 
-event(increment).
-event(reset).
+event(toggle_light).
 
-ffluent(value).
+fluent(light_on).
 
 
 %-------------------------------------------------------------------------------
 % effects 
 %-------------------------------------------------------------------------------
 
-%initiates(increment, value, ( (1,1), (1, (value, S)) ), S) :- step(S).
-&sum{one} = 1.  % TODO workaround for lpx
-initiates(increment, value, ( (1,one), (1, (value, S)) ), S) :- step(S).
+initiates(toggle_light,  light_on, T) :- not holdsAt(light_on, T), step(T).
 
-%initiates(reset, value, ( (0,0) ), S) :- step(S).
-% TODO workaround for lpx
-initiates(reset, value, ( (0, (value, S)), ), S) :- step(S).
+terminates(toggle_light, light_on, T) :- holdsAt(light_on, T), step(T).
 
 
 %-------------------------------------------------------------------------------
 % observations
 %-------------------------------------------------------------------------------
 
-initiallyP(value, 0).
+initiallyN(light_on).
 :- releasedAt(F,0), fluent(F).  % nothing is initially released from inertia
-:- releasedAt(F,0), ffluent(F). % nothing is initially released from inertia
 
 
 %-------------------------------------------------------------------------------
 % narrative 
 %-------------------------------------------------------------------------------
 
-obs(happens, increment,   10).
-obs(happens, increment,   20).
-obs(happens, reset,       30).
-obs(happens, increment,   40).
+% allows us to generate event observations via execution parameters (for experiments)
+#const eventsNumber=10.
+#const eventsScale=1.
+
+obs(happens, toggle_light, T) :- EventNumber = 1..eventsNumber, T = EventNumber*eventsScale.

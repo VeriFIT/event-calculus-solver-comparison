@@ -32,14 +32,9 @@
 % TODO moving things back to the right in equations
 % TODO step zero time nonzero?
 
-% OV: the if tries to handle the special case of ( (X) ) being converted to (X), e.g. ( (time, 0) )
 #script (python)
-import clingo
 def member(t):
-    if t.arguments[0].type == clingo.SymbolType.Function:
-        return t.arguments
-    else:
-        return clingo.Function("", t.arguments, True)
+  return t.arguments 
 #end.
 
 %-------------------------------------------------------------------------------
@@ -242,18 +237,22 @@ sum(LE,geq,B) :- sum(LE,gt,B).
 
 % map(T,S): time T is mapped to state S
 %   map(T,S) :- obs(happens,E,T), step(S), &sum{ (time,S) } = T.       % clingcon
-    map(T,S) :- obs(happens,E,T), step(S), sum(( (1,(time,S)) ),eq,T). % clingo-lpx
-             :- obs(happens,E,T), not map(T,_). 
+%            :- obs(happens,E,T), not map(T,_).                        % clingcon
+    map(T,S) :- obs(happens,E,T), step(S), sum(( (1,(time,S)), ),eq,T).% clingo-lpx
+             :- obs(happens,E,T), not map(T).                          % clingo-lpx
+      map(T) :- map(T,S).                                              % clingo-lpx
 happens(E,S) :- obs(happens,E,T),     map(T,S).
 
 % time_step(T,S): time point T corresponds to step S 
 %% clingcon
 %time_step(T,S) :- obs(O,_,T), O != happens, step(S), S > 0, &sum{ (time,S-1) } < T, &sum{ (time,S) } >= T. % (time,S-1) < T <= (time,S)
 %time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                         &sum{ (time,S) } >= T. %              T <= (time,S)
+%:- obs(O,_,T), O != happens, not time_step(T, _). % TODO added this
 % clingo-lpx
-time_step(T,S) :- obs(O,_,T), O != happens, step(S), S > 0, sum(( (1,(time,S1)) ),lt,T), sum(( (1,(time,S)) ),geq,T), S1 = S-1. % (time,S-1) < T <= (time,S)
-time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                              sum(( (1,(time,S)) ),geq,T).           %              T <= (time,S)
-:- obs(O,_,T), O != happens, not time_step(T, _). % TODO added this
+time_step(T,S) :- obs(O,_,T), O != happens, step(S), S > 0, sum(( (1,(time,S1)), ),lt,T), sum(( (1,(time,S)), ),geq,T), S1 = S-1. % (time,S-1) < T <= (time,S)
+time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                              sum(( (1,(time,S)), ),geq,T).            %              T <= (time,S)
+  time_step(T) :- time_step(T,S).
+:- obs(O,_,T), O != happens, not time_step(T). % TODO added this
 %time_step_obs((holdsAt;notHoldsAt;releasedAt;notReleasedAt)). % filter out happens and functional values
 
 % TODO what about observation that value is greater than something or where time is greater than something?
@@ -275,9 +274,11 @@ in_trajectory(F2,S3,C) :-
   S3=S1+S2, happens(E,S1), initiates(E,F1,S1), 0<S2,
   trajectory(F1,S1,F2,(LE,C),S2), not stoppedIn(S1,F1,S3), step(S3).
 %
-in_trajectory(F2,S1+S2,C) :- 
+in_trajectory(F2,S3,C) :- 
   S3=S1+S2, happens(E,S1), terminates(E,F1,S1), 0<S2,
   antiTrajectory(F1,S1,F2,(LE,C),S2), not startedIn(S1,F1,S3), step(S3).
+%
+in_trajectory(F2,S3) :- in_trajectory(F2,S3,C). % clingo-lpx
 
 &sum{ (F,S) }                         = V :- obs(F,V,T), ffluent(F), time_step(T,S), not in_trajectory(F,S,_).
 %&sum{ (F,S); C*T; -C*(time,S) } = V :- obs(F,V,T), ffluent(F), time_step(T,S),     in_trajectory(F,S,C).  % clingcon
@@ -304,7 +305,7 @@ in_trajectory(F2,S1+S2,C) :-
 %%% significant_step(S) :- map(T,S).
 
 % for clingo-lpx
-comparison(( (1,(time,S)) ),T) :- obs(_,_,T), step(S).
+comparison(( (1,(time,S)), ),T) :- obs(_,_,T), step(S).
 
 
 % func. atom that represents the time difference between each pair of timepoints
@@ -323,11 +324,11 @@ significant_step(S) :- happens(E,S).                    % step is significant if
 %-------------------------------------------------------------------------------
 
 % designating significant values of continuous fluents or time so that we do not miss them
-comparison(( (1,(F,S-1)) ),V) :- no_jump(F,S,V), step(S), step(S-1).
-comparison(( (1,(F,S  )) ),V) :- no_jump(F,S,V), step(S), step(S-1). 
+comparison(( (1,(F,S-1)), ),V) :- no_jump(F,S,V), step(S), step(S-1).
+comparison(( (1,(F,S  )), ),V) :- no_jump(F,S,V), step(S), step(S-1). 
 %
-:- no_jump(F,S,V), sum(( (1,(F,S-1)) ),lt,V), sum(( (1,(F,S)) ),gt,V).
-:- no_jump(F,S,V), sum(( (1,(F,S-1)) ),gt,V), sum(( (1,(F,S)) ),lt,V).
+:- no_jump(F,S,V), sum(( (1,(F,S-1)), ),lt,V), sum(( (1,(F,S)), ),gt,V).
+:- no_jump(F,S,V), sum(( (1,(F,S-1)), ),gt,V), sum(( (1,(F,S)), ),lt,V).
 
 
 %-------------------------------------------------------------------------------

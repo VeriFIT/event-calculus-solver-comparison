@@ -23,7 +23,7 @@ happens(turn_light_off, T) :- holdsAt(light_on, T),
     initiates(E, light_on, T1),
     not stoppedIn(T1, light_on, T),
     epsilon(EPS),
-    sum( ( (1, (timeDiff, T1, T)) ), eq, EPS),
+    sum( ( (1, (timeDiff, T1, T)), ), eq, EPS),
     step(T).
 
 happens(turn_light_on, T) :- not holdsAt(light_on, T), step(T),
@@ -33,17 +33,16 @@ happens(turn_light_on, T) :- not holdsAt(light_on, T), step(T),
     terminates(E, light_on, T1),
     not startedIn(T1, light_on, T),
     epsilon(EPS),
-    sum( ( (1, (timeDiff, T1, T)) ), eq, EPS),
+    sum( ( (1, (timeDiff, T1, T)), ), eq, EPS),
         %sum(time(T), -time(T1), eq, EPS),
     T > 1, step(T).
 
 
-comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
+comparison( ( (1, (timeDiff, T1, T)), ), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
     %comparison(time(T), -time(T1), EPS) :- epsilon(EPS), T1 < T, step(T1), step(T).
 
 
-% TODO complicated trigger_value
-% cannot step over T1 + epsilon
+% TODO different no_jump -- not dont step over a particular value of continuous change, but force an event at some T1 + epsilon
 :-  % establish SStart
     happens(E, SStart),
     terminates(E, light_on, SStart),
@@ -53,8 +52,8 @@ comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1),
     % trigger condition holds at S
     not holdsAt(light_on, S),
     % no_jump constraint for S
-    sum(( (1, (timeDiff, SStart, S-1)) ), lt, EPS),
-    sum(( (1, (timeDiff, SStart, S)) ), gt, EPS).
+    sum(( (1, (timeDiff, SStart, S-1)), ), lt, EPS),
+    sum(( (1, (timeDiff, SStart, S)), ), gt, EPS).
 :-  % establish SStart
     happens(E, SStart),
     initiates(E, light_on, SStart),
@@ -64,8 +63,8 @@ comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1),
     % trigger condition holds at S
     holdsAt(light_on, S),
     % no_jump constraint for S
-    sum(( (1, (timeDiff, SStart, S-1)) ), lt, EPS),
-    sum(( (1, (timeDiff, SStart, S)) ), gt, EPS).
+    sum(( (1, (timeDiff, SStart, S-1)), ), lt, EPS),
+    sum(( (1, (timeDiff, SStart, S)), ), gt, EPS).
 
 
 % ----- narrative & queries  -----

@@ -45,18 +45,18 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 % if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
 % will be walking, and their location will continuously approach Location2
 initiates(walk(A, L), walking(A), T) :- step(T), agent(A), in_locations(L).
-initiates(walk(A, L), walkingTo(A), ( (L, one) ), T) :- step(T), agent(A), in_locations(L).    % TODO need a second fluent because trajectories can only be controlled by dfluents
+initiates(walk(A, L), walkingTo(A), ( (L, one), ), T) :- step(T), agent(A), in_locations(L).    % TODO need a second fluent because trajectories can only be controlled by dfluents
 &sum{(walkingTo(A),T)} = 0 :- not holdsAt(walking(A), T), step(T), agent(A).
 
 releases(walk(A, L), location(A), T) :- agent(A), step(T), in_locations(L).
 
 terminates(arrive(A), walking(A), T) :- agent(A), step(T).
 %terminates(arrive(A), walkingTo(A), T) :- agent(A), step(T).
-initiates(arrive(A), walkingTo(A), ( (0, zero) ), T) :- agent(A), step(T).
+initiates(arrive(A), walkingTo(A), ( (0, zero), ), T) :- agent(A), step(T).
 
-initiates(arrive(A), location(A), ( (1, (location(A), T)) ), T) :- step(T), agent(A).
+initiates(arrive(A), location(A), ( (1, (location(A), T)), ), T) :- step(T), agent(A).
 
-trajectory(walking(A), T1, location(A), (( (1, (location(A), T1)) ), 10), T2) :- step(T1+T2), agent(A), step(T1), step(T2).
+trajectory(walking(A), T1, location(A), (( (1, (location(A), T1)), ), 10), T2) :- step(T1+T2), agent(A), step(T1), step(T2).
 % trajectory(walkingTo(A), T1, location(A), (0, 0, 1, location(A), 10), T2) :- agent(A), step(T1), step(T2).
 
 happens(arrive(A), T) :-
@@ -65,7 +65,7 @@ happens(arrive(A), T) :-
     step(T).
 % TODO manual no_jump because the target value is initiated (not a constant that is always the same)
 comparison(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), 0) :- agent(A), step(T).
-comparison(( (1, (location(A), T)) ), L) :- agent(A), step(T), happens(walk(A, L), T).
+comparison(( (1, (location(A), T)), ), L) :- agent(A), step(T), happens(walk(A, L), T).
 % either the agent was already walking
 :- holdsAt(walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), gt, 0), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), lt, 0), step(T), step(T+1).
 :- holdsAt(walking(A), T), holdsAt(walking(A), T+1), sum(( (1, (location(A), T)), (-1, (walkingTo(A), T)) ), lt, 0), sum(( (1, (location(A), T+1)), (-1, (walkingTo(A), T+1)) ), gt, 0), step(T), step(T+1).
@@ -87,7 +87,7 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 %! indirect effect
 % if an agent lets go of an object while in a room, then the object will be
 % in that room and will no longer be released from CLoI (caused by initiates)
-initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)) ), T) :- step(T), agent(A), object(O).
+initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)), ), T) :- step(T), agent(A), object(O).
 
 
 %-------------------------------------------------------------------------------

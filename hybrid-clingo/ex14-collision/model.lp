@@ -71,17 +71,17 @@ terminates(collide(O1, O2), falling(O1), T) :- object(O1), object(O2), step(T).
 terminates(collide(O1, O2), rising(O2), T) :- object(O1), object(O2), step(T).
 
 % [effect + CLoI]
-initiates(collide(O1,O2), height(O1), ((1, (height(O1),T))), T) :- step(T), object(O1), object(O2).
-initiates(collide(O1,O2), height(O2), ((1, (height(O2),T))), T) :- step(T), object(O1), object(O2).
+initiates(collide(O1,O2), height(O1), ((1, (height(O1),T)),), T) :- step(T), object(O1), object(O2).
+initiates(collide(O1,O2), height(O2), ((1, (height(O2),T)),), T) :- step(T), object(O1), object(O2).
 
 % [state constraint]
 % an object only has one unique height at a time
 % TODO not needed since clingo lpx only allows one functional value at a time
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
-trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)) ), -2), T2) :-
+trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)), ), -2), T2) :-
     step(T1+T2), object(O), step(T1), step(T2).
-trajectory(rising(O), T1, height(O), (( (1, (height(O), T1)) ), 2), T2) :-
+trajectory(rising(O), T1, height(O), (( (1, (height(O), T1)), ), 2), T2) :-
     step(T1+T2), object(O), step(T1), step(T2).
 
 

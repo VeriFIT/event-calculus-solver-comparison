@@ -45,14 +45,15 @@ releases(drop(A,O), height(O), T) :- agent(A), object(O), step(T).
 happens(hitGround(O), T) :-
     holdsAt(falling(O), T),
     % &sum{ (height(O), T) } = 0,
-    sum(( (1, (height(O), T)) ), eq, 0), 
+    sum(( (1, (height(O), T)), ), eq, 0), 
     step(T).
 
 
 % capture when height(O) = 0
 % restrict that there must exist a state where height is exactly equal to zero
 % (by saying that there cannot be two subsequent states in which one is lt/gt and the next gt/lt, i.e. there is no state with exactly eq)
-no_jump(height(O), S, 0) :- holdsAt(falling(O), S).
+no_jump(height(O), S, 0) :- object(O), step(S), holdsAt(falling(O), S).
+%    no_jump(height(O), S, 0) :- object(O), step(S). % TODO workaround for lpx1.4
 
 % [effect]
 % if an object hits the ground, then it will stop falling
@@ -60,14 +61,14 @@ terminates(hitGround(O), falling(O), T) :- object(O), step(T).
 
 % [effect + CLoI]
 % if an object hits the ground then its height will no longer be released from CLoI
-initiates(hitGround(O), height(O), ( (0, (height(O), T)) ), T) :- step(T), object(O).
+initiates(hitGround(O), height(O), ( (0, (height(O), T)), ), T) :- step(T), object(O).
 
 % [state constraint]
 % an object only has one unique height at a time
 % not needed -- only  one functional value at a time
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
-trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)) ), -2), T2) :-
+trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)), ), -2), T2) :-
     object(O), step(T1), step(T2), step(T1+T2).
 
 

@@ -51,7 +51,7 @@ terminates(turn_off, powered_on, T) :-
 
 
 % initiates(turn_on, result(0), T) :- step(T).
-initiates(turn_on, result, ( (0, (result, T)) ), T) :-
+initiates(turn_on, result, ( (0, (result, T)), ), T) :-
     Add > 0,
     not holdsAt(powered_on, T),
     %not holdsAt(result, T),
@@ -59,7 +59,7 @@ initiates(turn_on, result, ( (0, (result, T)) ), T) :-
 
 % terminates(turn_off, result(_), T) :- holdsAt(powered_on, T), step(T).
 % TODO default FDEC cannot terminate ffluents, instead initiate zero
-initiates(turn_off, result, ( (0, (result, T)) ), T) :-
+initiates(turn_off, result, ( (0, (result, T)), ), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     %holdsAt(result, T),

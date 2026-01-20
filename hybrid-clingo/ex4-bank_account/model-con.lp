@@ -44,11 +44,11 @@ event(monthlyReset(A)) :- account(A).
 initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    sum( ( (1, (balance(A1), T)), ), geq, TransM12),
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % needed for sum
-comparison( ( (1, (balance(A1), T)) ), TransM12) :-
+comparison( ( (1, (balance(A1), T)), ), TransM12) :-
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 %*
@@ -62,7 +62,7 @@ comparison( ( (1, (balance(A1), T)) ), TransM12) :-
 initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    sum( ( (1, (balance(A1), T)), ), geq, TransM12),
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % already defined with the initiates above
@@ -80,7 +80,7 @@ initiates(chargeServiceFee(A), serviceFeeCharged(A), T) :- account(A), step(T).
 
 % this is reset every month
 % happens(monthlyReset(A), T) :- &sum{ step(T) } = T, endOfMonth(T), account(A), step(T).
-happens(monthlyReset(A), T) :- sum(( (1, (time, T)) ), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
+happens(monthlyReset(A), T) :- sum(( (1, (time, T)), ), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
 
 terminates(monthlyReset(A), serviceFeeCharged(A), T):- account(A), step(T).
 
@@ -143,7 +143,7 @@ happens(chargeServiceFee(A), T) :-
     initiates(E, balance(A), _, T1),
     not startedIn(T1, balance(A), T),   % startedIn instead of stoppedIn because balance is a ffluent
     epsilon(EPS),
-    sum( ( (1, (timeDiff, T1, T)) ), eq, EPS).
+    sum( ( (1, (timeDiff, T1, T)), ), eq, EPS).
     %sum(time(T), -time(T1), eq, EPS).
 happens(chargeServiceFee(A), T) :-
     % &sum{ (balance(A),T-1) } < (minimumBalance(A),T-1), 
@@ -157,11 +157,11 @@ happens(chargeServiceFee(A), T) :-
     terminates(E, serviceFeeCharged(A), T1),
     not startedIn(T1, serviceFeeCharged(A), T),
     epsilon(EPS),
-    sum( ( (1, (timeDiff, T1, T)) ), eq, EPS).
+    sum( ( (1, (timeDiff, T1, T)), ), eq, EPS).
     %sum(time(T), -time(T1), eq, EPS).
 
 comparison( ( (1, (balance(A), T)), (-1, (minimumBalance(A), T)) ), 0) :- account(A), step(T).
-comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
+comparison( ( (1, (timeDiff, T1, T)), ), EPS) :- epsilon(EPS), T1 <= T, step(T1), step(T).
 
 
 % TODO different no_jump -- not dont step over a particular value of continuous change, but force an event at some T1 + epsilon
@@ -175,8 +175,8 @@ comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1),
     sum( ( (1, (balance(A), S)), (-1, (minimumBalance(A), S)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), S),
     % no_jump constraint for S
-    sum(( (1, (timeDiff, SStart, S-1)) ), lt, EPS),
-    sum(( (1, (timeDiff, SStart, S)) ), gt, EPS).
+    sum(( (1, (timeDiff, SStart, S-1)), ), lt, EPS),
+    sum(( (1, (timeDiff, SStart, S)), ), gt, EPS).
 :-  % establish SStart (cause 2)
     happens(E, SStart),
     terminates(E, serviceFeeCharged(A), SStart),
@@ -187,8 +187,8 @@ comparison( ( (1, (timeDiff, T1, T)) ), EPS) :- epsilon(EPS), T1 <= T, step(T1),
     sum( ( (1, (balance(A), S)), (-1, (minimumBalance(A), S)) ), lt, 0),
     not holdsAt(serviceFeeCharged(A), S),
     % no_jump constraint for S
-    sum(( (1, (timeDiff, SStart, S-1)) ), lt, EPS),
-    sum(( (1, (timeDiff, SStart, S)) ), gt, EPS).
+    sum(( (1, (timeDiff, SStart, S-1)), ), lt, EPS),
+    sum(( (1, (timeDiff, SStart, S)), ), gt, EPS).
 
 
 %-------------------------------------------------------------------------------

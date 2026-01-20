@@ -23,7 +23,7 @@ ffluent(sideUp).    % functional fluent
 
 releases(roll, sideUp, T) :- step(T).
 
-initiates(land, sideUp, ( (1, (sideUp, T)) ), T) :- step(T).
+initiates(land, sideUp, ( (1, (sideUp, T)), ), T) :- step(T).
 
 
 %-------------------------------------------------------------------------------

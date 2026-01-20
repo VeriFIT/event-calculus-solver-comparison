@@ -46,11 +46,11 @@ event(monthlyReset(A)) :- account(A).
 initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    sum( ( (1, (balance(A1), T)), ), geq, TransM12),
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % needed for sum
-comparison( ( (1, (balance(A1), T)) ), TransM12) :-
+comparison( ( (1, (balance(A1), T)), ), TransM12) :-
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 %*
@@ -66,7 +66,7 @@ comparison( ( (1, (balance(A1), T)) ), TransM12) :-
 initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    sum( ( (1, (balance(A1), T)), ), geq, TransM12),
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % already defined with the initiates above
@@ -84,7 +84,7 @@ initiates(chargeServiceFee(A), serviceFeeCharged(A), T) :- account(A), step(T).
 
 % this is reset every month
 % happens(monthlyReset(A), T) :- &sum{ step(T) } = T, endOfMonth(T), account(A), step(T).
-happens(monthlyReset(A), T) :- sum(( (1, (time, T)) ), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
+happens(monthlyReset(A), T) :- sum(( (1, (time, T)), ), eq, TriggerT), endOfMonth(TriggerT), account(A), step(T).
 
 terminates(monthlyReset(A), serviceFeeCharged(A), T):- account(A), step(T).
 

@@ -26,11 +26,11 @@
 %% functional fluents have values between steps
 #show fholdsAt(F, " = ", (F,S+1), ((time, S), "< T =<", (time, S+1))) :
   % holdsAt(F, S+1),  % functional fluents always hold
-  not in_trajectory(F,S+1,_), step(S), step(S+1), ffluent(F), not debug_prints.
+  not in_trajectory(F,S+1), step(S), step(S+1), ffluent(F), not debug_prints.
 #show fholdsAt(F, " = ", (F,0), (0, "< T =<", (time, 0))) :
   % holdsAt(F, 0),  % functional fluents always hold
   not map(0,0),
-  not in_trajectory(F,0,_), ffluent(F), not debug_prints.
+  not in_trajectory(F,0), ffluent(F), not debug_prints.
 %%%#show -fholdsAt(F, ((time, S), "< T =<", (time, S+1))) :
 %%%  not holdsAt(F, S+1), step(S), step(S+1), ffluent(F), not debug_prints, negated_prints.
 

@@ -213,20 +213,21 @@ if __name__ == "__main__":
         if(conf_args.no_axioms == False):
             cmd.extend([
                 os.path.join(scriptdir, 'axioms/fdec.lp'),
+                #os.path.join(scriptdir, 'axioms/fdec-lpx14.lp'),
                 os.path.join(scriptdir, 'axioms/fdec-show.lp')
             ])
             
         cmd.extend(conf_args.source_files,)
         
-        
+        #print(cmd)
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True
         )
         
-        returncode = result.returncode
-        #returncode = check_output_without_exit_code(result.stdout) # TODO temporary workaround to check the result while we cant get return code from lpx
+        #returncode = result.returncode
+        returncode = check_output_without_exit_code(result.stdout) # TODO temporary workaround to check the result while we cant get return code from lpx
         
         decoded_exit = decode_exit_code(returncode)
         if (ExitCode.E_SAT in decoded_exit):

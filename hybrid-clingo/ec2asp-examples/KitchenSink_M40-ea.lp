@@ -22,19 +22,19 @@ terminates(tapOff,filling,S) :- step(S).
 
 releases(tapOn,height,S) :- step(S).
 
-initiates(tapOff,height,((1,(height,S))),S) :- step(S).
+initiates(tapOff,height,((1,(height,S)),),S) :- step(S).
 
 terminates(overflow,filling,S) :- step(S).
 
-initiates(overflow,height,((1,(height,S))),S) :- step(S).
+initiates(overflow,height,((1,(height,S)),),S) :- step(S).
 
 initiates(overflow,spilling,S) :- step(S).
 
-trajectory(filling,S,height,(((1,(height,S))),1), S2) :- step(S), step(S2), step(S+S2).
+trajectory(filling,S,height,(((1,(height,S)),),1), S2) :- step(S), step(S2), step(S+S2).
 
 % :- holdsAt(height(Height1),S), holdsAt(height(Height2),S), Height1!=Height2. % implicit
 
-happens(overflow,S) :- sum(((1,(height,S))), eq, spillheight), holdsAt(filling,S), step(S).
+happens(overflow,S) :- sum(((1,(height,S)),), eq, spillheight), holdsAt(filling,S), step(S).
 no_jump(height, S, spillheight) :- holdsAt(filling, S).
 
 obs(height, 0, 0).

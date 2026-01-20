@@ -29,9 +29,9 @@ obs(happens,turnOffHeater(nathan,balloon),maxtime/2).
 % implicit
 %:- holdsAt(height(Balloon,Height1),S), holdsAt(height(Balloon,Height2),S), Height1!=Height2.
 
-trajectory(heaterOn(Balloon),S,height(Balloon), (((1,(height(Balloon),S))),1),S2) :- balloon(Balloon), step(S), step(S2), step(S+S2).
+trajectory(heaterOn(Balloon),S,height(Balloon), (((1,(height(Balloon),S)),),1),S2) :- balloon(Balloon), step(S), step(S2), step(S+S2).
 
-antiTrajectory(heaterOn(Balloon),S,height(Balloon), (((1,(height(Balloon),S))),-1),S2) :- balloon(Balloon), step(S), step(S2), step(S+S2).
+antiTrajectory(heaterOn(Balloon),S,height(Balloon), (((1,(height(Balloon),S)),),-1),S2) :- balloon(Balloon), step(S), step(S2), step(S+S2).
 
 obs(height(balloon), 0, 0).
 

@@ -21,7 +21,7 @@ account(account2).
 ffluent(balance(A)) :- account(A).
 
 % event(transfer(A1, A2, M)) :- account(A1), account(A2), money(M).
-event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), account(A2).
+event(transfer(A1, A2, M)) :- obs(happens,transfer(A1, A2, M), T), account(A1), account(A2).
 
 
 %-------------------------------------------------------------------------------
@@ -38,11 +38,11 @@ event(transfer(A1, A2, M)) :- happens(transfer(A1, A2, M), T), account(A1), acco
 initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    sum( ( (1, (balance(A1), T)), ), geq, TransM12),
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % needed for sum
-comparison( ( (1, (balance(A1), T)) ), TransM12) :-
+comparison( ( (1, (balance(A1), T)), ), TransM12) :-
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 %*
@@ -57,7 +57,7 @@ comparison( ( (1, (balance(A1), T)) ), TransM12) :-
 initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
-    sum( ( (1, (balance(A1), T)) ), geq, TransM12),
+    sum( ( (1, (balance(A1), T)), ), geq, TransM12),
     event(transfer(A1, A2, TransM12)), account(A1), account(A2), step(T).
 
 % already defined with the initiates above

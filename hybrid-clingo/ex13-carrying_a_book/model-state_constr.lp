@@ -37,7 +37,7 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 % and will be in Location2
 %initiates(walk(A, L), location(A), ( (1, L) ), T) :- step(T), agent(A), in_locations(L).
 &sum{one} = 1. % TODO workaround for lpx
-initiates(walk(A, L), location(A), ( (L, one) ), T) :- step(T), agent(A), in_locations(L).
+initiates(walk(A, L), location(A), ( (L, one), ), T) :- step(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
@@ -53,7 +53,7 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 %! indirect effect
 % if an agent lets go of an object while in a room, then the object will be
 % in that room and will no longer be released from CLoI (caused by initiates)
-initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)) ), T) :- step(T), agent(A), object(O).
+initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)), ), T) :- step(T), agent(A), object(O).
 
 
 %-------------------------------------------------------------------------------

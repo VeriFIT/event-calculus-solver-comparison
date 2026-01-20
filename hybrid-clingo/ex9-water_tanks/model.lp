@@ -25,28 +25,28 @@ terminates(switch_left, right_filling, T) :- step(T).
 terminates(switch_right, left_filling, T) :- step(T).
 initiates(switch_right, right_filling, T) :- step(T).
 
-trajectory(left_filling, T1, water_left, (( (1, (water_left, T1)) ), TotalFlow), T2) :-
+trajectory(left_filling, T1, water_left, (( (1, (water_left, T1)), ), TotalFlow), T2) :-
     TotalFlow = 30 - 20, % in rate 30, out rate 20
     step(T1), step(T2).
 
-trajectory(right_filling, T1, water_left, (( (1, (water_left, T1)) ), -TotalFlow), T2) :-
+trajectory(right_filling, T1, water_left, (( (1, (water_left, T1)), ), -TotalFlow), T2) :-
     TotalFlow = 20, % out rate 20
     step(T1), step(T2).
 
-trajectory(right_filling, T1, water_right, (( (1, (water_right, T1)) ), TotalFlow), T2) :-
+trajectory(right_filling, T1, water_right, (( (1, (water_right, T1)), ), TotalFlow), T2) :-
     TotalFlow = 30 - 20, % in rate 30, out rate 20
     step(T1), step(T2).
 
-trajectory(left_filling, T1, water_right, (( (1, (water_right, T1)) ), -TotalFlow), T2) :-
+trajectory(left_filling, T1, water_right, (( (1, (water_right, T1)), ), -TotalFlow), T2) :-
     TotalFlow = 20, % out rate 20
     step(T1), step(T2).
 
 happens(switch_left, T) :-
     holdsAt(right_filling, T),
-    sum(((1, (water_left, T))), leq, 50). % target level
+    sum(((1, (water_left, T)),), leq, 50). % target level
 happens(switch_right, T) :-
     holdsAt(left_filling, T),
-    sum(((1, (water_right, T))), leq, 50). % target level
+    sum(((1, (water_right, T)),), leq, 50). % target level
 
 no_jump(water_left, S, 50) :- holdsAt(right_filling, S), step(S).
 no_jump(water_right, S, 50) :- holdsAt(left_filling, S), step(S).
