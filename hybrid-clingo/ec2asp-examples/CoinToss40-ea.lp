@@ -28,7 +28,7 @@ obs(happens,toss,30).
 
 %obs(holdsAt,itsHeads, 0).    % not needed: value at time zero is the same as at time 1
 
-%obs(holdsAt,itsHeads, 40).
+%obs(holdsAt,itsHeads, maxtime).
     holdsAt(itsHeads, 3).   % TODO referring to lasts step directly, obs() was causing problems in lpx
 
 

@@ -1,21 +1,10 @@
+clingo version 5.7.2
+Reading from ../axioms/dec_clingo.lp ...
+Solving...
+Answer: 1 (Time: 0.016s)
+happens(feed(fred),1) holdsAt(hungry(fred),0) holdsAt(hungry(fred),1) holdsAt(happy(fred),2)
+SATISFIABLE
 
-==========
-Answer: 1
-
-0
-hungry(fred)
-
-1
-hungry(fred)
-happens(feed(fred),1)
-
-2
--hungry(fred)
-+happy(fred)
-
-3
--hungry(fred)
-P
 Models       : 1
 Calls        : 1
 Time         : 0.017s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)

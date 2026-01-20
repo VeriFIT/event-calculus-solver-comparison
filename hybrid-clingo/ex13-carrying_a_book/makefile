@@ -43,12 +43,14 @@ run-con-state-cont-nosig:
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	MODEL=-effect_constr;			NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL$$NAME.lp" ./logs/lpx$$MODEL$$NAME.log ; exit 0
 	MODEL=-state_constr;			NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL$$NAME.lp" ./logs/lpx$$MODEL$$NAME.log ; exit 0
 	MODEL=-state_constr-continuous; NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL$$NAME.lp" ./logs/lpx$$MODEL$$NAME.log ; exit 0
 
+log-con:
+	@mkdir -p ./logs ; rm -f ./logs/con*.log
 	MODEL=-effect_constr;			NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD} ./model$$MODEL$$NAME.lp" ./logs/con$$MODEL$$NAME.log ; exit 0
 	MODEL=-state_constr;			NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD} ./model$$MODEL$$NAME.lp" ./logs/con$$MODEL$$NAME.log ; exit 0
 	MODEL=-state_constr-continuous; NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD} ./model$$MODEL$$NAME.lp" ./logs/con$$MODEL$$NAME.log ; exit 0

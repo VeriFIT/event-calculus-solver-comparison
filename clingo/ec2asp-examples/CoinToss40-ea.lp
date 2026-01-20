@@ -31,7 +31,7 @@ happens(toss,30).
 holdsAt(itsHeads,0..9). % TODO extended to avoid MANY models
 holdsAt(itsHeads,11..19).
 holdsAt(itsHeads,21..29).
-holdsAt(itsHeads,31..40).
+holdsAt(itsHeads,31..maxtime).
 
 #show.
 

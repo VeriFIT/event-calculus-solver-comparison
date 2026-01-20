@@ -41,8 +41,8 @@ run-lpx-fix-min_dur-nosig:	# TODO causes problems here (many models with 'e')
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	MODEL=model; 			NAME=;		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative1.lp" ./logs/lpx-$$MODEL$$NAME.log ; exit 0
 	MODEL=model; 			NAME=many	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp --no_last_step --keep_going --minstep 8 --maxstep 10" ./logs/lpx-$$MODEL$$NAME.log ; exit 0
 	MODEL=fix-flat_loss; 	NAME=;		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp ./narrative2.lp" ./logs/lpx-$$MODEL$$NAME.log ; exit 0

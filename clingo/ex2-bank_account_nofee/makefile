@@ -1,8 +1,8 @@
 TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  [s]  %S\n  mem  [KB] %M\n  avgm [KB] %K"
 
-AXIOMS=../axioms/bec_clingo.lp
+#AXIOMS=../axioms/bec_clingo.lp
 #AXIOMS=../axioms/dbec_clingo.lp
-#AXIOMS=../axioms/dec_clingo.lp
+AXIOMS=../axioms/dec_clingo.lp
 #AXIOMS=../axioms/ec_clingo.lp
 
 #-----------------------------------------------------------------------------------------------------------------------

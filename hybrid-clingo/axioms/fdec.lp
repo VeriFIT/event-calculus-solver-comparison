@@ -42,12 +42,6 @@ def member(t):
         return clingo.Function("", t.arguments, True)
 #end.
 
-% % JR: member() takes two arguments
-% #script (python)
-% def member(_,t):
-%   return t.arguments 
-% #end.
-
 %-------------------------------------------------------------------------------
 % DEC axioms -- slightly modified (changed fluent to dfluent in many rules, 
 %               renamed maxtime to maxstep)
@@ -72,22 +66,10 @@ startedIn(S1,F,S2) :-
   step(S1), step(S2).
 
 % DEC3
-holdsAt(F2,S1+S2) :-
-  happens(E,S1),
-  initiates(E,F1,S1),
-  0<S2,
-  trajectory(F1,S1,F2,S2),
-  not stoppedIn(S1,F1,S1+S2),
-  step(S1+S2).
+% replaced by FDEC 2
 
 % DEC4
-holdsAt(F2,S1+S2) :-
-  happens(E,S1),
-  terminates(E,F1,S1),
-  0<S2,
-  antiTrajectory(F1,S1,F2,S2),
-  not startedIn(S1,F1,S1+S2),
-  step(S1+S2).
+% replaced by FDEC 3
 
 initiated1(F,S) :- happens(E,S), initiates(E,F,S).
 terminated1(F,S) :- happens(E,S), terminates(E,F,S).
@@ -250,6 +232,7 @@ sum(LE,geq,B) :- sum(LE,gt,B).
 % (time,S): the time of step S
 &sum{ (time, 0) } >= 0.                                           % step 0 is at at time >= 0
 &sum{ (time,S2); -(time,S1) } > 0 :- step(S1), step(S2), S2=S1+1. % consecutive steps must have greater time
+&sum{ (time,maxstep) } = maxtime :- not disable_laststep.         % maxstep is at time maxtime (unless disabled)
 
 %
 % Observations
@@ -273,6 +256,11 @@ time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                     
 :- obs(O,_,T), O != happens, not time_step(T, _). % TODO added this
 %time_step_obs((holdsAt;notHoldsAt;releasedAt;notReleasedAt)). % filter out happens and functional values
 
+% TODO what about observation that value is greater than something or where time is greater than something?
+
+% negative event observation  % TODO added this
+:- obs(notHappens,E,T), map(T, S), happens(E,S). % if not happens is observed at T then T either shouldnt map to anything or there shouldnt be happens at S
+
 % check Boolean fluents' observations
 :- obs(      holdsAt,F,T),  fluent(F), time_step(T,S), not holdsAt(F,S).
 :- obs(   notHoldsAt,F,T),  fluent(F), time_step(T,S),     holdsAt(F,S).
@@ -291,7 +279,6 @@ in_trajectory(F2,S1+S2,C) :-
   S3=S1+S2, happens(E,S1), terminates(E,F1,S1), 0<S2,
   antiTrajectory(F1,S1,F2,(LE,C),S2), not startedIn(S1,F1,S3), step(S3).
 
-% TODO what about observation that value is greater than something
 &sum{ (F,S) }                         = V :- obs(F,V,T), ffluent(F), time_step(T,S), not in_trajectory(F,S,_).
 %&sum{ (F,S); C*T; -C*(time,S) } = V :- obs(F,V,T), ffluent(F), time_step(T,S),     in_trajectory(F,S,C).  % clingcon
 &sum{ (F,S); C*(obs,T); -C*(time,S) } = V :- obs(F,V,T), ffluent(F), time_step(T,S),     in_trajectory(F,S,C).  % clingo-lpx 
@@ -318,9 +305,6 @@ in_trajectory(F2,S1+S2,C) :-
 
 % for clingo-lpx
 comparison(( (1,(time,S)) ),T) :- obs(_,_,T), step(S).
-
-% maxstep maps to maxtime (unless disabled)
-&sum{ (time,maxstep) } = maxtime :- not disable_laststep.
 
 
 % func. atom that represents the time difference between each pair of timepoints

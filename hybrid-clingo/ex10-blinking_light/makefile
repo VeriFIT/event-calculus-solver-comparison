@@ -45,13 +45,14 @@ run-con-fixed-50:
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	MODEL=model; 			NAME=;		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp --no_last_step" ./logs/lpx-$$MODEL$$NAME.log ; exit 0
 	MODEL=model-fixed; 		NAME=;		MAXTIME=15;		../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp" ./logs/lpx-$$MODEL$$NAME.log ; exit 0
 #	MODEL=model-fixed; 		NAME=many;  MAXTIME=63;		../../scripts/maketrace.sh "${LPX_CMD} ./$$MODEL.lp" ./logs/lpx-$$MODEL$$NAME.log ; exit 0
 
-
+log-con:
+	@mkdir -p ./logs ; rm -f ./logs/con*.log
 	MODEL=model; 			NAME=;		MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD} ./$$MODEL.lp --no_last_step --project" ./logs/con-$$MODEL$$NAME.log ; exit 0
 	MODEL=model-con-fixed; 	NAME=;		MAXTIME=15;		../../scripts/maketrace.sh "${CON_CMD} ./$$MODEL.lp" ./logs/con-$$MODEL$$NAME.log ; exit 0
 #	MODEL=model-con-fixed; 	NAME=many;  MAXTIME=59;		../../scripts/maketrace.sh "${CON_CMD} ./$$MODEL.lp" ./logs/con-$$MODEL$$NAME.log ; exit 0

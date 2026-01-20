@@ -1,7 +1,7 @@
 #const maxstep=2.
 #const maxtime=40.
 
-#const spillheight=25.
+#const spillheight=maxtime-10.
 % offset(1..25).
 
 

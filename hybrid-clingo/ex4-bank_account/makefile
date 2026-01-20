@@ -31,10 +31,12 @@ run-con-zeno:	# TODO generates all combinations of placement of timepoints (can 
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	NAME=-zeno	MAXTIME=1000;  ../../scripts/maketrace.sh "${LPX_CMD_ZENO} 	" ./logs/lpx$$NAME.log ; exit 0
 	NAME=;		MAXTIME=1000;  ../../scripts/maketrace.sh "${LPX_CMD} 		" ./logs/lpx$$NAME.log ; exit 0
-	
+
+log-con:
+	@mkdir -p ./logs ; rm -f ./logs/con*.log
 	NAME=-zeno	MAXTIME=1000;  ../../scripts/maketrace.sh "${CON_CMD_ZENO} --project" ./logs/con$$NAME.log ; exit 0
 	NAME=;		MAXTIME=1000;  ../../scripts/maketrace.sh "${CON_CMD} 		" ./logs/con$$NAME.log ; exit 0

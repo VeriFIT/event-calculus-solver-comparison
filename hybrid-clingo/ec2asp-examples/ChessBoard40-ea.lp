@@ -36,8 +36,8 @@ obs(happens,throw,35).
 %
 %obs(holdsAt,itsBlack,0).
 
-obs(holdsAt,itsWhite,40).
+obs(holdsAt,itsWhite,maxtime).
 
-obs(holdsAt,itsBlack,40).
+obs(holdsAt,itsBlack,maxtime).
 
 % --> find 3 models, differ in state after time 1: onWhite or onBlack or both

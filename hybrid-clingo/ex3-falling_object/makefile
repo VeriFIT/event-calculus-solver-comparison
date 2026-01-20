@@ -32,8 +32,8 @@ run-con-queries-nosig:
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	NAME=; 		MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD}" ./logs/lpx$$NAME-h$$HEIGHT.log ; exit 0
 	NAME=; 		MAXTIME=1000;	HEIGHT=40;	../../scripts/maketrace.sh "${LPX_CMD}" ./logs/lpx$$NAME-h$$HEIGHT.log ; exit 0
 	NAME=; 		MAXTIME=1000;	HEIGHT=80;	../../scripts/maketrace.sh "${LPX_CMD}" ./logs/lpx$$NAME-h$$HEIGHT.log ; exit 0
@@ -44,6 +44,8 @@ log:
 	
 	NAME=-queries;	MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${LPX_CMD} ./extra-queries.lp" ./logs/lpx$$NAME-h$$HEIGHT.log ; exit 0
 
+log-con:
+	@mkdir -p ./logs ; rm -f ./logs/con*.log
 	NAME=; 		MAXTIME=1000;	HEIGHT=20;	../../scripts/maketrace.sh "${CON_CMD}" ./logs/con$$NAME-h$$HEIGHT.log ; exit 0
 	NAME=; 		MAXTIME=1000;	HEIGHT=40;	../../scripts/maketrace.sh "${CON_CMD}" ./logs/con$$NAME-h$$HEIGHT.log ; exit 0
 	NAME=; 		MAXTIME=1000;	HEIGHT=80;	../../scripts/maketrace.sh "${CON_CMD}" ./logs/con$$NAME-h$$HEIGHT.log ; exit 0

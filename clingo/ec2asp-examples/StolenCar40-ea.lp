@@ -22,7 +22,7 @@ terminates(steal,carParked,Time) :- time(Time).
 
 happens(park,20).
 
-:- holdsAt(carParked,40).
+:- holdsAt(carParked,maxtime).
 
 holdsAt(carParked,Time) :- happens(steal,Time).
 
@@ -38,3 +38,5 @@ holdsAt(carParked,Time) :- happens(steal,Time).
 
 #show holdsAt/2.
 #show happens/2.
+
+% looking only for one model using -n1, otherwise many models

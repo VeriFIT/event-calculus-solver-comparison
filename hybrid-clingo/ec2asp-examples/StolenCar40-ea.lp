@@ -22,7 +22,7 @@ obs(notHoldsAt,carParked,0).
 
 obs(happens,park,20).
 
-obs(notHoldsAt,carParked, 40).
+obs(notHoldsAt,carParked, maxtime).
 
 :- happens(steal, T), not holdsAt(carParked, T).
 :- happens(park, T), holdsAt(carParked, T). % TODO added to avoid abducing park at step 0

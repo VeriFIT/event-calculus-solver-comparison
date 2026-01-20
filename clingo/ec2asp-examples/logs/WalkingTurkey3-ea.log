@@ -1,30 +1,11 @@
+clingo version 5.7.2
+Reading from ../axioms/dec_clingo.lp ...
+Solving...
+Answer: 1 (Time: 0.017s)
+happens(shoot,1) holdsAt(alive,0) holdsAt(loaded,0) holdsAt(walking,0) holdsAt(loaded,1) holdsAt(loaded,2) holdsAt(loaded,3) holdsAt(alive,1) holdsAt(walking,1)
+SATISFIABLE
 
-==========
-Answer: 1
-
-0
-walking
-loaded
-alive
-
-1
-walking
-alive
-loaded
-happens(shoot,1)
-
-2
--walking
--alive
-loaded
-
-3
-loaded
-
-4
--loaded
-P
 Models       : 1
 Calls        : 1
-Time         : 0.014s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.004s
+Time         : 0.017s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.005s

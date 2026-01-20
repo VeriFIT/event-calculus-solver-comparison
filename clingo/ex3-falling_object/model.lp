@@ -59,10 +59,10 @@ H1 = H2 :- holdsAt(height(O,H1), T), holdsAt(height(O,H2), T),
     agent(A), object(O), fHeight(H1), fHeight(H2), time(T).
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
-trajectory(falling(O), T1, height(O,H - (G)*(T2-T1)), T2) :-
-    T1 < T2,
+trajectory(falling(O), T1, height(O,H - (G)*(T2)), T2) :-
+    0 < T2,
     holdsAt(height(O,H), T1),
-    fGravity(G), object(O), fHeight(H), time(T1), time(T2).
+    fGravity(G), object(O), fHeight(H), time(T1), time(T2), time(T1+T2).
 
 
 %-------------------------------------------------------------------------------

@@ -26,7 +26,7 @@ happens(drop(nathan,apple),0).
 
 :- holdsAt(height(Object,Height1),Time), holdsAt(height(Object,Height2),Time), Height1!=Height2.
 
-trajectory(falling(Object),Time,height(Object,Height2),Time2) :- holdsAt(height(Object,Height1),Time), Height2=Height1-(Time2-Time), time(Time2).
+trajectory(falling(Object),Time,height(Object,Height2),Time2) :- holdsAt(height(Object,Height1),Time), Height2=Height1-(Time2), time(Time2), time(Time+Time2).
 
 antiTrajectory(falling(Object),Time,height(Object,Height2),Time2) :- holdsAt(height(Object,Height1),Time), Height2=Height1, time(Time2).
 

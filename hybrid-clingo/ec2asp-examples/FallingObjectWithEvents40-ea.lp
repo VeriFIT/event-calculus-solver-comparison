@@ -37,7 +37,7 @@ trajectory(falling(Object),S,height(Object), (((1,(height(Object),S))),-1),S2) :
 obs(notHoldsAt,falling(apple),0).
 
 %holdsAt(height(apple,35),0).
-obs(height(apple), 35, 0).
+obs(height(apple), maxtime-5, 0).
 
 obs(notReleasedAt,falling(Object),0) :- object(Object).
 

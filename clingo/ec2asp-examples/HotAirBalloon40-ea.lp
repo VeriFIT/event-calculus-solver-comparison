@@ -1,7 +1,7 @@
 
 
 #const maxtime=40.
-height(0..20).
+height(0..maxtime/2).
 %offset(1..20).
 
 balloon(balloon).
@@ -22,13 +22,13 @@ terminates(turnOffHeater(Agent,Balloon),heaterOn(Balloon),Time) :- agent(Agent),
 
 happens(turnOnHeater(nathan,balloon),0).
 
-happens(turnOffHeater(nathan,balloon),20).
+happens(turnOffHeater(nathan,balloon),maxtime/2).
 
 :- holdsAt(height(Balloon,Height1),Time), holdsAt(height(Balloon,Height2),Time), Height1!=Height2.
 
-trajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1+(Time2-Time), time(Time2).
+trajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1+(Time2), time(Time2), time(Time+Time2).
 
-antiTrajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1-(Time2-Time), time(Time2).
+antiTrajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1-(Time2), time(Time2), time(Time+Time2).
 
 holdsAt(height(balloon,0),0).
 

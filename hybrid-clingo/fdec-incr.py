@@ -171,7 +171,6 @@ if __name__ == "__main__":
         else:
             cmd.extend(["python", "-m", "clingolpx", "--enable-python", "--strict"])
             #cmd.extend(["python", "-c", "import clingolpx; clingolpx._pyclingolpx()", "--strict", "--project-anonymous"])
-            #cmd.extend([os.path.join(scriptdir, 'axioms/fdec-mem-lpx.lp')])
             
         if(conf_args.project == True):
             cmd.append("--project")

@@ -23,9 +23,11 @@ run-con-nosig:
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD}" ./logs/lpx$$NAME.log ; exit 0
 
+log-con:
+	@mkdir -p ./logs ; rm -f ./logs/con*.log
 	NAME=; 		MAXTIME=1000;	../../scripts/maketrace.sh "${CON_CMD}" ./logs/con$$NAME.log ; exit 0
 

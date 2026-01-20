@@ -1,105 +1,11 @@
+clingo version 5.7.2
+Reading from ../axioms/dec_clingo.lp ...
+Solving...
+Answer: 1 (Time: 0.038s)
+happens(turnOnHeater(nathan,balloon),0) happens(turnOffHeater(nathan,balloon),8) holdsAt(height(balloon,0),0) holdsAt(heaterOn(balloon),1) holdsAt(height(balloon,1),1) holdsAt(height(balloon,2),2) holdsAt(height(balloon,3),3) holdsAt(height(balloon,4),4) holdsAt(height(balloon,5),5) holdsAt(height(balloon,6),6) holdsAt(height(balloon,7),7) holdsAt(height(balloon,8),8) holdsAt(heaterOn(balloon),2) holdsAt(heaterOn(balloon),3) holdsAt(heaterOn(balloon),4) holdsAt(heaterOn(balloon),5) holdsAt(heaterOn(balloon),6) holdsAt(heaterOn(balloon),7) holdsAt(heaterOn(balloon),8) holdsAt(height(balloon,-4),20) holdsAt(height(balloon,-3),19) holdsAt(height(balloon,-2),18) holdsAt(height(balloon,-1),17) holdsAt(height(balloon,0),16) holdsAt(height(balloon,1),15) holdsAt(height(balloon,2),14) holdsAt(height(balloon,3),13) holdsAt(height(balloon,4),12) holdsAt(height(balloon,5),11) holdsAt(height(balloon,6),10) holdsAt(height(balloon,7),9)
+SATISFIABLE
 
-==========
-Answer: 1
-
-0
-height(balloon,0)
-happens(turnOnHeater(nathan,balloon),0)
-
-1
--height(balloon,0)
-+height(balloon,1)
-+heaterOn(balloon)
-
-2
--height(balloon,1)
-+height(balloon,2)
-heaterOn(balloon)
-
-3
--height(balloon,2)
-+height(balloon,3)
-heaterOn(balloon)
-
-4
--height(balloon,3)
-+height(balloon,4)
-heaterOn(balloon)
-
-5
--height(balloon,4)
-+height(balloon,5)
-heaterOn(balloon)
-
-6
--height(balloon,5)
-+height(balloon,6)
-heaterOn(balloon)
-
-7
--height(balloon,6)
-+height(balloon,7)
-heaterOn(balloon)
-
-8
--height(balloon,7)
-+height(balloon,8)
-heaterOn(balloon)
-happens(turnOffHeater(nathan,balloon),8)
-
-9
--heaterOn(balloon)
--height(balloon,8)
-+height(balloon,7)
-
-10
--height(balloon,7)
-+height(balloon,6)
-
-11
--height(balloon,6)
-+height(balloon,5)
-
-12
--height(balloon,5)
-+height(balloon,4)
-
-13
--height(balloon,4)
-+height(balloon,3)
-
-14
--height(balloon,3)
-+height(balloon,2)
-
-15
--height(balloon,2)
-+height(balloon,1)
-
-16
--height(balloon,1)
-+height(balloon,0)
-
-17
--height(balloon,0)
-+height(balloon,-1)
-
-18
--height(balloon,-1)
-+height(balloon,-2)
-
-19
--height(balloon,-2)
-+height(balloon,-3)
-
-20
--height(balloon,-3)
-+height(balloon,-4)
-
-21
--height(balloon,-3)
-P
 Models       : 1
 Calls        : 1
-Time         : 0.046s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 0.034s
+Time         : 0.039s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 0.026s

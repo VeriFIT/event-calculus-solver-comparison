@@ -38,9 +38,9 @@ holdsAt(itsWhite,0..34).    % TODO extended these to prevent MANY models
 
 holdsAt(itsBlack,0..34).
 
-holdsAt(itsWhite,36..40).
+holdsAt(itsWhite,36..maxtime).
 
-holdsAt(itsBlack,36..40).
+holdsAt(itsBlack,36..maxtime).
 
 #show.
 

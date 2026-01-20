@@ -1,7 +1,7 @@
 
 
 #const maxtime=40.
-height(0..25).
+height(0..maxtime-10).
 %offset(1..25).
 
 
@@ -30,11 +30,11 @@ initiates(overflow,height(Height),Time) :- holdsAt(height(Height),Time).
 
 initiates(overflow,spilling,Time) :- time(Time).
 
-trajectory(filling,Time,height(Height2),Time2) :- holdsAt(height(Height1),Time), Height2=Height1+(Time2-Time), time(Time2).
+trajectory(filling,Time,height(Height2),Time2) :- holdsAt(height(Height1),Time), Height2=Height1+(Time2), time(Time2), time(Time+Time2).
 
 :- holdsAt(height(Height1),Time), holdsAt(height(Height2),Time), Height1!=Height2.
 
-happens(overflow,Time) :- holdsAt(height(25),Time), holdsAt(filling,Time).
+happens(overflow,Time) :- holdsAt(height(maxtime-10),Time), holdsAt(filling,Time).
 
 holdsAt(height(0),0).
 

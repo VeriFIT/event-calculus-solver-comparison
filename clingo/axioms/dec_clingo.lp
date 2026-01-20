@@ -1,6 +1,11 @@
 % copied from http://decreasoner.sourceforge.net/csr/ecasp/dec.lp
 %! modification -- T2 in trajectory changed to timepoint instead of duration (T1->T2 instead of T1->T1+T2)
 
+%#show.
+%#show holdsAt/2.
+%#show happens/2.
+%#show releasedAt/2.
+
 %%%% below was added to make these axioms compatible with the BEC/DBEC examples without a need to modify the examples
 holdsAt(F, 0) :- initiallyP(F), fluent(F).
 :- holdsAt(F, 0), initiallyN(F), fluent(F).
@@ -27,22 +32,22 @@ startedIn(T1,F,T2) :-
   event(E), fluent(F), time(T), time(T1), time(T2).
 
 % DEC3
-holdsAt(F2,T2) :-
+holdsAt(F2,T1+T2) :-
   happens(E,T1),
   initiates(E,F1,T1),
-  T1<T2,
+  0<T2,
   trajectory(F1,T1,F2,T2),
-  not stoppedIn(T1,F1,T2),
-  event(E), fluent(F1), fluent(F2), time(T1), time(T2), T2<=maxtime.
+  not stoppedIn(T1,F1,T1+T2),
+  event(E), fluent(F1), fluent(F2), time(T1), time(T1+T2).
 
 % DEC4
-holdsAt(F2,T2) :-
+holdsAt(F2,T1+T2) :-
   happens(E,T1),
   terminates(E,F1,T1),
-  T1<T2,
+  0<T2,
   antiTrajectory(F1,T1,F2,T2),
-  not startedIn(T1,F1,T2),
-  event(E), fluent(F1), fluent(F2), time(T1), time(T2), T2<=maxtime.
+  not startedIn(T1,F1,T1+T2),
+  event(E), fluent(F1), fluent(F2), time(T1), time(T1+T2).
 
 initiated1(F,T) :-
   happens(E,T),
@@ -131,3 +136,11 @@ releasedAt(F,T+1) :-
 #defined releases/3.
 #defined trajectory/4.
 #defined antiTrajectory/4.
+
+
+%-------------------------------------------------------------------------------
+% TMP
+%-------------------------------------------------------------------------------
+
+:- initiallyP(F), not holdsAt(F,0).
+:- initiallyN(F),     holdsAt(F,0).

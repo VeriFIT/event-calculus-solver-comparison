@@ -30,7 +30,7 @@ initiates(overflow,height(Height),Time) :- holdsAt(height(Height),Time).
 
 initiates(overflow,spilling,Time) :- time(Time).
 
-trajectory(filling,Time,height(Height2),Time2) :- holdsAt(height(Height1),Time), Height2=Height1+(Time2-Time), time(Time2).
+trajectory(filling,Time,height(Height2),Time2) :- holdsAt(height(Height1),Time), Height2=Height1+(Time2), time(Time2), time(Time+Time2).
 
 :- holdsAt(height(Height1),Time), holdsAt(height(Height2),Time), Height1!=Height2.
 

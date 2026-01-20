@@ -35,8 +35,8 @@ run-lpx-fix-nosig:
 #-----------------------------------------------------------------------------------------------------------------------
 # log the execution
 
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx*.log
 	MODEL=; 			NAME=;		MAXTIME=19;		../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp" ./logs/lpx$$MODEL$$NAME.log ; exit 0
 	MODEL=; 			NAME=many;	MAXTIME=1000;	../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp --no_last_step --keep_going --minstep 8 --maxstep 10" ./logs/lpx$$MODEL$$NAME.log ; exit 0
 	MODEL=-fixed; 		NAME=;		MAXTIME=22;		../../scripts/maketrace.sh "${LPX_CMD} ./model$$MODEL.lp" ./logs/lpx$$MODEL$$NAME.log ; exit 0

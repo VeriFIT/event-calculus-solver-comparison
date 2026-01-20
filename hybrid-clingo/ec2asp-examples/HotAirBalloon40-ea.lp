@@ -24,7 +24,7 @@ terminates(turnOffHeater(Agent,Balloon),heaterOn(Balloon),S):- agent(Agent), bal
 
 obs(happens,turnOnHeater(nathan,balloon),0).
 
-obs(happens,turnOffHeater(nathan,balloon),20).
+obs(happens,turnOffHeater(nathan,balloon),maxtime/2).
 
 % implicit
 %:- holdsAt(height(Balloon,Height1),S), holdsAt(height(Balloon,Height2),S), Height1!=Height2.

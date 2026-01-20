@@ -26,9 +26,9 @@ happens(turnOffHeater(nathan,balloon),6).
 
 :- holdsAt(height(Balloon,Height1),Time), holdsAt(height(Balloon,Height2),Time), Height1!=Height2.
 
-trajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1+(Time2-Time), time(Time2).
+trajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1+(Time2), time(Time2), time(Time+Time2).
 
-antiTrajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1-(Time2-Time), time(Time2).
+antiTrajectory(heaterOn(Balloon),Time,height(Balloon,Height2),Time2) :- holdsAt(height(Balloon,Height1),Time), Height2=Height1-(Time2), time(Time2), time(Time+Time2).
 
 holdsAt(height(balloon,0),0).
 
