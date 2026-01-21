@@ -82,7 +82,7 @@ initiallyN(falling(apple)).
 
 
 % allows us to generate event observations via execution parameters (for experiments)
-obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(3*(EventNumber-1)))*precisionMultTime.
+obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(4*(EventNumber-1)))*precisionMultTime.
 
 % supplied as input
 #const maxEventsNumber=2.    
@@ -95,8 +95,8 @@ obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(3*
 #show conf_maxtime(maxtime).
 
 % auto-computed
-#const paramHeight=2*precisionMultVal.
-#const maxtime=3*(maxEventsNumber+1)*precisionMultTime.
+#const paramHeight=3*precisionMultVal.
+#const maxtime=4*(maxEventsNumber+1)*precisionMultTime.
 #const fallRate=1*precisionMultVal.  
     % falls for 10 units regardless of precision
     % vanila clingo struggles with higher time precision than value precision since it leads to fall rate 0.1, 0.01,...
