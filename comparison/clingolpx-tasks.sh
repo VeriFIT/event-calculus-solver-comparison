@@ -24,8 +24,8 @@ RUN_LPX="python ./fdec-incr.py"
 #1-StolenCar40;'$RUN_LPX ./ec2asp-examples/StolenCar40-ea.lp';1
 #1-StuffyRoom2;'$RUN_LPX ./ec2asp-examples/StuffyRoom2-ea.lp';1
 #1-StuffyRoom40;'$RUN_LPX ./ec2asp-examples/StuffyRoom40-ea.lp';1
-#1-SuperMarket12;'$RUN_LPX ./ec2asp-examples/SuperMarket12-ea.lp';1
-#1-SuperMarket40;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp';1
+#1-SuperMarket12;'$RUN_LPX ./ec2asp-examples/Supermarket12-ea.lp';1
+#1-SuperMarket40;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp';1
 #1-ThielscherCircuit1;'$RUN_LPX ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit1-ea.lp';1
 #1-ThielscherCircuit20;'$RUN_LPX ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit20-ea.lp';1
 #1-ThielscherCircuit40;'$RUN_LPX ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp';1
@@ -140,14 +140,14 @@ echo "
 1-StuffyRoom-maxT05000;'$RUN_LPX ./ec2asp-examples/StuffyRoom40-ea.lp --maxtime 5000';1
 1-StuffyRoom-maxT10000;'$RUN_LPX ./ec2asp-examples/StuffyRoom40-ea.lp --maxtime 10000';1
 
-1-SuperMarket-maxT00050;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 50';1
-1-SuperMarket-maxT00100;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 100';1
-1-SuperMarket-maxT00200;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 200';1
-1-SuperMarket-maxT00400;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 400';1
-1-SuperMarket-maxT01000;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 1000';1
-1-SuperMarket-maxT02000;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 2000';1
-1-SuperMarket-maxT05000;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 5000';1
-1-SuperMarket-maxT10000;'$RUN_LPX ./ec2asp-examples/SuperMarket40-ea.lp --maxtime 10000';1
+1-SuperMarket-maxT00050;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 50';1
+1-SuperMarket-maxT00100;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 100';1
+1-SuperMarket-maxT00200;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 200';1
+1-SuperMarket-maxT00400;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 400';1
+1-SuperMarket-maxT01000;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 1000';1
+1-SuperMarket-maxT02000;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 2000';1
+1-SuperMarket-maxT05000;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 5000';1
+1-SuperMarket-maxT10000;'$RUN_LPX ./ec2asp-examples/Supermarket40-ea.lp --maxtime 10000';1
 
 1-ThielscherCircuit-maxT00050;'$RUN_LPX ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp --maxtime 50';1
 1-ThielscherCircuit-maxT00100;'$RUN_LPX ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp --maxtime 100';1
