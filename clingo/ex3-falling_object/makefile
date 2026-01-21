@@ -2,7 +2,7 @@ TIME=/usr/bin/time -f "\n  real      %E\n  real [s]  %e\n  user [s]  %U\n  sys  
 
 #AXIOMS=../axioms/bec_clingo.lp
 #AXIOMS=../axioms/dbec_clingo.lp
-AXIOMS=../axioms/dec_clingo.lp
+AXIOMS=../axioms/dec_clingo.lp ../axioms/dec_clingo-show.lp
 #AXIOMS=../axioms/ec_clingo.lp
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -10,7 +10,7 @@ AXIOMS=../axioms/dec_clingo.lp
 
 CMD=clingo -c maxtime=$$MAXTIME -c paramHeight=$$HEIGHT -n 0 ${AXIOMS} ./model.lp
 run:
-	MAXTIME=15; HEIGHT=20; ${TIME} ${CMD} 2> .tmp987654321.tmp | ../utils/format-output/format-output-rework 2; cat .tmp987654321.tmp 1>&2; rm -f .tmp987654321.tmp
+	MAXTIME=15; HEIGHT=20; ${TIME} ${CMD}
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -25,11 +25,11 @@ run-miss_ground:
 # log the execution
 
 log:
-	MAXTIME=15;  HEIGHT=20;	 ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
-	MAXTIME=25;  HEIGHT=40;	 ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
-	MAXTIME=45;  HEIGHT=80;	 ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
-	MAXTIME=85;  HEIGHT=160; ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
-	MAXTIME=165; HEIGHT=320; ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=15;  HEIGHT=20;	 ../../scripts/maketrace.sh "${CMD}" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=25;  HEIGHT=40;	 ../../scripts/maketrace.sh "${CMD}" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=45;  HEIGHT=80;	 ../../scripts/maketrace.sh "${CMD}" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=85;  HEIGHT=160; ../../scripts/maketrace.sh "${CMD}" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=165; HEIGHT=320; ../../scripts/maketrace.sh "${CMD}" ./logs/t$$MAXTIME-h$$HEIGHT.log ; exit 0
 	
-	MAXTIME=5;   HEIGHT=4;   ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/miss_ground-ok-t$$MAXTIME-h$$HEIGHT.log ; exit 0
-	MAXTIME=4;   HEIGHT=3;   ../../scripts/maketrace.sh "${CMD} | ../utils/format-output/format-output-rework 1" ./logs/miss_ground-miss-t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=5;   HEIGHT=4;   ../../scripts/maketrace.sh "${CMD}" ./logs/miss_ground-ok-t$$MAXTIME-h$$HEIGHT.log ; exit 0
+	MAXTIME=4;   HEIGHT=3;   ../../scripts/maketrace.sh "${CMD}" ./logs/miss_ground-miss-t$$MAXTIME-h$$HEIGHT.log ; exit 0

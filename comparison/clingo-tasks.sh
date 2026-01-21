@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RUN="clingo ./axioms/dec_clingo.lp"
+RUN="clingo ./axioms/dec_clingo.lp ./axioms/dec_clingo-show.lp"
 
 #name;command;expectedmodels
 #tasks="

@@ -1,5 +1,5 @@
 % copied from http://decreasoner.sourceforge.net/csr/ecasp/dec.lp
-%! modification -- T2 in trajectory changed to timepoint instead of duration (T1->T2 instead of T1->T1+T2)
+% with minor adjustments
 
 %#show.
 %#show holdsAt/2.
