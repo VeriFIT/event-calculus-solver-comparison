@@ -35,9 +35,7 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent walks from Location1 to Location2, then they will no longer be in Location1
 % and will be in Location2
-%initiates(walk(A, L), location(A), ( (1, L) ), T) :- step(T), agent(A), in_locations(L).
-&sum{one} = 1. % TODO workaround for lpx
-initiates(walk(A, L), location(A), ( (L, one), ), T) :- step(T), agent(A), in_locations(L).
+initiates(walk(A, L), location(A), ( (1, L), ), T) :- step(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
@@ -65,9 +63,7 @@ initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)), ), T) :- step(T), 
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
-%&sum{(location(A),T)} = (location(O),T) :-
-% TODO workaround for LPX
-&sum{(location(A),T); - (location(O),T)} = 0 :-
+&sum{(location(A),T)} = (location(O),T) :-
     holdsAt(holding(A,O), T),
     agent(A), object(O), step(T).
 

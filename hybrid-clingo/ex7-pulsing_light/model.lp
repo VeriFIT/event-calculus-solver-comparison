@@ -29,9 +29,7 @@ terminates(turn_light_off, light_on, T) :- step(T).
 terminates(turn_light_off, fading_in, T) :- holdsAt(fading_in, T).
 terminates(turn_light_off, fading_out, T) :- holdsAt(fading_out, T).
 
-%initiates(turn_light_off, brightness, ( (0,0) ), T) :- step(T).
-&sum{zero} = 0. % TODO workaround for lpx
-initiates(turn_light_off, brightness, ( (0,zero), ), T) :- step(T).
+initiates(turn_light_off, brightness, ( (0,0), ), T) :- step(T).
 
 trajectory(fading_in, T1, brightness, ( ( (1, (brightness, T1)), ), 1), T2) :- step(T1+T2), step(T1), step(T2).
 

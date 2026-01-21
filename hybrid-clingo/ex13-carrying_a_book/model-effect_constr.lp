@@ -35,9 +35,7 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 
 % if an agent walks from Location1 to Location2, then they will no longer be in Location1
 % and will be in Location2
-%initiates(walk(A, L), location(A), ( (1, L) ), T) :- step(T), agent(A), in_locations(L).
-&sum{one} = 1. % TODO workaround for lpx
-initiates(walk(A, L), location(A), ( (L, one), ), T) :- step(T), agent(A), in_locations(L).
+initiates(walk(A, L), location(A), ( (1, L), ), T) :- step(T), agent(A), in_locations(L).
 
 % if an agent is in the same room as an object and picks it up, then they will be holding it
 initiates(pickUp(A, O), holding(A, O), T) :-
@@ -64,8 +62,6 @@ terminates(letGoOf(A, O), holding(A, O), T) :-
 %-------------------------------------------------------------------------------
 
 %! indirect effect
-% TODO maybe the (A,B,C,F) should be (A,B,C,F1,F2)
-% TODO axioms would then have &sum{ A; B*((F1,T) + C) } = (F2,T+1)
 initiates(E, location(O), EQ, T) :-
     holdsAt(holding(A, O), T),
     initiates(E, location(A), EQ, T),

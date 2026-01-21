@@ -41,9 +41,7 @@ event(monthlyReset(A)) :- account(A).
 %% and the amount is transfered from A1 to account A2,
 %% then the balance of A1 decreses and of A2 increases
 
-%initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
-&sum{one} = 1.  % TODO workaround for lpx
-initiates(transfer(A1, A2, TransM12), balance(A2), ( (TransM12, one), (1, (balance(A2), T)) ), T) :-
+initiates(transfer(A1, A2, TransM12), balance(A2), ( (1, TransM12), (1, (balance(A2), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
     sum( ( (1, (balance(A1), T)), ), geq, TransM12),
@@ -61,9 +59,7 @@ comparison( ( (1, (balance(A1), T)), ), TransM12) :-
 %*
 %% new balance of A1 (sends payment)
 *%
-%initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
-% TODO workaround for lpx
-initiates(transfer(A1, A2, TransM12), balance(A1), ( (-TransM12, one), (1, (balance(A1), T)) ), T) :-
+initiates(transfer(A1, A2, TransM12), balance(A1), ( (-1, TransM12), (1, (balance(A1), T)) ), T) :-
     TransM12 > 0,
     % &sum{ (balance(A1),T-1) } >= TransM12, 
     sum( ( (1, (balance(A1), T)), ), geq, TransM12),

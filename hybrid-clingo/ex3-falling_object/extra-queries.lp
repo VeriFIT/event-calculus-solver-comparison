@@ -1,7 +1,7 @@
 % exploring ways to query fluents values
 
-#const maxstep=6.
-#const maxtime=1000.
+% #const maxstep=6.
+% #const maxtime=1000.
 
 
 %-------------------------------------------------------------------------------
@@ -17,14 +17,14 @@ obs(happens, checkAtT, 15).
 % TODO if we wanted to see the time at which the height is 2
 % could add a triggered event
 event(checkAtH).
-happens(checkAtH, T) :- sum(( (1, (height(O), T)) ), eq, 2), step(T).
+happens(checkAtH, T) :- sum(( (1, (height(O), T)), ), eq, 2), object(O), step(T).
 no_jump(height(O), S, 2) :- holdsAt(falling(O), S).
 
 
 %% TODO if we wanted to see the time at which the object was falling for 2 time units
 checkDuration(2).
 &sum{ (time,S2); -(time,S1); -(timeDiff,S1,S2) } = 0 :- step(S1), step(S2), S1 <= S2.
-comparison( ( (1, (timeDiff, T1, T)) ), Dur) :- checkDuration(Dur), T1 <= T, step(T1), step(T).
+comparison( ( (1, (timeDiff, T1, T)), ), Dur) :- checkDuration(Dur), T1 <= T, step(T1), step(T).
 event(checkAtDur).
 happens(checkAtDur, T) :-
     holdsAt(falling(O), T),
@@ -34,7 +34,7 @@ happens(checkAtDur, T) :-
     initiates(E, falling(O), T1),
     not stoppedIn(T1, falling(O), T),
     checkDuration(Dur),
-    sum(( (1, (timeDiff, T1, T)) ), eq, Dur).
+    sum(( (1, (timeDiff, T1, T)), ), eq, Dur).
 
 :-  % establish SStart
     happens(E, SStart),
@@ -43,5 +43,5 @@ happens(checkAtDur, T) :-
     SStart < S,
     checkDuration(Dur),
     % cannot step over SStart + Dur
-    sum(( (1, (timeDiff, SStart, S-1)) ), lt, Dur),
-    sum(( (1, (timeDiff, SStart, S)) ), gt, Dur).
+    sum(( (1, (timeDiff, SStart, S-1)), ), lt, Dur),
+    sum(( (1, (timeDiff, SStart, S)), ), gt, Dur).

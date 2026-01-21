@@ -1,21 +1,5 @@
 % version of FDEC for happens3 -- events with duration
 
-% OV: the if tries to handle the special case of ( (X) ) being converted to (X), e.g. ( (time, 0) )
-#script (python)
-import clingo
-def member(t):
-    if t.arguments[0].type == clingo.SymbolType.Function:
-        return t.arguments
-    else:
-        return clingo.Function("", t.arguments, True)
-#end.
-
-% % JR: member() takes two arguments
-% #script (python)
-% def member(_,t):
-%   return t.arguments 
-% #end.
-
 %-------------------------------------------------------------------------------
 % DEC axioms -- slightly modified (changed fluent to dfluent in many rules, 
 %               renamed maxtime to maxstep)
@@ -147,24 +131,22 @@ startedIn(S1,F,S4) :-
 %   V for (rational) Variable
 
 % FDEC2 (corresponds to DEC3)
-&sum{ C*V : @member(LE) = (C,V); CC*(time,S4); -CC*(time,S2); -(F2,S4) } = 0 :-
-  S4=S2+S3,
+&sum{ C*V : @member(LE) = (C,V); CC*(time,S2+S3); -CC*(time,S2) } = (F2,S2+S3) :-
   happens3(E,S1,S2),
   initiates(E,F1,S1),
   0<S3,
   trajectory(F1,S1,F2,(LE,CC),S3),
-  not stoppedIn(S1,F1,S4),
-  step(S4).
+  not stoppedIn(S1,F1,S2+S3),
+  step(S2+S3).
 
 % FDEC3 (corresponds to DEC4)
-&sum{ C*V : @member(LE) = (C,V); CC*(time,S4); -CC*(time,S2); -(F2,S4) } = 0 :-
-  S4=S2+S3,
+&sum{ C*V : @member(LE) = (C,V); CC*(time,S2+S3); -CC*(time,S2) } = (F2,S2+S3) :-
   happens3(E,S1,S2),
   terminates(E,F1,S1),
   0<S3,
   antiTrajectory(F1,S1,F2,(LE,CC),S3),
-  not startedIn(S1,F1,S4),
-  step(S4).
+  not startedIn(S1,F1,S2+S3),
+  step(S2+S3).
 
 initiated1(F,S2) :- happens3(E,S1,S2), initiates(E,F,LE,S1).
 % no terminated1(F,S) for ffluent(F)
@@ -172,17 +154,15 @@ initiated1(F,S2) :- happens3(E,S1,S2), initiates(E,F,LE,S1).
 
 % FDEC4 (corresponds to DEC5 and DEC6) 
 % note OV: no holdsAt and initiated instead of terminated
-&sum{ (F,S1); -(F,S2) } = 0 :-
-  S2=S1+1,
-  not releasedAt(F,S2), 
+&sum{ (F,S1) } = (F,S1+1) :-
+  not releasedAt(F,S1+1), 
   not initiated1(F,S1),
-  ffluent(F), step(S1), step(S2).
+  ffluent(F), step(S1), step(S1+1).
 
 % DEC7 and DEC8 apply also to ffluent(F)
 
 % FDEC5 (corresponds to DEC9 and DEC10)
-&sum{ C*V : @member(LE) = (C,V); -(F,S3) } = 0 :-
-  S3=S2+1,
+&sum{ C*V : @member(LE) = (C,V) } = (F,S2+1) :-
   happens3(E,S1,S2),
   initiates(E,F,LE,S1),
   step(S2).
@@ -205,7 +185,9 @@ initiated1(F,S2) :- happens3(E,S1,S2), initiates(E,F,LE,S1).
 % comparison(LE,B): there is a comparison between linear equation LE and bound B
 % sum(LE,lt/eq/gt,B): the sum of the members of LE is lt/eq/gt the bound B
 
-{ sum(LE,(lt;eq;gt),B) } = 1 :- comparison(LE,B).
+%{ sum(LE,(lt;eq;gt),B) } = 1 :- comparison(LE,B).
+{ sum(LE,(lt;eq;gt),B) } :- comparison(LE,B).               % clingo bug https://github.com/potassco/clingo/issues/594
+:- not { sum(LE,X,B): X=(lt;eq;gt) } = 1, comparison(LE,B). % clingo bug
 %
 &sum{ C*V : @member(LE) = (C,V) } < B :- sum(LE,lt,B).
 &sum{ C*V : @member(LE) = (C,V) } = B :- sum(LE,eq,B).
@@ -222,8 +204,9 @@ sum(LE,geq,B) :- sum(LE,gt,B).
 %-------------------------------------------------------------------------------
 
 % (time,S): the time of step S
-&sum{ (time, 0) } >= 0.                                           % step 0 is at at time >= 0
-&sum{ (time,S2); -(time,S1) } > 0 :- step(S1), step(S2), S2=S1+1. % consecutive steps must have greater time
+&sum{ (time, 0) } >= 0.                                    % step 0 is at at time >= 0
+&sum{ (time,S1+1) } > (time,S1) :- step(S1), step(S1+1).   % consecutive steps must have greater time
+&sum{ (time,maxstep) } = maxtime :- not disable_laststep.  % maxstep is at time maxtime (unless disabled)
 
 %
 % Observations
@@ -237,8 +220,8 @@ sum(LE,geq,B) :- sum(LE,gt,B).
 
 % map(T,S): time T is mapped to state S
 %   map(T,S) :- obs(happens3,E,T), step(S), &sum{ (time,S) } = T.       % clingcon
-    map(T,S) :- obs(happens3,E,T,_), step(S), sum(( (1,(time,S)) ),eq,T). % clingo-lpx
-    map(T,S) :- obs(happens3,E,_,T), step(S), sum(( (1,(time,S)) ),eq,T). % clingo-lpx
+    map(T,S) :- obs(happens3,E,T,_), step(S), sum(( (1,(time,S)), ),eq,T). % clingo-lpx
+    map(T,S) :- obs(happens3,E,_,T), step(S), sum(( (1,(time,S)), ),eq,T). % clingo-lpx
              :- obs(happens3,E,_,T), not map(T,_). 
              :- obs(happens3,E,T,_), not map(T,_). 
 happens3(E,S1,S2) :- obs(happens3,E,T1,T2), map(T1,S1), map(T2,S2).
@@ -248,10 +231,13 @@ happens3(E,S1,S2) :- obs(happens3,E,T1,T2), map(T1,S1), map(T2,S2).
 %time_step(T,S) :- obs(O,_,T), O != happens, step(S), S > 0, &sum{ (time,S-1) } < T, &sum{ (time,S) } >= T. % (time,S-1) < T <= (time,S)
 %time_step(T,S) :- obs(O,_,T), O != happens,          S = 0,                         &sum{ (time,S) } >= T. %              T <= (time,S)
 % clingo-lpx
-time_step(T,S) :- obs(O,_,T), O != happens3, step(S), S > 0, sum(( (1,(time,S1)) ),lt,T), sum(( (1,(time,S)) ),geq,T), S1 = S-1. % (time,S-1) < T <= (time,S)
-time_step(T,S) :- obs(O,_,T), O != happens3,          S = 0,                              sum(( (1,(time,S)) ),geq,T).           %              T <= (time,S)
+time_step(T,S) :- obs(O,_,T), O != happens3, step(S), S > 0, sum(( (1,(time,S-1)), ),lt,T), sum(( (1,(time,S)), ),geq,T). % (time,S-1) < T <= (time,S)
+time_step(T,S) :- obs(O,_,T), O != happens3,          S = 0,                                sum(( (1,(time,S)), ),geq,T).           %              T <= (time,S)
 :- obs(O,_,T), O != happens3, not time_step(T, _). % TODO added this
 %time_step_obs((holdsAt;notHoldsAt;releasedAt;notReleasedAt)). % filter out happens and functional values
+
+%% % negative event observation
+%% :- obs(notHappens,E,T), map(T, S), happens(E,S). % if not happens is observed at T then T either shouldnt map to anything or there shouldnt be happens at S
 
 % check Boolean fluents' observations
 :- obs(      holdsAt,F,T),  fluent(F), time_step(T,S), not holdsAt(F,S).
@@ -263,19 +249,18 @@ time_step(T,S) :- obs(O,_,T), O != happens3,          S = 0,                    
 
 % check functional fluents' observations
 % in_trajectory(F,S,C): F is at step S in a trajectory with time coefficient C
-in_trajectory(F2,S4,C) :- 
-  S4=S2+S3, happens3(E,S1,S2), initiates(E,F1,S1), 0<S3,
-  trajectory(F1,S1,F2,(LE,C),S3), not stoppedIn(S1,F1,S4), step(S4).
+in_trajectory(F2,S2+S3,C) :- 
+  happens3(E,S1,S2), initiates(E,F1,S1), 0<S3,
+  trajectory(F1,S1,F2,(LE,C),S3), not stoppedIn(S1,F1,S2+S3), step(S2+S3).
 %
-in_trajectory(F2,S4,C) :- 
-  S4=S2+S3, happens3(E,S1,S2), terminates(E,F1,S1), 0<S3,
-  antiTrajectory(F1,S1,F2,(LE,C),S3), not startedIn(S1,F1,S4), step(S4).
+in_trajectory(F2,S2+S3,C) :- 
+  happens3(E,S1,S2), terminates(E,F1,S1), 0<S3,
+  antiTrajectory(F1,S1,F2,(LE,C),S3), not startedIn(S1,F1,S2+S3), step(S2+S3).
 
 % TODO what about observation that value is greater than something
 &sum{ (F,S) }                         = V :- obs(F,V,T), ffluent(F), time_step(T,S), not in_trajectory(F,S,_).
 %&sum{ (F,S); C*T; -C*(time,S) } = V :- obs(F,V,T), ffluent(F), time_step(T,S),     in_trajectory(F,S,C).  % clingcon
-&sum{ (F,S); C*(obs,T); -C*(time,S) } = V :- obs(F,V,T), ffluent(F), time_step(T,S),     in_trajectory(F,S,C).  % clingo-lpx 
-&sum{(obs,T)} = T :- obs(_,_,T).  % TODO workaround for clingo-lpx (cant say C*T)
+&sum{ (F,S); C*T; -C*(time,S) } = V :- obs(F,V,T), ffluent(F), time_step(T,S),     in_trajectory(F,S,C).  % clingo-lpx 
 
 %%% %
 %%% % Simpler option (creates more steps)
@@ -297,12 +282,9 @@ in_trajectory(F2,S4,C) :-
 %%% significant_step(S) :- map(T,S).
 
 % for clingo-lpx
-comparison(( (1,(time,S)) ),T) :- obs(_,_,T), step(S).
-comparison(( (1,(time,S)) ),T) :- obs(_,_,T,_), step(S).
-comparison(( (1,(time,S)) ),T) :- obs(_,_,_,T), step(S).
-
-% maxstep maps to maxtime (unless disabled)
-&sum{ (time,maxstep) } = maxtime :- not disable_laststep.
+comparison(( (1,(time,S)), ),T) :- obs(_,_,T), step(S).
+comparison(( (1,(time,S)), ),T) :- obs(_,_,T,_), step(S).
+comparison(( (1,(time,S)), ),T) :- obs(_,_,_,T), step(S).
 
 
 % func. atom that represents the time difference between each pair of timepoints
@@ -322,11 +304,11 @@ significant_step(S) :- happens3(E,_,S).                 % step is significant if
 %-------------------------------------------------------------------------------
 
 % designating significant values of continuous fluents or time so that we do not miss them
-comparison(( (1,(F,S-1)) ),V) :- no_jump(F,S,V), step(S), step(S-1).
-comparison(( (1,(F,S  )) ),V) :- no_jump(F,S,V), step(S), step(S-1). 
+comparison(( (1,(F,S-1)), ),V) :- no_jump(F,S,V), step(S), step(S-1).
+comparison(( (1,(F,S  )), ),V) :- no_jump(F,S,V), step(S), step(S-1). 
 %
-:- no_jump(F,S,V), sum(( (1,(F,S-1)) ),lt,V), sum(( (1,(F,S)) ),gt,V).
-:- no_jump(F,S,V), sum(( (1,(F,S-1)) ),gt,V), sum(( (1,(F,S)) ),lt,V).
+:- no_jump(F,S,V), sum(( (1,(F,S-1)), ),lt,V), sum(( (1,(F,S)), ),gt,V).
+:- no_jump(F,S,V), sum(( (1,(F,S-1)), ),gt,V), sum(( (1,(F,S)), ),lt,V).
 
 
 %-------------------------------------------------------------------------------

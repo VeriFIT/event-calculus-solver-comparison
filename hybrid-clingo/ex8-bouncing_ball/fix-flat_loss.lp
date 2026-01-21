@@ -63,14 +63,12 @@ trajectory(falling, T1, velocity, (( (1, (velocity, T1)), ), Rate), T2) :-
 trajectory(rising, T1, height, (( (1, (height, T1)), ), Rate), T2) :-
     initiallyP(constant_fall_rate(Rate)),
     step(T1), step(T2).
-trajectory(rising, T1, velocity, (( ("-0.25", flatloss), ("0.25", (velocity, T1)), ), -Rate), T2) :-
+trajectory(rising, T1, velocity, (( ("-0.25", FlatBounceLoss), ("0.25", (velocity, T1)), ), -Rate), T2) :-
     % loose some flat amount of velocity from the bounce (crop to zero velocity)
     initiallyP(constant_velocity_loss_bounce(FlatBounceLoss)),
     initiallyP(constant_fall_rate(Rate)),
     %initiallyP(velocity_loss_portion(LossPortion)), % ... 1 - LossPortion
     step(T1), step(T2).
-% TODO workaround for lpx
-&sum{flatloss} = FlatBounceLoss :- initiallyP(constant_velocity_loss_bounce(FlatBounceLoss)).
 
 happens(fall_down, T) :- happens(drop, T).
 

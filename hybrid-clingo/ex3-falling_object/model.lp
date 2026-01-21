@@ -53,7 +53,6 @@ happens(hitGround(O), T) :-
 % restrict that there must exist a state where height is exactly equal to zero
 % (by saying that there cannot be two subsequent states in which one is lt/gt and the next gt/lt, i.e. there is no state with exactly eq)
 no_jump(height(O), S, 0) :- object(O), step(S), holdsAt(falling(O), S).
-%    no_jump(height(O), S, 0) :- object(O), step(S). % TODO workaround for lpx1.4
 
 % [effect]
 % if an object hits the ground, then it will stop falling

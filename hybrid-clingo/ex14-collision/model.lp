@@ -76,7 +76,7 @@ initiates(collide(O1,O2), height(O2), ((1, (height(O2),T)),), T) :- step(T), obj
 
 % [state constraint]
 % an object only has one unique height at a time
-% TODO not needed since clingo lpx only allows one functional value at a time
+% not needed since clingo lpx only allows one functional value at a time
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
 trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)), ), -2), T2) :-

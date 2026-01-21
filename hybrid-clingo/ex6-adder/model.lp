@@ -28,9 +28,7 @@ fluent(powered_on).
 %-------------------------------------------------------------------------------
 
 % initiates(add(Add),  result(Res2), T) :- Add .>. 0, holdsAt(result(Res1), T), Res2 = Res1 + Add, step(T).
-%initiates(add(Add), result, ( (1, Add), (1, (result, T)) ), T) :-
-&sum{one} = 1.  % TODO workaround for lpx
-initiates(add(Add), result, ( (Add, one), (1, (result, T)) ), T) :-
+initiates(add(Add), result, ( (1, Add), (1, (result, T)) ), T) :-
     Add > 0,
     holdsAt(powered_on, T),
     % holdsAt(result, T),

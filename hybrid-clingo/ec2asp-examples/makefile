@@ -1,5 +1,5 @@
-log:
-	@mkdir -p ./logs ; rm -f ./logs/*.log ; exit 0
+log-lpx:
+	@mkdir -p ./logs ; rm -f ./logs/lpx-*.log ; exit 0
 
 # clingo-lpx  --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -65,6 +65,8 @@ log:
 	../../scripts/maketrace.sh "python ../fdec-incr.py ./Telephone3-ea.lp" logs/lpx-Telephone3-ea.log ; exit 0
 	../../scripts/maketrace.sh "python ../fdec-incr.py ./Telephone40-ea.lp" logs/lpx-Telephone40-ea.log ; exit 0
 
+log-con:
+	@mkdir -p ./logs ; rm -f ./logs/con-*.log ; exit 0
 
 # clingcon  --------------------------------------------------------------------------------------------------------------------------------------------------
 

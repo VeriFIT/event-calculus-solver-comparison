@@ -38,21 +38,17 @@ event(letGoOf(A, O)) :- agent(A), object(O).
 % effects 
 %-------------------------------------------------------------------------------
 
-% TODO workaround for lpx
-&sum{one} = 1.
-&sum{zero} = 0.
-
 % if an agent starts walking from Location1 to Location2, then they will no longer be in Location1,
 % will be walking, and their location will continuously approach Location2
 initiates(walk(A, L), walking(A), T) :- step(T), agent(A), in_locations(L).
-initiates(walk(A, L), walkingTo(A), ( (L, one), ), T) :- step(T), agent(A), in_locations(L).    % TODO need a second fluent because trajectories can only be controlled by dfluents
+initiates(walk(A, L), walkingTo(A), ( (1, L), ), T) :- step(T), agent(A), in_locations(L).    % TODO need a second fluent because trajectories can only be controlled by dfluents
 &sum{(walkingTo(A),T)} = 0 :- not holdsAt(walking(A), T), step(T), agent(A).
 
 releases(walk(A, L), location(A), T) :- agent(A), step(T), in_locations(L).
 
 terminates(arrive(A), walking(A), T) :- agent(A), step(T).
 %terminates(arrive(A), walkingTo(A), T) :- agent(A), step(T).
-initiates(arrive(A), walkingTo(A), ( (0, zero), ), T) :- agent(A), step(T).
+initiates(arrive(A), walkingTo(A), ( (0, 0), ), T) :- agent(A), step(T).
 
 initiates(arrive(A), location(A), ( (1, (location(A), T)), ), T) :- step(T), agent(A).
 
@@ -99,9 +95,7 @@ initiates(letGoOf(A, O), location(O), ( (1, (location(A),T)), ), T) :- step(T), 
 
 %! indirect effect
 % when an agent is in a room and holding an object, then the object is in the same room
-%&sum{(location(A),T)} = (location(O),T) :-
-% TODO workaround for LPX
-&sum{(location(A),T); - (location(O),T)} = 0 :-
+&sum{(location(A),T)} = (location(O),T) :-
     holdsAt(holding(A,O), T),
     agent(A), object(O), step(T).
 

@@ -17,13 +17,9 @@ ffluent(value).
 % effects 
 %-------------------------------------------------------------------------------
 
-%initiates(increment, value, ( (1,1), (1, (value, S)) ), S) :- step(S).
-&sum{one} = 1.  % TODO workaround for lpx
-initiates(increment, value, ( (1,one), (1, (value, S)) ), S) :- step(S).
+initiates(increment, value, ( (1,1), (1, (value, S)) ), S) :- step(S).
 
-%initiates(reset, value, ( (0,0) ), S) :- step(S).
-% TODO workaround for lpx
-initiates(reset, value, ( (0, (value, S)), ), S) :- step(S).
+initiates(reset, value, ( (0,0) ), S) :- step(S).
 
 
 %-------------------------------------------------------------------------------

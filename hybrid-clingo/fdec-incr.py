@@ -166,11 +166,17 @@ if __name__ == "__main__":
         
         cmd = []   
         if(conf_args.con == True):
-            cmd.extend(["python", "-m", "clingcon", "--enable-python"])
+            cmd.extend([
+                "python", "-m", "clingcon", "--enable-python",
+                os.path.join(scriptdir, 'axioms/fdec-memb-con.lp')
+            ])
             #cmd.extend([os.path.join(scriptdir, 'axioms/fdec-mem-con.lp')])
         else:
-            cmd.extend(["python", "-m", "clingolpx", "--enable-python", "--strict"])
-            #cmd.extend(["python", "-c", "import clingolpx; clingolpx._pyclingolpx()", "--strict", "--project-anonymous"])
+            #cmd.extend(["python", "-m", "clingolpx", "--enable-python", "--strict"])
+            cmd.extend([
+                "python", "-c", "import clingolpx; clingolpx._pyclingolpx()", "--strict", "--project-anonymous",
+                os.path.join(scriptdir, 'axioms/fdec-memb-lpx.lp')
+            ])
             
         if(conf_args.project == True):
             cmd.append("--project")
@@ -213,7 +219,6 @@ if __name__ == "__main__":
         if(conf_args.no_axioms == False):
             cmd.extend([
                 os.path.join(scriptdir, 'axioms/fdec.lp'),
-                #os.path.join(scriptdir, 'axioms/fdec-lpx14.lp'),
                 os.path.join(scriptdir, 'axioms/fdec-show.lp')
             ])
             
