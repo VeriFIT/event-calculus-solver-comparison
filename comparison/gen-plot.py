@@ -14,6 +14,7 @@ plt.rcParams.update({
 })
 
 FigSize = (2.8, 2.6)
+Timeout = 300
 
 # ---------- CSV loader ----------
 def load_tool(path, fname, prefix):
@@ -68,7 +69,7 @@ def main(data_dir, graph_name):
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlim(df["PARAM"].min(), df["PARAM"].max())
-    ax.axhline(120, color="red", linestyle="--", linewidth=1)
+    ax.axhline(Timeout, color="red", linestyle="--", linewidth=1)
     
     ax.set_xlabel(graph_name)
     ax.set_ylabel("Execution time (s)")
