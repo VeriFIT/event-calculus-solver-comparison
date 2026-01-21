@@ -86,7 +86,7 @@ obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(3*
 
 % supplied as input
 #const maxEventsNumber=2.    
-#const eventsNumber=1.      
+#const eventsNumber=2.      
 #const precisionMultTime=1.
 #const precisionMultVal=1. 
 
@@ -97,7 +97,7 @@ obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(3*
 % auto-computed
 #const paramHeight=2*precisionMultVal.
 #const maxtime=3*(maxEventsNumber+1)*precisionMultTime.
-#const fallRate=(-1)*precisionMultVal.  
+#const fallRate=1*precisionMultVal.  
     % falls for 10 units regardless of precision
     % vanila clingo struggles with higher time precision than value precision since it leads to fall rate 0.1, 0.01,...
 
