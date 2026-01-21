@@ -3,7 +3,7 @@
 RUN="python ./fdec-incr.py --con"
 
 maxEvents=102
-maxInEvents=51
+maxInEvents=52
 stepEvents=5
 #maxEvents=10
 #maxInEvents=5  # each input event causes one triggered event

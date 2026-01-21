@@ -15,12 +15,14 @@ TIMEOUT=300
 rm -rf "$OUTDIR"
 mkdir -p "$OUTDIR"
 mkdir -p "$OUTDIR/domain"
+mkdir -p "$OUTDIR/step-toggle"
 mkdir -p "$OUTDIR/step-falling"
 
 # lpx
 echo running clingolpx domain
 conda run -n clingo-lpx ../scripts/test.sh ./clingolpx-tasks.sh ../hybrid-clingo/ ../comparison/$OUTDIR/domain/clingolpx $NCPUS $NRUNS $TIMEOUT > /dev/null
-
+echo running clingolpx step-toggle
+conda run -n clingo-lpx ../scripts/test.sh ./clingolpx-tasks-step-toggle.sh ../hybrid-clingo/ ../comparison/$OUTDIR/step-toggle/clingolpx $NCPUS $NRUNS $TIMEOUT > /dev/null
 echo running clingolpx step-falling
 conda run -n clingo-lpx ../scripts/test.sh ./clingolpx-tasks-step-falling.sh ../hybrid-clingo/ ../comparison/$OUTDIR/step-falling/clingolpx $NCPUS $NRUNS $TIMEOUT > /dev/null
 
@@ -31,6 +33,8 @@ conda run -n clingo-lpx ../scripts/test.sh ./clingolpx-tasks-step-falling.sh ../
 # clingcon
 echo running clingcon domain
 conda run -n clingcon ../scripts/test.sh ./clingcon-tasks.sh ../hybrid-clingo/ ../comparison/$OUTDIR/domain/clingcon $NCPUS $NRUNS $TIMEOUT > /dev/null
+echo running clingcon step-toggle
+conda run -n clingcon ../scripts/test.sh ./clingcon-tasks-step-toggle.sh ../hybrid-clingo/ ../comparison/$OUTDIR/step-toggle/clingcon $NCPUS $NRUNS $TIMEOUT > /dev/null
 echo running clingcon step-falling
 conda run -n clingcon ../scripts/test.sh ./clingcon-tasks-step-falling.sh ../hybrid-clingo/ ../comparison/$OUTDIR/step-falling/clingcon $NCPUS $NRUNS $TIMEOUT > /dev/null
 
@@ -41,6 +45,8 @@ conda run -n clingcon ../scripts/test.sh ./clingcon-tasks-step-falling.sh ../hyb
 # clingo
 echo running clingo domain
 conda run -n clingcon ../scripts/test.sh ./clingo-tasks.sh ../clingo/ ../comparison/$OUTDIR/domain/clingo $NCPUS $NRUNS $TIMEOUT > /dev/null
+echo running clingo step-toggle
+conda run -n clingcon ../scripts/test.sh ./clingo-tasks-step-toggle.sh ../clingo/ ../comparison/$OUTDIR/step-toggle/clingo $NCPUS $NRUNS $TIMEOUT > /dev/null
 echo running clingo step-falling
 conda run -n clingcon ../scripts/test.sh ./clingo-tasks-step-falling.sh ../clingo/ ../comparison/$OUTDIR/step-falling/clingo $NCPUS $NRUNS $TIMEOUT > /dev/null
 
@@ -50,4 +56,5 @@ conda run -n clingcon ../scripts/test.sh ./clingo-tasks-step-falling.sh ../cling
 
 # make graphs
 python ./gen-plot.py ./$OUTDIR/domain/  Domain
-python ./gen-plot.py ./$OUTDIR/step-falling/    EventPrecision
+python ./gen-plot.py ./$OUTDIR/step-toggle/    "Toggle Events"
+python ./gen-plot.py ./$OUTDIR/step-falling/    "DropHit Events"
