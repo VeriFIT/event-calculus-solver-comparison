@@ -65,9 +65,9 @@ log-all-con-parallel:
 	@true
 
 # both clingcon and clingo-lpx 13
-create-env-fdec:
-	conda env create -f ./utils/fdec.yml || \
-	conda env update -f ./utils/fdec.yml
+create-env-clingcon:
+	conda env create -f ./utils/clingcon_env.yml || \
+	conda env update -f ./utils/clingcon_env.yml
 
 # clingo-lpx 14
 create-env-newlpx:
