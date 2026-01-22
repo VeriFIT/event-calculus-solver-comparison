@@ -59,14 +59,14 @@ terminates(hitGround(O), falling(O), T) :- object(O), step(T).
 %initiates(hitGround(O), height(O), ( (0, (height(O), T)), ), T) :- step(T), object(O).
 %! object teleports to its initial height when it hits the ground
 %! this is for ease of dropping multiple times
-initiates(hitGround(O), height(O), ( (1, H), ), T) :- step(T), object(O), initHeight(H).
+initiates(hitGround(O), height(O), ( (1, (height(O), T)), (1, IH) ), T) :- step(T), object(O), initHeight(IH).
 
 % [state constraint]
 % an object only has one unique height at a time
 % not needed -- only  one functional value at a time
 
 % motion of an object from the moment it is dropped to the moment it hits the ground
-trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)), ), fallRate), T2) :-
+trajectory(falling(O), T1, height(O), (( (1, (height(O), T1)), ), -fallRate), T2) :-
     object(O), step(T1), step(T2), step(T1+T2).
 
 
@@ -82,7 +82,7 @@ initiallyN(falling(apple)).
 
 
 % allows us to generate event observations via execution parameters (for experiments)
-obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(4*(EventNumber-1)))*precisionMultTime.
+obs(happens, drop(nathan,apple), T):- EventNumber = 1..eventsNumber, T = (1+(2*(EventNumber-1)))*precisionMultTime.
 
 % supplied as input
 #const maxEventsNumber=2.    
@@ -95,9 +95,9 @@ obs(happens, drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(4*
 #show conf_maxtime(maxtime).
 
 % auto-computed
-#const paramHeight=3*precisionMultVal.
-#const maxtime=4*(maxEventsNumber+1)*precisionMultTime.
-#const fallRate=1*precisionMultVal.  
+#const paramHeight=100*precisionMultVal.
+#const maxtime=2*(maxEventsNumber)*precisionMultTime.
+#const fallRate=100*precisionMultVal.  
     % falls for 10 units regardless of precision
     % vanila clingo struggles with higher time precision than value precision since it leads to fall rate 0.1, 0.01,...
 

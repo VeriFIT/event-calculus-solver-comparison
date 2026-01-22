@@ -54,7 +54,7 @@ terminates(hitGround(O), falling(O), T) :-
 %    object(O), fHeight(H), time(T).
 %! object teleports to its initial height when it hits the ground
 %! this is for ease of dropping multiple times
-initiates(hitGround(O), height(O,H), T) :- time(T), object(O), initHeight(H).
+initiates(hitGround(O), height(O,H+IH), T) :- holdsAt(height(O, H), T), time(T), object(O), initHeight(IH).
     
 
 % [state constraint]
@@ -78,7 +78,7 @@ initiallyN(F) :- not initiallyP(F), fluent(F).  % apple is initially not falling
 :- releasedAt(F,0), fluent(F). % nothing is initially released from CLoI
 
 % allows us to generate event observations via execution parameters (for experiments)
-happens(drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(4*(EventNumber-1)))*precisionMultTime.
+happens(drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(2*(EventNumber-1)))*precisionMultTime.
 
 % supplied as input
 #const maxEventsNumber=2.    
@@ -91,8 +91,8 @@ happens(drop(nathan,apple), T) :- EventNumber = 1..eventsNumber, T = (1+(4*(Even
 #show conf_maxtime(maxtime).
 
 % auto-computed
-#const paramHeight=3*precisionMultVal.
-#const maxtime=4*(maxEventsNumber+1)*precisionMultTime.
-#const fallRate=1*precisionMultVal.  
+#const paramHeight=100*precisionMultVal.
+#const maxtime=2*(maxEventsNumber)*precisionMultTime.
+#const fallRate=100*precisionMultVal.  
     % falls for 10 units regardless of precision
     % vanila clingo struggles with higher time precision than value precision since it leads to fall rate 0.1, 0.01,...

@@ -48,176 +48,49 @@ RUN="clingo ./axioms/dec_clingo.lp ./axioms/dec_clingo-show.lp"
 #2-Telephone40;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp';1
 #"
 
-echo "
-1-BusRide-maxT00050;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=50';1
-1-BusRide-maxT00100;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=100';1
-1-BusRide-maxT00200;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=200';1
-1-BusRide-maxT00400;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=400';1
-1-BusRide-maxT01000;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=1000';1
-1-BusRide-maxT02000;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=2000';1
-1-BusRide-maxT05000;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=5000';1
-1-BusRide-maxT10000;'$RUN -n10 ./ec2asp-examples/BusRide40-ea.lp -c maxtime=10000';1
+DOM_START=50
+DOM_STEP=50
+DOM_MAX=10000
 
-1-ChessBoard-maxT00050;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=50';3
-1-ChessBoard-maxT00100;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=100';3
-1-ChessBoard-maxT00200;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=200';3
-1-ChessBoard-maxT00400;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=400';3
-1-ChessBoard-maxT01000;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=1000';3
-1-ChessBoard-maxT02000;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=2000';3
-1-ChessBoard-maxT05000;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=5000';3
-1-ChessBoard-maxT10000;'$RUN -n10 ./ec2asp-examples/ChessBoard40-ea.lp -c maxtime=10000';3
-
-1-CoinToss-maxT00050;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=50';8
-1-CoinToss-maxT00100;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=100';8
-1-CoinToss-maxT00200;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=200';8
-1-CoinToss-maxT00400;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=400';8
-1-CoinToss-maxT01000;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=1000';8
-1-CoinToss-maxT02000;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=2000';8
-1-CoinToss-maxT05000;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=5000';8
-1-CoinToss-maxT10000;'$RUN -n10 ./ec2asp-examples/CoinToss40-ea.lp -c maxtime=10000';8
-
-1-Commuter-maxT00050;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=50';1
-1-Commuter-maxT00100;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=100';1
-1-Commuter-maxT00200;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=200';1
-1-Commuter-maxT00400;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=400';1
-1-Commuter-maxT01000;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=1000';1
-1-Commuter-maxT02000;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=2000';1
-1-Commuter-maxT05000;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=5000';1
-1-Commuter-maxT10000;'clingo ./axioms/dec_clingo_dur.lp -n10 ./ec2asp-examples/Commuter15-ea.lp -c maxtime=10000';1
-
-1-DeadOrAlive-maxT00050;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=50';1
-1-DeadOrAlive-maxT00100;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=100';1
-1-DeadOrAlive-maxT00200;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=200';1
-1-DeadOrAlive-maxT00400;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=400';1
-1-DeadOrAlive-maxT01000;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=1000';1
-1-DeadOrAlive-maxT02000;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=2000';1
-1-DeadOrAlive-maxT05000;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=5000';1
-1-DeadOrAlive-maxT10000;'$RUN -n10 ./ec2asp-examples/DeadOrAlive40-ea.lp -c maxtime=10000';1
-
-1-Happy-maxT00050;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=50';1
-1-Happy-maxT00100;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=100';1
-1-Happy-maxT00200;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=200';1
-1-Happy-maxT00400;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=400';1
-1-Happy-maxT01000;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=1000';1
-1-Happy-maxT02000;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=2000';1
-1-Happy-maxT05000;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=5000';1
-1-Happy-maxT10000;'$RUN -n10 ./ec2asp-examples/Happy40-ea.lp -c maxtime=10000';1
-
-1-KitchenSink-maxT00050;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=50';1
-1-KitchenSink-maxT00100;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=100';1
-1-KitchenSink-maxT00200;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=200';1
-1-KitchenSink-maxT00400;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=400';1
-1-KitchenSink-maxT01000;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=1000';1
-1-KitchenSink-maxT02000;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=2000';1
-1-KitchenSink-maxT05000;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=5000';1
-1-KitchenSink-maxT10000;'$RUN -n10 ./ec2asp-examples/KitchenSink_M40-ea.lp -c maxtime=10000';1
-
-1-RussianTurkey-maxT00050;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=50';2
-1-RussianTurkey-maxT00100;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=100';2
-1-RussianTurkey-maxT00200;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=200';2
-1-RussianTurkey-maxT00400;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=400';2
-1-RussianTurkey-maxT01000;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=1000';2
-1-RussianTurkey-maxT02000;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=2000';2
-1-RussianTurkey-maxT05000;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=5000';2
-1-RussianTurkey-maxT10000;'$RUN -n10 ./ec2asp-examples/RussianTurkey40-ea.lp -c maxtime=10000';2
-
-1-StolenCar-maxT00050;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=50';1
-1-StolenCar-maxT00100;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=100';1
-1-StolenCar-maxT00200;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=200';1
-1-StolenCar-maxT00400;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=400';1
-1-StolenCar-maxT01000;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=1000';1
-1-StolenCar-maxT02000;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=2000';1
-1-StolenCar-maxT05000;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=5000';1
-1-StolenCar-maxT10000;'$RUN -n1 ./ec2asp-examples/StolenCar40-ea.lp -c maxtime=10000';1
-
-1-StuffyRoom-maxT00050;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=50';1
-1-StuffyRoom-maxT00100;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=100';1
-1-StuffyRoom-maxT00200;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=200';1
-1-StuffyRoom-maxT00400;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=400';1
-1-StuffyRoom-maxT01000;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=1000';1
-1-StuffyRoom-maxT02000;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=2000';1
-1-StuffyRoom-maxT05000;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=5000';1
-1-StuffyRoom-maxT10000;'$RUN -n10 ./ec2asp-examples/StuffyRoom40-ea.lp -c maxtime=10000';1
-
-1-SuperMarket-maxT00050;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=50';1
-1-SuperMarket-maxT00100;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=100';1
-1-SuperMarket-maxT00200;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=200';1
-1-SuperMarket-maxT00400;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=400';1
-1-SuperMarket-maxT01000;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=1000';1
-1-SuperMarket-maxT02000;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=2000';1
-1-SuperMarket-maxT05000;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=5000';1
-1-SuperMarket-maxT10000;'$RUN -n10 ./ec2asp-examples/Supermarket40-ea.lp -c maxtime=10000';1
-
-1-ThielscherCircuit-maxT00050;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=50';1
-1-ThielscherCircuit-maxT00100;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=100';1
-1-ThielscherCircuit-maxT00200;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=200';1
-1-ThielscherCircuit-maxT00400;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=400';1
-1-ThielscherCircuit-maxT01000;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=1000';1
-1-ThielscherCircuit-maxT02000;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=2000';1
-1-ThielscherCircuit-maxT05000;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=5000';1
-1-ThielscherCircuit-maxT10000;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/ThielscherCircuit40-ea.lp -c maxtime=10000';1
-
-1-WalkingTurkey-maxT00050;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=50';1
-1-WalkingTurkey-maxT00100;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=100';1
-1-WalkingTurkey-maxT00200;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=200';1
-1-WalkingTurkey-maxT00400;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=400';1
-1-WalkingTurkey-maxT01000;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=1000';1
-1-WalkingTurkey-maxT02000;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=2000';1
-1-WalkingTurkey-maxT05000;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=5000';1
-1-WalkingTurkey-maxT10000;'$RUN -n10 ./ec2asp-examples/WalkingTurkey40-ea.lp -c maxtime=10000';1
-
-1-Yale-maxT00050;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=50';1
-1-Yale-maxT00100;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=100';1
-1-Yale-maxT00200;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=200';1
-1-Yale-maxT00400;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=400';1
-1-Yale-maxT01000;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=1000';1
-1-Yale-maxT02000;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=2000';1
-1-Yale-maxT05000;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=5000';1
-1-Yale-maxT10000;'$RUN -n10 ./ec2asp-examples/Yale40-ea.lp -c maxtime=10000';1
-
-2-FallingObjectWithEvents-maxT00050;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=50';1
-2-FallingObjectWithEvents-maxT00100;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=100';1
-2-FallingObjectWithEvents-maxT00200;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=200';1
-2-FallingObjectWithEvents-maxT00400;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=400';1
-2-FallingObjectWithEvents-maxT01000;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=1000';1
-2-FallingObjectWithEvents-maxT02000;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=2000';1
-2-FallingObjectWithEvents-maxT05000;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=5000';1
-2-FallingObjectWithEvents-maxT10000;'$RUN -n10 ./ec2asp-examples/FallingObjectWithEvents40-ea.lp -c maxtime=10000';1
-
-2-HotAirBalloon-maxT00050;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=50';1
-2-HotAirBalloon-maxT00100;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=100';1
-2-HotAirBalloon-maxT00200;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=200';1
-2-HotAirBalloon-maxT00400;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=400';1
-2-HotAirBalloon-maxT01000;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=1000';1
-2-HotAirBalloon-maxT02000;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=2000';1
-2-HotAirBalloon-maxT05000;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=5000';1
-2-HotAirBalloon-maxT10000;'$RUN -n10 ./ec2asp-examples/HotAirBalloon40-ea.lp -c maxtime=10000';1
-
-2-Telephone-maxT00050;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=50';1
-2-Telephone-maxT00100;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=100';1
-2-Telephone-maxT00200;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=200';1
-2-Telephone-maxT00400;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=400';1
-2-Telephone-maxT01000;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=1000';1
-2-Telephone-maxT02000;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=2000';1
-2-Telephone-maxT05000;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=5000';1
-2-Telephone-maxT10000;'$RUN -n10 ./ec2asp-examples/Telephone40-ea.lp -c maxtime=10000';1
-
-
-3-Counter-maxT00050;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=50';1
-3-Counter-maxT00100;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=100';1
-3-Counter-maxT00200;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=200';1
-3-Counter-maxT00400;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=400';1
-3-Counter-maxT01000;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=1000';1
-3-Counter-maxT02000;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=2000';1
-3-Counter-maxT05000;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=5000';1
-3-Counter-maxT10000;'$RUN -n10 ./ex15-counter/model.lp -c maxtime=10000';1
+EXAMPLES="
+BusRide
+ChessBoard
+CoinToss
+DeadOrAlive
+Happy
+KitchenSink_M
+RussianTurkey
+StolenCar
+StuffyRoom
+Supermarket
+WalkingTurkey
+Yale
+FallingObjectWithEvents
+HotAirBalloon
+Telephone
 "
 
+for EX in "$EXAMPLES"
+do
+    for DOM in $(seq $DOM_START $DOM_STEP $DOM_MAX)
+    do
+    echo "1-$EX-maxT$DOM;'$RUN -n10 ./ec2asp-examples/${EX}40-ea.lp --maxtime $DOM';1"
+    done
+done
 
+EX="ThielscherCircuit"
+for DOM in $(seq $DOM_START $DOM_STEP $DOM_MAX)
+do
+echo "1-$EX-maxT$DOM;'$RUN -n10 ./axioms/causal.lp ./ec2asp-examples/${EX}40-ea.lp --maxtime $DOM';1"
 
+EX="Commuter"
+for DOM in $(seq $DOM_START $DOM_STEP $DOM_MAX)
+do
+echo "1-$EX-maxT$DOM;'clingo ./axioms/dec_clingo_dur.lp ./axioms/dec_clingo_dur-show.lp -n10 ./ec2asp-examples/${EX}15-ea.lp --maxtime $DOM';1"
+done
 
-
-
-
-
-
+EX="Counter"
+for DOM in $(seq $DOM_START $DOM_STEP $DOM_MAX)
+do
+echo "1-Counter-maxT$DOM;'$RUN -n10 ./ex15-counter/model.lp --maxtime $DOM';1"
+done

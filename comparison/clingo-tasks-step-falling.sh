@@ -2,15 +2,15 @@
 
 RUN="clingo ./axioms/dec_clingo.lp ./axioms/dec_clingo-show.lp"
 
-maxEvents=72
-maxInEvents=36
-stepEvents=5
+maxEvents=102
+maxInEvents=52
+stepEvents=2
 #maxEvents=10
 #maxInEvents=5  # each input event causes one triggered event
 #stepEvents=1
 
-precisionT="1 2" 
-precisionV="1 10" 
+precisionT="1 4" 
+precisionV="1 4" 
 for PT in $precisionT
 do
     for PV in $precisionV
