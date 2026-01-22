@@ -1,0 +1,18 @@
+creating a summary
+
+1) delete
+^  PASS *[a-zA-Z][^4]*  *.*$
+^        FAIL *[a-zA-Z][^4]*  *.*$
+^real	.*$
+^sys	.*$
+Running queries for the PCA pump specification:
+  using a pool of 6 CPU cores \(out of 6 available\) to run 22 queries in parallel
+^.* UTC [0-9]*$
+^$\n
+
+2) replace
+^.*/model-
+model-
+
+\nuser	
+\t

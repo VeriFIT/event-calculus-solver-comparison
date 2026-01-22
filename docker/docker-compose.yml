@@ -1,0 +1,8 @@
+version: "3"
+services:
+  scasp:
+    image: fdec
+    build:
+      # context is the parent directory to access the tool directories
+      context: ../
+      dockerfile: ./docker/Dockerfile
